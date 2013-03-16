@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+kzf_start="$(eval "pwd")/build/start";
+eval "php \""$kzf_start"\"/kzf-run.php $1 $2 $3 $4 $5 $6 $7";
