@@ -17,7 +17,6 @@ class NodeTreeController extends Base\BaseController
 	
 	public function listAction() {
 		$aoNodeTree = Model\NodeTreeQuery::create()->find();
-		
 		return $this->renderBackend('tree.tpl',array('aoNodeTree'=>$aoNodeTree));
 	}
 }

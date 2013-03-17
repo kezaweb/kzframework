@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <style type="text/css" src="/backend/css/bootstrap.min.css"></style>
     <link href="css/bootstrap.css" rel="stylesheet">    
+    <link href="css/kzf.css" rel="stylesheet">    
     <script src="/backend/js/jquery-1.9.1.min.js"></script>
     <script src="/backend/js/bootstrap.min.js"></script>
     <script src="/backend/js/kzf.js"></script>
@@ -30,6 +31,13 @@
 	
 	{/block}
 	</div>
+	
+	
+	<!-- load box -->
+	<div id="load-kzf-content">
+		{html_image file='img/35load.gif'}&nbsp; &nbsp;Loading page...	
+	</div>
+	
 </body>
 
 </html>

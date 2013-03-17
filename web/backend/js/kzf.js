@@ -14,9 +14,14 @@
     	    $.ajax({
     	        url: url,
     	        cache : false,
+    	        beforeSend: function() {
+    	        	$('#'+target).html('');
+    	        	$('#load-'+target).show();
+    	        },
     	        success: function(data){ 
     	                       if (target !== 'undefined'){
     	                          $('#'+target).html( data );
+    	                          $('#load-'+target).hide();
     	                       }
     	                 }
     	    });
