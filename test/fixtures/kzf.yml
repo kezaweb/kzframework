@@ -1,0 +1,5 @@
+rule:
+  -
+    id: 1
+    rul_name: "Rule Name"
+    rul_desc: "Rule Description"
