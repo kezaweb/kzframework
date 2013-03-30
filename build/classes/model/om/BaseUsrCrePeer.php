@@ -38,13 +38,13 @@ abstract class BaseUsrCrePeer
     const TM_CLASS = 'UsrCreTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 4;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /** the column name for the usr_id field */
     const USR_ID = 'usr_cre.usr_id';
@@ -55,14 +55,8 @@ abstract class BaseUsrCrePeer
     /** the column name for the created_by field */
     const CREATED_BY = 'usr_cre.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'usr_cre.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'usr_cre.updated_by';
-
-    /** the column name for the updated_at field */
-    const UPDATED_AT = 'usr_cre.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -83,12 +77,12 @@ abstract class BaseUsrCrePeer
      * e.g. UsrCrePeer::$fieldNames[UsrCrePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('UsrId', 'CreId', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('usrId', 'creId', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (UsrCrePeer::USR_ID, UsrCrePeer::CRE_ID, UsrCrePeer::CREATED_BY, UsrCrePeer::CREATED_AT, UsrCrePeer::UPDATED_BY, UsrCrePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USR_ID', 'CRE_ID', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('usr_id', 'cre_id', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('UsrId', 'CreId', 'CreatedBy', 'UpdatedBy', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('usrId', 'creId', 'createdBy', 'updatedBy', ),
+        BasePeer::TYPE_COLNAME => array (UsrCrePeer::USR_ID, UsrCrePeer::CRE_ID, UsrCrePeer::CREATED_BY, UsrCrePeer::UPDATED_BY, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USR_ID', 'CRE_ID', 'CREATED_BY', 'UPDATED_BY', ),
+        BasePeer::TYPE_FIELDNAME => array ('usr_id', 'cre_id', 'created_by', 'updated_by', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -98,12 +92,12 @@ abstract class BaseUsrCrePeer
      * e.g. UsrCrePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('UsrId' => 0, 'CreId' => 1, 'CreatedBy' => 2, 'CreatedAt' => 3, 'UpdatedBy' => 4, 'UpdatedAt' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('usrId' => 0, 'creId' => 1, 'createdBy' => 2, 'createdAt' => 3, 'updatedBy' => 4, 'updatedAt' => 5, ),
-        BasePeer::TYPE_COLNAME => array (UsrCrePeer::USR_ID => 0, UsrCrePeer::CRE_ID => 1, UsrCrePeer::CREATED_BY => 2, UsrCrePeer::CREATED_AT => 3, UsrCrePeer::UPDATED_BY => 4, UsrCrePeer::UPDATED_AT => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('USR_ID' => 0, 'CRE_ID' => 1, 'CREATED_BY' => 2, 'CREATED_AT' => 3, 'UPDATED_BY' => 4, 'UPDATED_AT' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('usr_id' => 0, 'cre_id' => 1, 'created_by' => 2, 'created_at' => 3, 'updated_by' => 4, 'updated_at' => 5, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+        BasePeer::TYPE_PHPNAME => array ('UsrId' => 0, 'CreId' => 1, 'CreatedBy' => 2, 'UpdatedBy' => 3, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('usrId' => 0, 'creId' => 1, 'createdBy' => 2, 'updatedBy' => 3, ),
+        BasePeer::TYPE_COLNAME => array (UsrCrePeer::USR_ID => 0, UsrCrePeer::CRE_ID => 1, UsrCrePeer::CREATED_BY => 2, UsrCrePeer::UPDATED_BY => 3, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('USR_ID' => 0, 'CRE_ID' => 1, 'CREATED_BY' => 2, 'UPDATED_BY' => 3, ),
+        BasePeer::TYPE_FIELDNAME => array ('usr_id' => 0, 'cre_id' => 1, 'created_by' => 2, 'updated_by' => 3, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
     );
 
     /**
@@ -180,16 +174,12 @@ abstract class BaseUsrCrePeer
             $criteria->addSelectColumn(UsrCrePeer::USR_ID);
             $criteria->addSelectColumn(UsrCrePeer::CRE_ID);
             $criteria->addSelectColumn(UsrCrePeer::CREATED_BY);
-            $criteria->addSelectColumn(UsrCrePeer::CREATED_AT);
             $criteria->addSelectColumn(UsrCrePeer::UPDATED_BY);
-            $criteria->addSelectColumn(UsrCrePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.usr_id');
             $criteria->addSelectColumn($alias . '.cre_id');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
-            $criteria->addSelectColumn($alias . '.updated_at');
         }
     }
 

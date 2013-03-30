@@ -7,7 +7,7 @@ use \TableMap;
 
 
 /**
- * This class defines the structure of the 'credential' table.
+ * This class defines the structure of the 'node' table.
  *
  *
  *
@@ -18,13 +18,13 @@ use \TableMap;
  *
  * @package    propel.generator.model.map
  */
-class CredentialTableMap extends TableMap
+class NodeTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'model.map.CredentialTableMap';
+    const CLASS_NAME = 'model.map.NodeTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -36,17 +36,25 @@ class CredentialTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('credential');
-        $this->setPhpName('Credential');
-        $this->setClassname('Kzf\\Model\\Credential');
+        $this->setName('node');
+        $this->setPhpName('Node');
+        $this->setClassname('Kzf\\Model\\Node');
         $this->setPackage('model');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('cre_name', 'CreName', 'VARCHAR', false, 50, null);
-        $this->addColumn('cre_level', 'CreLevel', 'INTEGER', false, null, null);
-        $this->addForeignKey('created_by', 'CreatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addForeignKey('updated_by', 'UpdatedBy', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addColumn('nod_title', 'NodTitle', 'VARCHAR', false, 150, null);
+        $this->addColumn('nod_left', 'NodLeft', 'INTEGER', false, null, null);
+        $this->addColumn('nod_right', 'NodRight', 'INTEGER', false, null, null);
+        $this->addColumn('nod_level', 'NodLevel', 'INTEGER', false, null, null);
+        $this->addColumn('nod_type', 'NodType', 'VARCHAR', false, 45, null);
+        $this->addColumn('nod_cloud', 'NodCloud', 'INTEGER', false, 1, null);
+        $this->addColumn('nod_virtual', 'NodVirtual', 'INTEGER', false, 1, null);
+        $this->addColumn('bch_id', 'BchId', 'INTEGER', false, null, null);
+        $this->addColumn('bch_parent', 'BchParent', 'INTEGER', false, null, null);
+        $this->addColumn('lef_id', 'LefId', 'INTEGER', false, null, null);
+        $this->addColumn('created_by', 'CreatedBy', 'INTEGER', false, null, null);
+        $this->addColumn('updated_by', 'UpdatedBy', 'INTEGER', false, null, null);
         $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
@@ -57,9 +65,6 @@ class CredentialTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('UserRelatedByCreatedBy', 'Kzf\\Model\\User', RelationMap::MANY_TO_ONE, array('created_by' => 'id', ), null, null);
-        $this->addRelation('UserRelatedByUpdatedBy', 'Kzf\\Model\\User', RelationMap::MANY_TO_ONE, array('updated_by' => 'id', ), null, null);
-        $this->addRelation('UsrCre', 'Kzf\\Model\\UsrCre', RelationMap::ONE_TO_MANY, array('id' => 'cre_id', ), null, null, 'UsrCres');
     } // buildRelations()
 
     /**
@@ -76,7 +81,15 @@ class CredentialTableMap extends TableMap
   'update_column' => 'updated_at',
   'disable_updated_at' => 'false',
 ),
+            'nested_set' =>  array (
+  'left_column' => 'nod_left',
+  'right_column' => 'nod_right',
+  'level_column' => 'nod_level',
+  'use_scope' => 'false',
+  'scope_column' => 'tree_scope',
+  'method_proxies' => 'true',
+),
         );
     } // getBehaviors()
 
-} // CredentialTableMap
+} // NodeTableMap

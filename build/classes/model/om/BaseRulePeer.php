@@ -64,11 +64,11 @@ abstract class BaseRulePeer
     /** the column name for the created_by field */
     const CREATED_BY = 'rule.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'rule.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'rule.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'rule.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'rule.updated_at';
@@ -92,11 +92,11 @@ abstract class BaseRulePeer
      * e.g. RulePeer::$fieldNames[RulePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'RulName', 'RulDesc', 'RulActif', 'TruId', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'rulName', 'rulDesc', 'rulActif', 'truId', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (RulePeer::ID, RulePeer::RUL_NAME, RulePeer::RUL_DESC, RulePeer::RUL_ACTIF, RulePeer::TRU_ID, RulePeer::CREATED_BY, RulePeer::CREATED_AT, RulePeer::UPDATED_BY, RulePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'RUL_NAME', 'RUL_DESC', 'RUL_ACTIF', 'TRU_ID', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'rul_name', 'rul_desc', 'rul_actif', 'tru_id', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'RulName', 'RulDesc', 'RulActif', 'TruId', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'rulName', 'rulDesc', 'rulActif', 'truId', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (RulePeer::ID, RulePeer::RUL_NAME, RulePeer::RUL_DESC, RulePeer::RUL_ACTIF, RulePeer::TRU_ID, RulePeer::CREATED_BY, RulePeer::UPDATED_BY, RulePeer::CREATED_AT, RulePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'RUL_NAME', 'RUL_DESC', 'RUL_ACTIF', 'TRU_ID', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'rul_name', 'rul_desc', 'rul_actif', 'tru_id', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -107,11 +107,11 @@ abstract class BaseRulePeer
      * e.g. RulePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'RulName' => 1, 'RulDesc' => 2, 'RulActif' => 3, 'TruId' => 4, 'CreatedBy' => 5, 'CreatedAt' => 6, 'UpdatedBy' => 7, 'UpdatedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'rulName' => 1, 'rulDesc' => 2, 'rulActif' => 3, 'truId' => 4, 'createdBy' => 5, 'createdAt' => 6, 'updatedBy' => 7, 'updatedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (RulePeer::ID => 0, RulePeer::RUL_NAME => 1, RulePeer::RUL_DESC => 2, RulePeer::RUL_ACTIF => 3, RulePeer::TRU_ID => 4, RulePeer::CREATED_BY => 5, RulePeer::CREATED_AT => 6, RulePeer::UPDATED_BY => 7, RulePeer::UPDATED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'RUL_NAME' => 1, 'RUL_DESC' => 2, 'RUL_ACTIF' => 3, 'TRU_ID' => 4, 'CREATED_BY' => 5, 'CREATED_AT' => 6, 'UPDATED_BY' => 7, 'UPDATED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'rul_name' => 1, 'rul_desc' => 2, 'rul_actif' => 3, 'tru_id' => 4, 'created_by' => 5, 'created_at' => 6, 'updated_by' => 7, 'updated_at' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'RulName' => 1, 'RulDesc' => 2, 'RulActif' => 3, 'TruId' => 4, 'CreatedBy' => 5, 'UpdatedBy' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'rulName' => 1, 'rulDesc' => 2, 'rulActif' => 3, 'truId' => 4, 'createdBy' => 5, 'updatedBy' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
+        BasePeer::TYPE_COLNAME => array (RulePeer::ID => 0, RulePeer::RUL_NAME => 1, RulePeer::RUL_DESC => 2, RulePeer::RUL_ACTIF => 3, RulePeer::TRU_ID => 4, RulePeer::CREATED_BY => 5, RulePeer::UPDATED_BY => 6, RulePeer::CREATED_AT => 7, RulePeer::UPDATED_AT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'RUL_NAME' => 1, 'RUL_DESC' => 2, 'RUL_ACTIF' => 3, 'TRU_ID' => 4, 'CREATED_BY' => 5, 'UPDATED_BY' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'rul_name' => 1, 'rul_desc' => 2, 'rul_actif' => 3, 'tru_id' => 4, 'created_by' => 5, 'updated_by' => 6, 'created_at' => 7, 'updated_at' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -192,8 +192,8 @@ abstract class BaseRulePeer
             $criteria->addSelectColumn(RulePeer::RUL_ACTIF);
             $criteria->addSelectColumn(RulePeer::TRU_ID);
             $criteria->addSelectColumn(RulePeer::CREATED_BY);
-            $criteria->addSelectColumn(RulePeer::CREATED_AT);
             $criteria->addSelectColumn(RulePeer::UPDATED_BY);
+            $criteria->addSelectColumn(RulePeer::CREATED_AT);
             $criteria->addSelectColumn(RulePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -202,8 +202,8 @@ abstract class BaseRulePeer
             $criteria->addSelectColumn($alias . '.rul_actif');
             $criteria->addSelectColumn($alias . '.tru_id');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

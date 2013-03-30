@@ -45,8 +45,8 @@ class TypeRuleTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('is_in_store', 'IsInStore', 'BOOLEAN', false, 1, null);
         $this->addForeignKey('created_by', 'CreatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('updated_by', 'UpdatedBy', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
@@ -61,5 +61,22 @@ class TypeRuleTableMap extends TableMap
         $this->addRelation('Rule', 'Kzf\\Model\\Rule', RelationMap::ONE_TO_MANY, array('id' => 'tru_id', ), null, null, 'Rules');
         $this->addRelation('TypeRuleI18n', 'Kzf\\Model\\TypeRuleI18n', RelationMap::ONE_TO_ONE, array('id' => 'id', ), null, null);
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
+        );
+    } // getBehaviors()
 
 } // TypeRuleTableMap

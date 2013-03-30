@@ -5,12 +5,10 @@ namespace Kzf\Model\om;
 use \BaseObject;
 use \BasePeer;
 use \Criteria;
-use \DateTime;
 use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
-use \PropelDateTime;
 use \PropelException;
 use \PropelPDO;
 use Kzf\Model\Credential;
@@ -68,22 +66,10 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
     protected $created_by;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
      * The value for the updated_by field.
      * @var        int
      */
     protected $updated_by;
-
-    /**
-     * The value for the updated_at field.
-     * @var        string
-     */
-    protected $updated_at;
 
     /**
      * @var        User
@@ -156,46 +142,6 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [optionally formatted] temporal [created_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getCreatedAt($format = 'Y-m-d H:i:s')
-    {
-        if ($this->created_at === null) {
-            return null;
-        }
-
-        if ($this->created_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->created_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->created_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
-    }
-
-    /**
      * Get the [updated_by] column value.
      *
      * @return int
@@ -203,46 +149,6 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
     public function getUpdatedBy()
     {
         return $this->updated_by;
-    }
-
-    /**
-     * Get the [optionally formatted] temporal [updated_at] column value.
-     *
-     *
-     * @param string $format The date/time format string (either date()-style or strftime()-style).
-     *				 If format is null, then the raw DateTime object will be returned.
-     * @return mixed Formatted date/time value as string or DateTime object (if format is null), null if column is null, and 0 if column value is 0000-00-00 00:00:00
-     * @throws PropelException - if unable to parse/validate the date/time value.
-     */
-    public function getUpdatedAt($format = 'Y-m-d H:i:s')
-    {
-        if ($this->updated_at === null) {
-            return null;
-        }
-
-        if ($this->updated_at === '0000-00-00 00:00:00') {
-            // while technically this is not a default value of null,
-            // this seems to be closest in meaning.
-            return null;
-        }
-
-        try {
-            $dt = new DateTime($this->updated_at);
-        } catch (Exception $x) {
-            throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->updated_at, true), $x);
-        }
-
-        if ($format === null) {
-            // Because propel.useDateTimeClass is true, we return a DateTime object.
-            return $dt;
-        }
-
-        if (strpos($format, '%') !== false) {
-            return strftime($format, $dt->format('U'));
-        }
-
-        return $dt->format($format);
-
     }
 
     /**
@@ -321,29 +227,6 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
     } // setCreatedBy()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return UsrCre The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = UsrCrePeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
      * Set the value of [updated_by] column.
      *
      * @param int $v new value
@@ -367,29 +250,6 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
 
         return $this;
     } // setUpdatedBy()
-
-    /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return UsrCre The current object (for fluent API support)
-     */
-    public function setUpdatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = UsrCrePeer::UPDATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setUpdatedAt()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -426,9 +286,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
             $this->usr_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->cre_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
             $this->created_by = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->created_at = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-            $this->updated_by = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->updated_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+            $this->updated_by = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -437,7 +295,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 6; // 6 = UsrCrePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = UsrCrePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating UsrCre object", $e);
@@ -703,14 +561,8 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
         if ($this->isColumnModified(UsrCrePeer::CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'created_by';
         }
-        if ($this->isColumnModified(UsrCrePeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'created_at';
-        }
         if ($this->isColumnModified(UsrCrePeer::UPDATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'updated_by';
-        }
-        if ($this->isColumnModified(UsrCrePeer::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'updated_at';
         }
 
         $sql = sprintf(
@@ -732,14 +584,8 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
                     case 'created_by':
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case 'created_at':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
                     case 'updated_by':
                         $stmt->bindValue($identifier, $this->updated_by, PDO::PARAM_INT);
-                        break;
-                    case 'updated_at':
-                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -908,13 +754,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
                 return $this->getCreatedBy();
                 break;
             case 3:
-                return $this->getCreatedAt();
-                break;
-            case 4:
                 return $this->getUpdatedBy();
-                break;
-            case 5:
-                return $this->getUpdatedAt();
                 break;
             default:
                 return null;
@@ -948,9 +788,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
             $keys[0] => $this->getUsrId(),
             $keys[1] => $this->getCreId(),
             $keys[2] => $this->getCreatedBy(),
-            $keys[3] => $this->getCreatedAt(),
-            $keys[4] => $this->getUpdatedBy(),
-            $keys[5] => $this->getUpdatedAt(),
+            $keys[3] => $this->getUpdatedBy(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aUserRelatedByUsrId) {
@@ -1009,13 +847,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
                 $this->setCreatedBy($value);
                 break;
             case 3:
-                $this->setCreatedAt($value);
-                break;
-            case 4:
                 $this->setUpdatedBy($value);
-                break;
-            case 5:
-                $this->setUpdatedAt($value);
                 break;
         } // switch()
     }
@@ -1044,9 +876,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
         if (array_key_exists($keys[0], $arr)) $this->setUsrId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setCreId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setCreatedBy($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setUpdatedBy($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setUpdatedAt($arr[$keys[5]]);
+        if (array_key_exists($keys[3], $arr)) $this->setUpdatedBy($arr[$keys[3]]);
     }
 
     /**
@@ -1061,9 +891,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
         if ($this->isColumnModified(UsrCrePeer::USR_ID)) $criteria->add(UsrCrePeer::USR_ID, $this->usr_id);
         if ($this->isColumnModified(UsrCrePeer::CRE_ID)) $criteria->add(UsrCrePeer::CRE_ID, $this->cre_id);
         if ($this->isColumnModified(UsrCrePeer::CREATED_BY)) $criteria->add(UsrCrePeer::CREATED_BY, $this->created_by);
-        if ($this->isColumnModified(UsrCrePeer::CREATED_AT)) $criteria->add(UsrCrePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(UsrCrePeer::UPDATED_BY)) $criteria->add(UsrCrePeer::UPDATED_BY, $this->updated_by);
-        if ($this->isColumnModified(UsrCrePeer::UPDATED_AT)) $criteria->add(UsrCrePeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1137,9 +965,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
         $copyObj->setUsrId($this->getUsrId());
         $copyObj->setCreId($this->getCreId());
         $copyObj->setCreatedBy($this->getCreatedBy());
-        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedBy($this->getUpdatedBy());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1413,9 +1239,7 @@ abstract class BaseUsrCre extends BaseObject implements Persistent
         $this->usr_id = null;
         $this->cre_id = null;
         $this->created_by = null;
-        $this->created_at = null;
         $this->updated_by = null;
-        $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;

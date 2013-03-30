@@ -63,11 +63,11 @@ abstract class BaseLeafPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'leaf.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'leaf.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'leaf.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'leaf.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'leaf.updated_at';
@@ -91,11 +91,11 @@ abstract class BaseLeafPeer
      * e.g. LeafPeer::$fieldNames[LeafPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'LefTitle', 'LefActive', 'LefPublishedAt', 'LefContent', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'lefTitle', 'lefActive', 'lefPublishedAt', 'lefContent', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (LeafPeer::ID, LeafPeer::LEF_TITLE, LeafPeer::LEF_ACTIVE, LeafPeer::LEF_PUBLISHED_AT, LeafPeer::LEF_CONTENT, LeafPeer::CREATED_BY, LeafPeer::CREATED_AT, LeafPeer::UPDATED_BY, LeafPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'LEF_TITLE', 'LEF_ACTIVE', 'LEF_PUBLISHED_AT', 'LEF_CONTENT', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'lef_title', 'lef_active', 'lef_published_at', 'lef_content', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'LefTitle', 'LefActive', 'LefPublishedAt', 'LefContent', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'lefTitle', 'lefActive', 'lefPublishedAt', 'lefContent', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (LeafPeer::ID, LeafPeer::LEF_TITLE, LeafPeer::LEF_ACTIVE, LeafPeer::LEF_PUBLISHED_AT, LeafPeer::LEF_CONTENT, LeafPeer::CREATED_BY, LeafPeer::UPDATED_BY, LeafPeer::CREATED_AT, LeafPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'LEF_TITLE', 'LEF_ACTIVE', 'LEF_PUBLISHED_AT', 'LEF_CONTENT', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'lef_title', 'lef_active', 'lef_published_at', 'lef_content', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -106,11 +106,11 @@ abstract class BaseLeafPeer
      * e.g. LeafPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'LefTitle' => 1, 'LefActive' => 2, 'LefPublishedAt' => 3, 'LefContent' => 4, 'CreatedBy' => 5, 'CreatedAt' => 6, 'UpdatedBy' => 7, 'UpdatedAt' => 8, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'lefTitle' => 1, 'lefActive' => 2, 'lefPublishedAt' => 3, 'lefContent' => 4, 'createdBy' => 5, 'createdAt' => 6, 'updatedBy' => 7, 'updatedAt' => 8, ),
-        BasePeer::TYPE_COLNAME => array (LeafPeer::ID => 0, LeafPeer::LEF_TITLE => 1, LeafPeer::LEF_ACTIVE => 2, LeafPeer::LEF_PUBLISHED_AT => 3, LeafPeer::LEF_CONTENT => 4, LeafPeer::CREATED_BY => 5, LeafPeer::CREATED_AT => 6, LeafPeer::UPDATED_BY => 7, LeafPeer::UPDATED_AT => 8, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'LEF_TITLE' => 1, 'LEF_ACTIVE' => 2, 'LEF_PUBLISHED_AT' => 3, 'LEF_CONTENT' => 4, 'CREATED_BY' => 5, 'CREATED_AT' => 6, 'UPDATED_BY' => 7, 'UPDATED_AT' => 8, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'lef_title' => 1, 'lef_active' => 2, 'lef_published_at' => 3, 'lef_content' => 4, 'created_by' => 5, 'created_at' => 6, 'updated_by' => 7, 'updated_at' => 8, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'LefTitle' => 1, 'LefActive' => 2, 'LefPublishedAt' => 3, 'LefContent' => 4, 'CreatedBy' => 5, 'UpdatedBy' => 6, 'CreatedAt' => 7, 'UpdatedAt' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'lefTitle' => 1, 'lefActive' => 2, 'lefPublishedAt' => 3, 'lefContent' => 4, 'createdBy' => 5, 'updatedBy' => 6, 'createdAt' => 7, 'updatedAt' => 8, ),
+        BasePeer::TYPE_COLNAME => array (LeafPeer::ID => 0, LeafPeer::LEF_TITLE => 1, LeafPeer::LEF_ACTIVE => 2, LeafPeer::LEF_PUBLISHED_AT => 3, LeafPeer::LEF_CONTENT => 4, LeafPeer::CREATED_BY => 5, LeafPeer::UPDATED_BY => 6, LeafPeer::CREATED_AT => 7, LeafPeer::UPDATED_AT => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'LEF_TITLE' => 1, 'LEF_ACTIVE' => 2, 'LEF_PUBLISHED_AT' => 3, 'LEF_CONTENT' => 4, 'CREATED_BY' => 5, 'UPDATED_BY' => 6, 'CREATED_AT' => 7, 'UPDATED_AT' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'lef_title' => 1, 'lef_active' => 2, 'lef_published_at' => 3, 'lef_content' => 4, 'created_by' => 5, 'updated_by' => 6, 'created_at' => 7, 'updated_at' => 8, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
@@ -191,8 +191,8 @@ abstract class BaseLeafPeer
             $criteria->addSelectColumn(LeafPeer::LEF_PUBLISHED_AT);
             $criteria->addSelectColumn(LeafPeer::LEF_CONTENT);
             $criteria->addSelectColumn(LeafPeer::CREATED_BY);
-            $criteria->addSelectColumn(LeafPeer::CREATED_AT);
             $criteria->addSelectColumn(LeafPeer::UPDATED_BY);
+            $criteria->addSelectColumn(LeafPeer::CREATED_AT);
             $criteria->addSelectColumn(LeafPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -201,8 +201,8 @@ abstract class BaseLeafPeer
             $criteria->addSelectColumn($alias . '.lef_published_at');
             $criteria->addSelectColumn($alias . '.lef_content');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

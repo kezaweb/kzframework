@@ -2,11 +2,11 @@
 
 namespace Kzf\Model;
 
-use Kzf\Model\om\BaseNodeTreePeer;
+use Kzf\Model\om\BaseNodeQuery;
 
 
 /**
- * Skeleton subclass for performing query and update operations on the 'node_tree' table.
+ * Skeleton subclass for performing query and update operations on the 'node' table.
  *
  *
  *
@@ -16,6 +16,6 @@ use Kzf\Model\om\BaseNodeTreePeer;
  *
  * @package    propel.generator.model
  */
-class NodeTreePeer extends BaseNodeTreePeer
+class NodeQuery extends BaseNodeQuery
 {
 }

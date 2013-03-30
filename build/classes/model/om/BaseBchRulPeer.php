@@ -59,11 +59,11 @@ abstract class BaseBchRulPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'bch_rul.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'bch_rul.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'bch_rul.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'bch_rul.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'bch_rul.updated_at';
@@ -87,11 +87,11 @@ abstract class BaseBchRulPeer
      * e.g. BchRulPeer::$fieldNames[BchRulPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('BchId', 'RulId', 'BcrOption', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('bchId', 'rulId', 'bcrOption', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (BchRulPeer::BCH_ID, BchRulPeer::RUL_ID, BchRulPeer::BCR_OPTION, BchRulPeer::CREATED_BY, BchRulPeer::CREATED_AT, BchRulPeer::UPDATED_BY, BchRulPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('BCH_ID', 'RUL_ID', 'BCR_OPTION', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('bch_id', 'rul_id', 'bcr_option', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('BchId', 'RulId', 'BcrOption', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('bchId', 'rulId', 'bcrOption', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (BchRulPeer::BCH_ID, BchRulPeer::RUL_ID, BchRulPeer::BCR_OPTION, BchRulPeer::CREATED_BY, BchRulPeer::UPDATED_BY, BchRulPeer::CREATED_AT, BchRulPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('BCH_ID', 'RUL_ID', 'BCR_OPTION', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('bch_id', 'rul_id', 'bcr_option', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -102,11 +102,11 @@ abstract class BaseBchRulPeer
      * e.g. BchRulPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('BchId' => 0, 'RulId' => 1, 'BcrOption' => 2, 'CreatedBy' => 3, 'CreatedAt' => 4, 'UpdatedBy' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('bchId' => 0, 'rulId' => 1, 'bcrOption' => 2, 'createdBy' => 3, 'createdAt' => 4, 'updatedBy' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (BchRulPeer::BCH_ID => 0, BchRulPeer::RUL_ID => 1, BchRulPeer::BCR_OPTION => 2, BchRulPeer::CREATED_BY => 3, BchRulPeer::CREATED_AT => 4, BchRulPeer::UPDATED_BY => 5, BchRulPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('BCH_ID' => 0, 'RUL_ID' => 1, 'BCR_OPTION' => 2, 'CREATED_BY' => 3, 'CREATED_AT' => 4, 'UPDATED_BY' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('bch_id' => 0, 'rul_id' => 1, 'bcr_option' => 2, 'created_by' => 3, 'created_at' => 4, 'updated_by' => 5, 'updated_at' => 6, ),
+        BasePeer::TYPE_PHPNAME => array ('BchId' => 0, 'RulId' => 1, 'BcrOption' => 2, 'CreatedBy' => 3, 'UpdatedBy' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('bchId' => 0, 'rulId' => 1, 'bcrOption' => 2, 'createdBy' => 3, 'updatedBy' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        BasePeer::TYPE_COLNAME => array (BchRulPeer::BCH_ID => 0, BchRulPeer::RUL_ID => 1, BchRulPeer::BCR_OPTION => 2, BchRulPeer::CREATED_BY => 3, BchRulPeer::UPDATED_BY => 4, BchRulPeer::CREATED_AT => 5, BchRulPeer::UPDATED_AT => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('BCH_ID' => 0, 'RUL_ID' => 1, 'BCR_OPTION' => 2, 'CREATED_BY' => 3, 'UPDATED_BY' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('bch_id' => 0, 'rul_id' => 1, 'bcr_option' => 2, 'created_by' => 3, 'updated_by' => 4, 'created_at' => 5, 'updated_at' => 6, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -185,16 +185,16 @@ abstract class BaseBchRulPeer
             $criteria->addSelectColumn(BchRulPeer::RUL_ID);
             $criteria->addSelectColumn(BchRulPeer::BCR_OPTION);
             $criteria->addSelectColumn(BchRulPeer::CREATED_BY);
-            $criteria->addSelectColumn(BchRulPeer::CREATED_AT);
             $criteria->addSelectColumn(BchRulPeer::UPDATED_BY);
+            $criteria->addSelectColumn(BchRulPeer::CREATED_AT);
             $criteria->addSelectColumn(BchRulPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.bch_id');
             $criteria->addSelectColumn($alias . '.rul_id');
             $criteria->addSelectColumn($alias . '.bcr_option');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

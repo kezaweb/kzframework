@@ -26,16 +26,12 @@ use Kzf\Model\UsrCreQuery;
  * @method UsrCreQuery orderByUsrId($order = Criteria::ASC) Order by the usr_id column
  * @method UsrCreQuery orderByCreId($order = Criteria::ASC) Order by the cre_id column
  * @method UsrCreQuery orderByCreatedBy($order = Criteria::ASC) Order by the created_by column
- * @method UsrCreQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method UsrCreQuery orderByUpdatedBy($order = Criteria::ASC) Order by the updated_by column
- * @method UsrCreQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method UsrCreQuery groupByUsrId() Group by the usr_id column
  * @method UsrCreQuery groupByCreId() Group by the cre_id column
  * @method UsrCreQuery groupByCreatedBy() Group by the created_by column
- * @method UsrCreQuery groupByCreatedAt() Group by the created_at column
  * @method UsrCreQuery groupByUpdatedBy() Group by the updated_by column
- * @method UsrCreQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method UsrCreQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method UsrCreQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,16 +59,12 @@ use Kzf\Model\UsrCreQuery;
  * @method UsrCre findOneByUsrId(int $usr_id) Return the first UsrCre filtered by the usr_id column
  * @method UsrCre findOneByCreId(int $cre_id) Return the first UsrCre filtered by the cre_id column
  * @method UsrCre findOneByCreatedBy(int $created_by) Return the first UsrCre filtered by the created_by column
- * @method UsrCre findOneByCreatedAt(string $created_at) Return the first UsrCre filtered by the created_at column
  * @method UsrCre findOneByUpdatedBy(int $updated_by) Return the first UsrCre filtered by the updated_by column
- * @method UsrCre findOneByUpdatedAt(string $updated_at) Return the first UsrCre filtered by the updated_at column
  *
  * @method array findByUsrId(int $usr_id) Return UsrCre objects filtered by the usr_id column
  * @method array findByCreId(int $cre_id) Return UsrCre objects filtered by the cre_id column
  * @method array findByCreatedBy(int $created_by) Return UsrCre objects filtered by the created_by column
- * @method array findByCreatedAt(string $created_at) Return UsrCre objects filtered by the created_at column
  * @method array findByUpdatedBy(int $updated_by) Return UsrCre objects filtered by the updated_by column
- * @method array findByUpdatedAt(string $updated_at) Return UsrCre objects filtered by the updated_at column
  *
  * @package    propel.generator.model.om
  */
@@ -163,7 +155,7 @@ abstract class BaseUsrCreQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT usr_id, cre_id, created_by, created_at, updated_by, updated_at FROM usr_cre WHERE usr_id = :p0 AND cre_id = :p1';
+        $sql = 'SELECT usr_id, cre_id, created_by, updated_by FROM usr_cre WHERE usr_id = :p0 AND cre_id = :p1';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key[0], PDO::PARAM_INT);
@@ -397,49 +389,6 @@ abstract class BaseUsrCreQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return UsrCreQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(UsrCrePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(UsrCrePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UsrCrePeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
      * Filter the query on the updated_by column
      *
      * Example usage:
@@ -481,49 +430,6 @@ abstract class BaseUsrCreQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UsrCrePeer::UPDATED_BY, $updatedBy, $comparison);
-    }
-
-    /**
-     * Filter the query on the updated_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByUpdatedAt('2011-03-14'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt('now'); // WHERE updated_at = '2011-03-14'
-     * $query->filterByUpdatedAt(array('max' => 'yesterday')); // WHERE updated_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $updatedAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return UsrCreQuery The current query, for fluid interface
-     */
-    public function filterByUpdatedAt($updatedAt = null, $comparison = null)
-    {
-        if (is_array($updatedAt)) {
-            $useMinMax = false;
-            if (isset($updatedAt['min'])) {
-                $this->addUsingAlias(UsrCrePeer::UPDATED_AT, $updatedAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($updatedAt['max'])) {
-                $this->addUsingAlias(UsrCrePeer::UPDATED_AT, $updatedAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UsrCrePeer::UPDATED_AT, $updatedAt, $comparison);
     }
 
     /**

@@ -45,9 +45,7 @@ class UsrCreTableMap extends TableMap
         $this->addForeignPrimaryKey('usr_id', 'UsrId', 'INTEGER' , 'user', 'id', true, null, null);
         $this->addForeignPrimaryKey('cre_id', 'CreId', 'INTEGER' , 'credential', 'id', true, null, null);
         $this->addForeignKey('created_by', 'CreatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('updated_by', 'UpdatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 

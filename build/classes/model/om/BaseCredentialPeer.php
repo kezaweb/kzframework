@@ -57,11 +57,11 @@ abstract class BaseCredentialPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'credential.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'credential.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'credential.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'credential.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'credential.updated_at';
@@ -85,11 +85,11 @@ abstract class BaseCredentialPeer
      * e.g. CredentialPeer::$fieldNames[CredentialPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'CreName', 'CreLevel', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'creName', 'creLevel', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (CredentialPeer::ID, CredentialPeer::CRE_NAME, CredentialPeer::CRE_LEVEL, CredentialPeer::CREATED_BY, CredentialPeer::CREATED_AT, CredentialPeer::UPDATED_BY, CredentialPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CRE_NAME', 'CRE_LEVEL', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'cre_name', 'cre_level', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'CreName', 'CreLevel', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'creName', 'creLevel', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (CredentialPeer::ID, CredentialPeer::CRE_NAME, CredentialPeer::CRE_LEVEL, CredentialPeer::CREATED_BY, CredentialPeer::UPDATED_BY, CredentialPeer::CREATED_AT, CredentialPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'CRE_NAME', 'CRE_LEVEL', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'cre_name', 'cre_level', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -100,11 +100,11 @@ abstract class BaseCredentialPeer
      * e.g. CredentialPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreName' => 1, 'CreLevel' => 2, 'CreatedBy' => 3, 'CreatedAt' => 4, 'UpdatedBy' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'creName' => 1, 'creLevel' => 2, 'createdBy' => 3, 'createdAt' => 4, 'updatedBy' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (CredentialPeer::ID => 0, CredentialPeer::CRE_NAME => 1, CredentialPeer::CRE_LEVEL => 2, CredentialPeer::CREATED_BY => 3, CredentialPeer::CREATED_AT => 4, CredentialPeer::UPDATED_BY => 5, CredentialPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CRE_NAME' => 1, 'CRE_LEVEL' => 2, 'CREATED_BY' => 3, 'CREATED_AT' => 4, 'UPDATED_BY' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cre_name' => 1, 'cre_level' => 2, 'created_by' => 3, 'created_at' => 4, 'updated_by' => 5, 'updated_at' => 6, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreName' => 1, 'CreLevel' => 2, 'CreatedBy' => 3, 'UpdatedBy' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'creName' => 1, 'creLevel' => 2, 'createdBy' => 3, 'updatedBy' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        BasePeer::TYPE_COLNAME => array (CredentialPeer::ID => 0, CredentialPeer::CRE_NAME => 1, CredentialPeer::CRE_LEVEL => 2, CredentialPeer::CREATED_BY => 3, CredentialPeer::UPDATED_BY => 4, CredentialPeer::CREATED_AT => 5, CredentialPeer::UPDATED_AT => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'CRE_NAME' => 1, 'CRE_LEVEL' => 2, 'CREATED_BY' => 3, 'UPDATED_BY' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'cre_name' => 1, 'cre_level' => 2, 'created_by' => 3, 'updated_by' => 4, 'created_at' => 5, 'updated_at' => 6, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -183,16 +183,16 @@ abstract class BaseCredentialPeer
             $criteria->addSelectColumn(CredentialPeer::CRE_NAME);
             $criteria->addSelectColumn(CredentialPeer::CRE_LEVEL);
             $criteria->addSelectColumn(CredentialPeer::CREATED_BY);
-            $criteria->addSelectColumn(CredentialPeer::CREATED_AT);
             $criteria->addSelectColumn(CredentialPeer::UPDATED_BY);
+            $criteria->addSelectColumn(CredentialPeer::CREATED_AT);
             $criteria->addSelectColumn(CredentialPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.cre_name');
             $criteria->addSelectColumn($alias . '.cre_level');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

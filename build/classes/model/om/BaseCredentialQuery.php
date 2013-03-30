@@ -27,16 +27,16 @@ use Kzf\Model\UsrCre;
  * @method CredentialQuery orderByCreName($order = Criteria::ASC) Order by the cre_name column
  * @method CredentialQuery orderByCreLevel($order = Criteria::ASC) Order by the cre_level column
  * @method CredentialQuery orderByCreatedBy($order = Criteria::ASC) Order by the created_by column
- * @method CredentialQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method CredentialQuery orderByUpdatedBy($order = Criteria::ASC) Order by the updated_by column
+ * @method CredentialQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method CredentialQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method CredentialQuery groupById() Group by the id column
  * @method CredentialQuery groupByCreName() Group by the cre_name column
  * @method CredentialQuery groupByCreLevel() Group by the cre_level column
  * @method CredentialQuery groupByCreatedBy() Group by the created_by column
- * @method CredentialQuery groupByCreatedAt() Group by the created_at column
  * @method CredentialQuery groupByUpdatedBy() Group by the updated_by column
+ * @method CredentialQuery groupByCreatedAt() Group by the created_at column
  * @method CredentialQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method CredentialQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -61,16 +61,16 @@ use Kzf\Model\UsrCre;
  * @method Credential findOneByCreName(string $cre_name) Return the first Credential filtered by the cre_name column
  * @method Credential findOneByCreLevel(int $cre_level) Return the first Credential filtered by the cre_level column
  * @method Credential findOneByCreatedBy(int $created_by) Return the first Credential filtered by the created_by column
- * @method Credential findOneByCreatedAt(string $created_at) Return the first Credential filtered by the created_at column
  * @method Credential findOneByUpdatedBy(int $updated_by) Return the first Credential filtered by the updated_by column
+ * @method Credential findOneByCreatedAt(string $created_at) Return the first Credential filtered by the created_at column
  * @method Credential findOneByUpdatedAt(string $updated_at) Return the first Credential filtered by the updated_at column
  *
  * @method array findById(int $id) Return Credential objects filtered by the id column
  * @method array findByCreName(string $cre_name) Return Credential objects filtered by the cre_name column
  * @method array findByCreLevel(int $cre_level) Return Credential objects filtered by the cre_level column
  * @method array findByCreatedBy(int $created_by) Return Credential objects filtered by the created_by column
- * @method array findByCreatedAt(string $created_at) Return Credential objects filtered by the created_at column
  * @method array findByUpdatedBy(int $updated_by) Return Credential objects filtered by the updated_by column
+ * @method array findByCreatedAt(string $created_at) Return Credential objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return Credential objects filtered by the updated_at column
  *
  * @package    propel.generator.model.om
@@ -175,7 +175,7 @@ abstract class BaseCredentialQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT id, cre_name, cre_level, created_by, created_at, updated_by, updated_at FROM credential WHERE id = :p0';
+        $sql = 'SELECT id, cre_name, cre_level, created_by, updated_by, created_at, updated_at FROM credential WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -422,49 +422,6 @@ abstract class BaseCredentialQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return CredentialQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(CredentialPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(CredentialPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(CredentialPeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
      * Filter the query on the updated_by column
      *
      * Example usage:
@@ -506,6 +463,49 @@ abstract class BaseCredentialQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CredentialPeer::UPDATED_BY, $updatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return CredentialQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(CredentialPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(CredentialPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CredentialPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -793,4 +793,69 @@ abstract class BaseCredentialQuery extends ModelCriteria
         return $this;
     }
 
+    // timestampable behavior
+
+    /**
+     * Filter by the latest updated
+     *
+     * @param      int $nbDays Maximum age of the latest update in days
+     *
+     * @return     CredentialQuery The current query, for fluid interface
+     */
+    public function recentlyUpdated($nbDays = 7)
+    {
+        return $this->addUsingAlias(CredentialPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by update date desc
+     *
+     * @return     CredentialQuery The current query, for fluid interface
+     */
+    public function lastUpdatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(CredentialPeer::UPDATED_AT);
+    }
+
+    /**
+     * Order by update date asc
+     *
+     * @return     CredentialQuery The current query, for fluid interface
+     */
+    public function firstUpdatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(CredentialPeer::UPDATED_AT);
+    }
+
+    /**
+     * Filter by the latest created
+     *
+     * @param      int $nbDays Maximum age of in days
+     *
+     * @return     CredentialQuery The current query, for fluid interface
+     */
+    public function recentlyCreated($nbDays = 7)
+    {
+        return $this->addUsingAlias(CredentialPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by create date desc
+     *
+     * @return     CredentialQuery The current query, for fluid interface
+     */
+    public function lastCreatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(CredentialPeer::CREATED_AT);
+    }
+
+    /**
+     * Order by create date asc
+     *
+     * @return     CredentialQuery The current query, for fluid interface
+     */
+    public function firstCreatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(CredentialPeer::CREATED_AT);
+    }
 }

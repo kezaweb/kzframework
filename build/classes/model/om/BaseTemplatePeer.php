@@ -60,11 +60,11 @@ abstract class BaseTemplatePeer
     /** the column name for the created_by field */
     const CREATED_BY = 'template.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'template.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'template.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'template.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'template.updated_at';
@@ -88,11 +88,11 @@ abstract class BaseTemplatePeer
      * e.g. TemplatePeer::$fieldNames[TemplatePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'TplName', 'TplDesc', 'TplFile', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'tplName', 'tplDesc', 'tplFile', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (TemplatePeer::ID, TemplatePeer::TPL_NAME, TemplatePeer::TPL_DESC, TemplatePeer::TPL_FILE, TemplatePeer::CREATED_BY, TemplatePeer::CREATED_AT, TemplatePeer::UPDATED_BY, TemplatePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TPL_NAME', 'TPL_DESC', 'TPL_FILE', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'tpl_name', 'tpl_desc', 'tpl_file', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'TplName', 'TplDesc', 'TplFile', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'tplName', 'tplDesc', 'tplFile', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (TemplatePeer::ID, TemplatePeer::TPL_NAME, TemplatePeer::TPL_DESC, TemplatePeer::TPL_FILE, TemplatePeer::CREATED_BY, TemplatePeer::UPDATED_BY, TemplatePeer::CREATED_AT, TemplatePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'TPL_NAME', 'TPL_DESC', 'TPL_FILE', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'tpl_name', 'tpl_desc', 'tpl_file', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -103,11 +103,11 @@ abstract class BaseTemplatePeer
      * e.g. TemplatePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'TplName' => 1, 'TplDesc' => 2, 'TplFile' => 3, 'CreatedBy' => 4, 'CreatedAt' => 5, 'UpdatedBy' => 6, 'UpdatedAt' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'tplName' => 1, 'tplDesc' => 2, 'tplFile' => 3, 'createdBy' => 4, 'createdAt' => 5, 'updatedBy' => 6, 'updatedAt' => 7, ),
-        BasePeer::TYPE_COLNAME => array (TemplatePeer::ID => 0, TemplatePeer::TPL_NAME => 1, TemplatePeer::TPL_DESC => 2, TemplatePeer::TPL_FILE => 3, TemplatePeer::CREATED_BY => 4, TemplatePeer::CREATED_AT => 5, TemplatePeer::UPDATED_BY => 6, TemplatePeer::UPDATED_AT => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TPL_NAME' => 1, 'TPL_DESC' => 2, 'TPL_FILE' => 3, 'CREATED_BY' => 4, 'CREATED_AT' => 5, 'UPDATED_BY' => 6, 'UPDATED_AT' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'tpl_name' => 1, 'tpl_desc' => 2, 'tpl_file' => 3, 'created_by' => 4, 'created_at' => 5, 'updated_by' => 6, 'updated_at' => 7, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'TplName' => 1, 'TplDesc' => 2, 'TplFile' => 3, 'CreatedBy' => 4, 'UpdatedBy' => 5, 'CreatedAt' => 6, 'UpdatedAt' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'tplName' => 1, 'tplDesc' => 2, 'tplFile' => 3, 'createdBy' => 4, 'updatedBy' => 5, 'createdAt' => 6, 'updatedAt' => 7, ),
+        BasePeer::TYPE_COLNAME => array (TemplatePeer::ID => 0, TemplatePeer::TPL_NAME => 1, TemplatePeer::TPL_DESC => 2, TemplatePeer::TPL_FILE => 3, TemplatePeer::CREATED_BY => 4, TemplatePeer::UPDATED_BY => 5, TemplatePeer::CREATED_AT => 6, TemplatePeer::UPDATED_AT => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'TPL_NAME' => 1, 'TPL_DESC' => 2, 'TPL_FILE' => 3, 'CREATED_BY' => 4, 'UPDATED_BY' => 5, 'CREATED_AT' => 6, 'UPDATED_AT' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'tpl_name' => 1, 'tpl_desc' => 2, 'tpl_file' => 3, 'created_by' => 4, 'updated_by' => 5, 'created_at' => 6, 'updated_at' => 7, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
@@ -187,8 +187,8 @@ abstract class BaseTemplatePeer
             $criteria->addSelectColumn(TemplatePeer::TPL_DESC);
             $criteria->addSelectColumn(TemplatePeer::TPL_FILE);
             $criteria->addSelectColumn(TemplatePeer::CREATED_BY);
-            $criteria->addSelectColumn(TemplatePeer::CREATED_AT);
             $criteria->addSelectColumn(TemplatePeer::UPDATED_BY);
+            $criteria->addSelectColumn(TemplatePeer::CREATED_AT);
             $criteria->addSelectColumn(TemplatePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -196,8 +196,8 @@ abstract class BaseTemplatePeer
             $criteria->addSelectColumn($alias . '.tpl_desc');
             $criteria->addSelectColumn($alias . '.tpl_file');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

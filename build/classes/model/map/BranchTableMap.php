@@ -49,10 +49,10 @@ class BranchTableMap extends TableMap
         $this->addColumn('bch_level', 'BchLevel', 'INTEGER', false, null, null);
         $this->addColumn('bch_url', 'BchUrl', 'VARCHAR', false, 90, null);
         $this->addForeignKey('created_by', 'CreatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('updated_by', 'UpdatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('tpl_id', 'TplId', 'INTEGER', 'template', 'id', false, null, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
+        $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
 
@@ -65,8 +65,23 @@ class BranchTableMap extends TableMap
         $this->addRelation('UserRelatedByCreatedBy', 'Kzf\\Model\\User', RelationMap::MANY_TO_ONE, array('created_by' => 'id', ), null, null);
         $this->addRelation('UserRelatedByUpdatedBy', 'Kzf\\Model\\User', RelationMap::MANY_TO_ONE, array('updated_by' => 'id', ), null, null);
         $this->addRelation('BchRul', 'Kzf\\Model\\BchRul', RelationMap::ONE_TO_MANY, array('id' => 'bch_id', ), null, null, 'BchRuls');
-        $this->addRelation('NodeTreeRelatedByBchId', 'Kzf\\Model\\NodeTree', RelationMap::ONE_TO_MANY, array('id' => 'bch_id', ), null, null, 'NodeTreesRelatedByBchId');
-        $this->addRelation('NodeTreeRelatedByBchParent', 'Kzf\\Model\\NodeTree', RelationMap::ONE_TO_MANY, array('id' => 'bch_parent', ), null, null, 'NodeTreesRelatedByBchParent');
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
+        );
+    } // getBehaviors()
 
 } // BranchTableMap

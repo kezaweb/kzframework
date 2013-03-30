@@ -59,11 +59,11 @@ abstract class BaseLefRulPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'lef_rul.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'lef_rul.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'lef_rul.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'lef_rul.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'lef_rul.updated_at';
@@ -87,11 +87,11 @@ abstract class BaseLefRulPeer
      * e.g. LefRulPeer::$fieldNames[LefRulPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('LefId', 'RulId', 'LerOption', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('lefId', 'rulId', 'lerOption', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (LefRulPeer::LEF_ID, LefRulPeer::RUL_ID, LefRulPeer::LER_OPTION, LefRulPeer::CREATED_BY, LefRulPeer::CREATED_AT, LefRulPeer::UPDATED_BY, LefRulPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('LEF_ID', 'RUL_ID', 'LER_OPTION', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('lef_id', 'rul_id', 'ler_option', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('LefId', 'RulId', 'LerOption', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('lefId', 'rulId', 'lerOption', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (LefRulPeer::LEF_ID, LefRulPeer::RUL_ID, LefRulPeer::LER_OPTION, LefRulPeer::CREATED_BY, LefRulPeer::UPDATED_BY, LefRulPeer::CREATED_AT, LefRulPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('LEF_ID', 'RUL_ID', 'LER_OPTION', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('lef_id', 'rul_id', 'ler_option', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -102,11 +102,11 @@ abstract class BaseLefRulPeer
      * e.g. LefRulPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('LefId' => 0, 'RulId' => 1, 'LerOption' => 2, 'CreatedBy' => 3, 'CreatedAt' => 4, 'UpdatedBy' => 5, 'UpdatedAt' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('lefId' => 0, 'rulId' => 1, 'lerOption' => 2, 'createdBy' => 3, 'createdAt' => 4, 'updatedBy' => 5, 'updatedAt' => 6, ),
-        BasePeer::TYPE_COLNAME => array (LefRulPeer::LEF_ID => 0, LefRulPeer::RUL_ID => 1, LefRulPeer::LER_OPTION => 2, LefRulPeer::CREATED_BY => 3, LefRulPeer::CREATED_AT => 4, LefRulPeer::UPDATED_BY => 5, LefRulPeer::UPDATED_AT => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('LEF_ID' => 0, 'RUL_ID' => 1, 'LER_OPTION' => 2, 'CREATED_BY' => 3, 'CREATED_AT' => 4, 'UPDATED_BY' => 5, 'UPDATED_AT' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('lef_id' => 0, 'rul_id' => 1, 'ler_option' => 2, 'created_by' => 3, 'created_at' => 4, 'updated_by' => 5, 'updated_at' => 6, ),
+        BasePeer::TYPE_PHPNAME => array ('LefId' => 0, 'RulId' => 1, 'LerOption' => 2, 'CreatedBy' => 3, 'UpdatedBy' => 4, 'CreatedAt' => 5, 'UpdatedAt' => 6, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('lefId' => 0, 'rulId' => 1, 'lerOption' => 2, 'createdBy' => 3, 'updatedBy' => 4, 'createdAt' => 5, 'updatedAt' => 6, ),
+        BasePeer::TYPE_COLNAME => array (LefRulPeer::LEF_ID => 0, LefRulPeer::RUL_ID => 1, LefRulPeer::LER_OPTION => 2, LefRulPeer::CREATED_BY => 3, LefRulPeer::UPDATED_BY => 4, LefRulPeer::CREATED_AT => 5, LefRulPeer::UPDATED_AT => 6, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('LEF_ID' => 0, 'RUL_ID' => 1, 'LER_OPTION' => 2, 'CREATED_BY' => 3, 'UPDATED_BY' => 4, 'CREATED_AT' => 5, 'UPDATED_AT' => 6, ),
+        BasePeer::TYPE_FIELDNAME => array ('lef_id' => 0, 'rul_id' => 1, 'ler_option' => 2, 'created_by' => 3, 'updated_by' => 4, 'created_at' => 5, 'updated_at' => 6, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
     );
 
@@ -185,16 +185,16 @@ abstract class BaseLefRulPeer
             $criteria->addSelectColumn(LefRulPeer::RUL_ID);
             $criteria->addSelectColumn(LefRulPeer::LER_OPTION);
             $criteria->addSelectColumn(LefRulPeer::CREATED_BY);
-            $criteria->addSelectColumn(LefRulPeer::CREATED_AT);
             $criteria->addSelectColumn(LefRulPeer::UPDATED_BY);
+            $criteria->addSelectColumn(LefRulPeer::CREATED_AT);
             $criteria->addSelectColumn(LefRulPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.lef_id');
             $criteria->addSelectColumn($alias . '.rul_id');
             $criteria->addSelectColumn($alias . '.ler_option');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

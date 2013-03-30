@@ -20,8 +20,6 @@ use Kzf\Model\BchRulQuery;
 use Kzf\Model\Branch;
 use Kzf\Model\BranchPeer;
 use Kzf\Model\BranchQuery;
-use Kzf\Model\NodeTree;
-use Kzf\Model\NodeTreeQuery;
 use Kzf\Model\Template;
 use Kzf\Model\TemplateQuery;
 use Kzf\Model\User;
@@ -98,28 +96,28 @@ abstract class BaseBranch extends BaseObject implements Persistent
     protected $created_by;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
      * The value for the updated_by field.
      * @var        int
      */
     protected $updated_by;
 
     /**
-     * The value for the updated_at field.
-     * @var        string
-     */
-    protected $updated_at;
-
-    /**
      * The value for the tpl_id field.
      * @var        int
      */
     protected $tpl_id;
+
+    /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
+
+    /**
+     * The value for the updated_at field.
+     * @var        string
+     */
+    protected $updated_at;
 
     /**
      * @var        Template
@@ -141,18 +139,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
      */
     protected $collBchRuls;
     protected $collBchRulsPartial;
-
-    /**
-     * @var        PropelObjectCollection|NodeTree[] Collection to store aggregation of NodeTree objects.
-     */
-    protected $collNodeTreesRelatedByBchId;
-    protected $collNodeTreesRelatedByBchIdPartial;
-
-    /**
-     * @var        PropelObjectCollection|NodeTree[] Collection to store aggregation of NodeTree objects.
-     */
-    protected $collNodeTreesRelatedByBchParent;
-    protected $collNodeTreesRelatedByBchParentPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -179,18 +165,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $bchRulsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $nodeTreesRelatedByBchIdScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $nodeTreesRelatedByBchParentScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -293,6 +267,26 @@ abstract class BaseBranch extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [updated_by] column value.
+     *
+     * @return int
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updated_by;
+    }
+
+    /**
+     * Get the [tpl_id] column value.
+     *
+     * @return int
+     */
+    public function getTplId()
+    {
+        return $this->tpl_id;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -333,16 +327,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [updated_by] column value.
-     *
-     * @return int
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updated_by;
-    }
-
-    /**
      * Get the [optionally formatted] temporal [updated_at] column value.
      *
      *
@@ -380,16 +364,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    /**
-     * Get the [tpl_id] column value.
-     *
-     * @return int
-     */
-    public function getTplId()
-    {
-        return $this->tpl_id;
     }
 
     /**
@@ -554,29 +528,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
     } // setCreatedBy()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Branch The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = BranchPeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
      * Set the value of [updated_by] column.
      *
      * @param int $v new value
@@ -602,29 +553,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
     } // setUpdatedBy()
 
     /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Branch The current object (for fluent API support)
-     */
-    public function setUpdatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->updated_at = $newDateAsString;
-                $this->modifiedColumns[] = BranchPeer::UPDATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setUpdatedAt()
-
-    /**
      * Set the value of [tpl_id] column.
      *
      * @param int $v new value
@@ -648,6 +576,52 @@ abstract class BaseBranch extends BaseObject implements Persistent
 
         return $this;
     } // setTplId()
+
+    /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Branch The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = BranchPeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
+
+    /**
+     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Branch The current object (for fluent API support)
+     */
+    public function setUpdatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->updated_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->updated_at !== null && $tmpDt = new DateTime($this->updated_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->updated_at = $newDateAsString;
+                $this->modifiedColumns[] = BranchPeer::UPDATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setUpdatedAt()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -688,10 +662,10 @@ abstract class BaseBranch extends BaseObject implements Persistent
             $this->bch_level = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->bch_url = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
             $this->created_by = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-            $this->updated_by = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->updated_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-            $this->tpl_id = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->updated_by = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->tpl_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+            $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -776,10 +750,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
             $this->aUserRelatedByUpdatedBy = null;
             $this->collBchRuls = null;
 
-            $this->collNodeTreesRelatedByBchId = null;
-
-            $this->collNodeTreesRelatedByBchParent = null;
-
         } // if (deep)
     }
 
@@ -852,8 +822,19 @@ abstract class BaseBranch extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(BranchPeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(BranchPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(BranchPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -947,42 +928,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->nodeTreesRelatedByBchIdScheduledForDeletion !== null) {
-                if (!$this->nodeTreesRelatedByBchIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->nodeTreesRelatedByBchIdScheduledForDeletion as $nodeTreeRelatedByBchId) {
-                        // need to save related object because we set the relation to null
-                        $nodeTreeRelatedByBchId->save($con);
-                    }
-                    $this->nodeTreesRelatedByBchIdScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNodeTreesRelatedByBchId !== null) {
-                foreach ($this->collNodeTreesRelatedByBchId as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->nodeTreesRelatedByBchParentScheduledForDeletion !== null) {
-                if (!$this->nodeTreesRelatedByBchParentScheduledForDeletion->isEmpty()) {
-                    foreach ($this->nodeTreesRelatedByBchParentScheduledForDeletion as $nodeTreeRelatedByBchParent) {
-                        // need to save related object because we set the relation to null
-                        $nodeTreeRelatedByBchParent->save($con);
-                    }
-                    $this->nodeTreesRelatedByBchParentScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNodeTreesRelatedByBchParent !== null) {
-                foreach ($this->collNodeTreesRelatedByBchParent as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -1030,17 +975,17 @@ abstract class BaseBranch extends BaseObject implements Persistent
         if ($this->isColumnModified(BranchPeer::CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'created_by';
         }
-        if ($this->isColumnModified(BranchPeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'created_at';
-        }
         if ($this->isColumnModified(BranchPeer::UPDATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'updated_by';
         }
-        if ($this->isColumnModified(BranchPeer::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'updated_at';
-        }
         if ($this->isColumnModified(BranchPeer::TPL_ID)) {
             $modifiedColumns[':p' . $index++]  = 'tpl_id';
+        }
+        if ($this->isColumnModified(BranchPeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = 'created_at';
+        }
+        if ($this->isColumnModified(BranchPeer::UPDATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = 'updated_at';
         }
 
         $sql = sprintf(
@@ -1074,17 +1019,17 @@ abstract class BaseBranch extends BaseObject implements Persistent
                     case 'created_by':
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case 'created_at':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
                     case 'updated_by':
                         $stmt->bindValue($identifier, $this->updated_by, PDO::PARAM_INT);
                         break;
-                    case 'updated_at':
-                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
-                        break;
                     case 'tpl_id':
                         $stmt->bindValue($identifier, $this->tpl_id, PDO::PARAM_INT);
+                        break;
+                    case 'created_at':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
+                        break;
+                    case 'updated_at':
+                        $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1217,22 +1162,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collNodeTreesRelatedByBchId !== null) {
-                    foreach ($this->collNodeTreesRelatedByBchId as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collNodeTreesRelatedByBchParent !== null) {
-                    foreach ($this->collNodeTreesRelatedByBchParent as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
 
             $this->alreadyInValidation = false;
         }
@@ -1290,16 +1219,16 @@ abstract class BaseBranch extends BaseObject implements Persistent
                 return $this->getCreatedBy();
                 break;
             case 7:
-                return $this->getCreatedAt();
-                break;
-            case 8:
                 return $this->getUpdatedBy();
                 break;
+            case 8:
+                return $this->getTplId();
+                break;
             case 9:
-                return $this->getUpdatedAt();
+                return $this->getCreatedAt();
                 break;
             case 10:
-                return $this->getTplId();
+                return $this->getUpdatedAt();
                 break;
             default:
                 return null;
@@ -1337,10 +1266,10 @@ abstract class BaseBranch extends BaseObject implements Persistent
             $keys[4] => $this->getBchLevel(),
             $keys[5] => $this->getBchUrl(),
             $keys[6] => $this->getCreatedBy(),
-            $keys[7] => $this->getCreatedAt(),
-            $keys[8] => $this->getUpdatedBy(),
-            $keys[9] => $this->getUpdatedAt(),
-            $keys[10] => $this->getTplId(),
+            $keys[7] => $this->getUpdatedBy(),
+            $keys[8] => $this->getTplId(),
+            $keys[9] => $this->getCreatedAt(),
+            $keys[10] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
             if (null !== $this->aTemplate) {
@@ -1354,12 +1283,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
             }
             if (null !== $this->collBchRuls) {
                 $result['BchRuls'] = $this->collBchRuls->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNodeTreesRelatedByBchId) {
-                $result['NodeTreesRelatedByBchId'] = $this->collNodeTreesRelatedByBchId->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNodeTreesRelatedByBchParent) {
-                $result['NodeTreesRelatedByBchParent'] = $this->collNodeTreesRelatedByBchParent->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1417,16 +1340,16 @@ abstract class BaseBranch extends BaseObject implements Persistent
                 $this->setCreatedBy($value);
                 break;
             case 7:
-                $this->setCreatedAt($value);
-                break;
-            case 8:
                 $this->setUpdatedBy($value);
                 break;
+            case 8:
+                $this->setTplId($value);
+                break;
             case 9:
-                $this->setUpdatedAt($value);
+                $this->setCreatedAt($value);
                 break;
             case 10:
-                $this->setTplId($value);
+                $this->setUpdatedAt($value);
                 break;
         } // switch()
     }
@@ -1459,10 +1382,10 @@ abstract class BaseBranch extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setBchLevel($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setBchUrl($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setCreatedBy($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setUpdatedBy($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedAt($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setTplId($arr[$keys[10]]);
+        if (array_key_exists($keys[7], $arr)) $this->setUpdatedBy($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setTplId($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
     }
 
     /**
@@ -1481,10 +1404,10 @@ abstract class BaseBranch extends BaseObject implements Persistent
         if ($this->isColumnModified(BranchPeer::BCH_LEVEL)) $criteria->add(BranchPeer::BCH_LEVEL, $this->bch_level);
         if ($this->isColumnModified(BranchPeer::BCH_URL)) $criteria->add(BranchPeer::BCH_URL, $this->bch_url);
         if ($this->isColumnModified(BranchPeer::CREATED_BY)) $criteria->add(BranchPeer::CREATED_BY, $this->created_by);
-        if ($this->isColumnModified(BranchPeer::CREATED_AT)) $criteria->add(BranchPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(BranchPeer::UPDATED_BY)) $criteria->add(BranchPeer::UPDATED_BY, $this->updated_by);
-        if ($this->isColumnModified(BranchPeer::UPDATED_AT)) $criteria->add(BranchPeer::UPDATED_AT, $this->updated_at);
         if ($this->isColumnModified(BranchPeer::TPL_ID)) $criteria->add(BranchPeer::TPL_ID, $this->tpl_id);
+        if ($this->isColumnModified(BranchPeer::CREATED_AT)) $criteria->add(BranchPeer::CREATED_AT, $this->created_at);
+        if ($this->isColumnModified(BranchPeer::UPDATED_AT)) $criteria->add(BranchPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
     }
@@ -1554,10 +1477,10 @@ abstract class BaseBranch extends BaseObject implements Persistent
         $copyObj->setBchLevel($this->getBchLevel());
         $copyObj->setBchUrl($this->getBchUrl());
         $copyObj->setCreatedBy($this->getCreatedBy());
-        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedBy($this->getUpdatedBy());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
         $copyObj->setTplId($this->getTplId());
+        $copyObj->setCreatedAt($this->getCreatedAt());
+        $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1569,18 +1492,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
             foreach ($this->getBchRuls() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addBchRul($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getNodeTreesRelatedByBchId() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNodeTreeRelatedByBchId($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getNodeTreesRelatedByBchParent() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNodeTreeRelatedByBchParent($relObj->copy($deepCopy));
                 }
             }
 
@@ -1803,12 +1714,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
     {
         if ('BchRul' == $relationName) {
             $this->initBchRuls();
-        }
-        if ('NodeTreeRelatedByBchId' == $relationName) {
-            $this->initNodeTreesRelatedByBchId();
-        }
-        if ('NodeTreeRelatedByBchParent' == $relationName) {
-            $this->initNodeTreesRelatedByBchParent();
         }
     }
 
@@ -2106,592 +2011,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collNodeTreesRelatedByBchId collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Branch The current object (for fluent API support)
-     * @see        addNodeTreesRelatedByBchId()
-     */
-    public function clearNodeTreesRelatedByBchId()
-    {
-        $this->collNodeTreesRelatedByBchId = null; // important to set this to null since that means it is uninitialized
-        $this->collNodeTreesRelatedByBchIdPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collNodeTreesRelatedByBchId collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNodeTreesRelatedByBchId($v = true)
-    {
-        $this->collNodeTreesRelatedByBchIdPartial = $v;
-    }
-
-    /**
-     * Initializes the collNodeTreesRelatedByBchId collection.
-     *
-     * By default this just sets the collNodeTreesRelatedByBchId collection to an empty array (like clearcollNodeTreesRelatedByBchId());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNodeTreesRelatedByBchId($overrideExisting = true)
-    {
-        if (null !== $this->collNodeTreesRelatedByBchId && !$overrideExisting) {
-            return;
-        }
-        $this->collNodeTreesRelatedByBchId = new PropelObjectCollection();
-        $this->collNodeTreesRelatedByBchId->setModel('NodeTree');
-    }
-
-    /**
-     * Gets an array of NodeTree objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Branch is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     * @throws PropelException
-     */
-    public function getNodeTreesRelatedByBchId($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByBchIdPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByBchId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByBchId) {
-                // return empty collection
-                $this->initNodeTreesRelatedByBchId();
-            } else {
-                $collNodeTreesRelatedByBchId = NodeTreeQuery::create(null, $criteria)
-                    ->filterByBranchRelatedByBchId($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNodeTreesRelatedByBchIdPartial && count($collNodeTreesRelatedByBchId)) {
-                      $this->initNodeTreesRelatedByBchId(false);
-
-                      foreach($collNodeTreesRelatedByBchId as $obj) {
-                        if (false == $this->collNodeTreesRelatedByBchId->contains($obj)) {
-                          $this->collNodeTreesRelatedByBchId->append($obj);
-                        }
-                      }
-
-                      $this->collNodeTreesRelatedByBchIdPartial = true;
-                    }
-
-                    $collNodeTreesRelatedByBchId->getInternalIterator()->rewind();
-                    return $collNodeTreesRelatedByBchId;
-                }
-
-                if($partial && $this->collNodeTreesRelatedByBchId) {
-                    foreach($this->collNodeTreesRelatedByBchId as $obj) {
-                        if($obj->isNew()) {
-                            $collNodeTreesRelatedByBchId[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNodeTreesRelatedByBchId = $collNodeTreesRelatedByBchId;
-                $this->collNodeTreesRelatedByBchIdPartial = false;
-            }
-        }
-
-        return $this->collNodeTreesRelatedByBchId;
-    }
-
-    /**
-     * Sets a collection of NodeTreeRelatedByBchId objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $nodeTreesRelatedByBchId A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Branch The current object (for fluent API support)
-     */
-    public function setNodeTreesRelatedByBchId(PropelCollection $nodeTreesRelatedByBchId, PropelPDO $con = null)
-    {
-        $nodeTreesRelatedByBchIdToDelete = $this->getNodeTreesRelatedByBchId(new Criteria(), $con)->diff($nodeTreesRelatedByBchId);
-
-        $this->nodeTreesRelatedByBchIdScheduledForDeletion = unserialize(serialize($nodeTreesRelatedByBchIdToDelete));
-
-        foreach ($nodeTreesRelatedByBchIdToDelete as $nodeTreeRelatedByBchIdRemoved) {
-            $nodeTreeRelatedByBchIdRemoved->setBranchRelatedByBchId(null);
-        }
-
-        $this->collNodeTreesRelatedByBchId = null;
-        foreach ($nodeTreesRelatedByBchId as $nodeTreeRelatedByBchId) {
-            $this->addNodeTreeRelatedByBchId($nodeTreeRelatedByBchId);
-        }
-
-        $this->collNodeTreesRelatedByBchId = $nodeTreesRelatedByBchId;
-        $this->collNodeTreesRelatedByBchIdPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related NodeTree objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related NodeTree objects.
-     * @throws PropelException
-     */
-    public function countNodeTreesRelatedByBchId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByBchIdPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByBchId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByBchId) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getNodeTreesRelatedByBchId());
-            }
-            $query = NodeTreeQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByBranchRelatedByBchId($this)
-                ->count($con);
-        }
-
-        return count($this->collNodeTreesRelatedByBchId);
-    }
-
-    /**
-     * Method called to associate a NodeTree object to this object
-     * through the NodeTree foreign key attribute.
-     *
-     * @param    NodeTree $l NodeTree
-     * @return Branch The current object (for fluent API support)
-     */
-    public function addNodeTreeRelatedByBchId(NodeTree $l)
-    {
-        if ($this->collNodeTreesRelatedByBchId === null) {
-            $this->initNodeTreesRelatedByBchId();
-            $this->collNodeTreesRelatedByBchIdPartial = true;
-        }
-        if (!in_array($l, $this->collNodeTreesRelatedByBchId->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddNodeTreeRelatedByBchId($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	NodeTreeRelatedByBchId $nodeTreeRelatedByBchId The nodeTreeRelatedByBchId object to add.
-     */
-    protected function doAddNodeTreeRelatedByBchId($nodeTreeRelatedByBchId)
-    {
-        $this->collNodeTreesRelatedByBchId[]= $nodeTreeRelatedByBchId;
-        $nodeTreeRelatedByBchId->setBranchRelatedByBchId($this);
-    }
-
-    /**
-     * @param	NodeTreeRelatedByBchId $nodeTreeRelatedByBchId The nodeTreeRelatedByBchId object to remove.
-     * @return Branch The current object (for fluent API support)
-     */
-    public function removeNodeTreeRelatedByBchId($nodeTreeRelatedByBchId)
-    {
-        if ($this->getNodeTreesRelatedByBchId()->contains($nodeTreeRelatedByBchId)) {
-            $this->collNodeTreesRelatedByBchId->remove($this->collNodeTreesRelatedByBchId->search($nodeTreeRelatedByBchId));
-            if (null === $this->nodeTreesRelatedByBchIdScheduledForDeletion) {
-                $this->nodeTreesRelatedByBchIdScheduledForDeletion = clone $this->collNodeTreesRelatedByBchId;
-                $this->nodeTreesRelatedByBchIdScheduledForDeletion->clear();
-            }
-            $this->nodeTreesRelatedByBchIdScheduledForDeletion[]= $nodeTreeRelatedByBchId;
-            $nodeTreeRelatedByBchId->setBranchRelatedByBchId(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Branch is new, it will return
-     * an empty collection; or if this Branch has previously
-     * been saved, it will retrieve related NodeTreesRelatedByBchId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Branch.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByBchIdJoinUserRelatedByCreatedBy($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('UserRelatedByCreatedBy', $join_behavior);
-
-        return $this->getNodeTreesRelatedByBchId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Branch is new, it will return
-     * an empty collection; or if this Branch has previously
-     * been saved, it will retrieve related NodeTreesRelatedByBchId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Branch.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByBchIdJoinUserRelatedByUpdatedBy($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('UserRelatedByUpdatedBy', $join_behavior);
-
-        return $this->getNodeTreesRelatedByBchId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Branch is new, it will return
-     * an empty collection; or if this Branch has previously
-     * been saved, it will retrieve related NodeTreesRelatedByBchId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Branch.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByBchIdJoinLeaf($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('Leaf', $join_behavior);
-
-        return $this->getNodeTreesRelatedByBchId($query, $con);
-    }
-
-    /**
-     * Clears out the collNodeTreesRelatedByBchParent collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Branch The current object (for fluent API support)
-     * @see        addNodeTreesRelatedByBchParent()
-     */
-    public function clearNodeTreesRelatedByBchParent()
-    {
-        $this->collNodeTreesRelatedByBchParent = null; // important to set this to null since that means it is uninitialized
-        $this->collNodeTreesRelatedByBchParentPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collNodeTreesRelatedByBchParent collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNodeTreesRelatedByBchParent($v = true)
-    {
-        $this->collNodeTreesRelatedByBchParentPartial = $v;
-    }
-
-    /**
-     * Initializes the collNodeTreesRelatedByBchParent collection.
-     *
-     * By default this just sets the collNodeTreesRelatedByBchParent collection to an empty array (like clearcollNodeTreesRelatedByBchParent());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNodeTreesRelatedByBchParent($overrideExisting = true)
-    {
-        if (null !== $this->collNodeTreesRelatedByBchParent && !$overrideExisting) {
-            return;
-        }
-        $this->collNodeTreesRelatedByBchParent = new PropelObjectCollection();
-        $this->collNodeTreesRelatedByBchParent->setModel('NodeTree');
-    }
-
-    /**
-     * Gets an array of NodeTree objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Branch is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     * @throws PropelException
-     */
-    public function getNodeTreesRelatedByBchParent($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByBchParentPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByBchParent || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByBchParent) {
-                // return empty collection
-                $this->initNodeTreesRelatedByBchParent();
-            } else {
-                $collNodeTreesRelatedByBchParent = NodeTreeQuery::create(null, $criteria)
-                    ->filterByBranchRelatedByBchParent($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNodeTreesRelatedByBchParentPartial && count($collNodeTreesRelatedByBchParent)) {
-                      $this->initNodeTreesRelatedByBchParent(false);
-
-                      foreach($collNodeTreesRelatedByBchParent as $obj) {
-                        if (false == $this->collNodeTreesRelatedByBchParent->contains($obj)) {
-                          $this->collNodeTreesRelatedByBchParent->append($obj);
-                        }
-                      }
-
-                      $this->collNodeTreesRelatedByBchParentPartial = true;
-                    }
-
-                    $collNodeTreesRelatedByBchParent->getInternalIterator()->rewind();
-                    return $collNodeTreesRelatedByBchParent;
-                }
-
-                if($partial && $this->collNodeTreesRelatedByBchParent) {
-                    foreach($this->collNodeTreesRelatedByBchParent as $obj) {
-                        if($obj->isNew()) {
-                            $collNodeTreesRelatedByBchParent[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNodeTreesRelatedByBchParent = $collNodeTreesRelatedByBchParent;
-                $this->collNodeTreesRelatedByBchParentPartial = false;
-            }
-        }
-
-        return $this->collNodeTreesRelatedByBchParent;
-    }
-
-    /**
-     * Sets a collection of NodeTreeRelatedByBchParent objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $nodeTreesRelatedByBchParent A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Branch The current object (for fluent API support)
-     */
-    public function setNodeTreesRelatedByBchParent(PropelCollection $nodeTreesRelatedByBchParent, PropelPDO $con = null)
-    {
-        $nodeTreesRelatedByBchParentToDelete = $this->getNodeTreesRelatedByBchParent(new Criteria(), $con)->diff($nodeTreesRelatedByBchParent);
-
-        $this->nodeTreesRelatedByBchParentScheduledForDeletion = unserialize(serialize($nodeTreesRelatedByBchParentToDelete));
-
-        foreach ($nodeTreesRelatedByBchParentToDelete as $nodeTreeRelatedByBchParentRemoved) {
-            $nodeTreeRelatedByBchParentRemoved->setBranchRelatedByBchParent(null);
-        }
-
-        $this->collNodeTreesRelatedByBchParent = null;
-        foreach ($nodeTreesRelatedByBchParent as $nodeTreeRelatedByBchParent) {
-            $this->addNodeTreeRelatedByBchParent($nodeTreeRelatedByBchParent);
-        }
-
-        $this->collNodeTreesRelatedByBchParent = $nodeTreesRelatedByBchParent;
-        $this->collNodeTreesRelatedByBchParentPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related NodeTree objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related NodeTree objects.
-     * @throws PropelException
-     */
-    public function countNodeTreesRelatedByBchParent(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByBchParentPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByBchParent || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByBchParent) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getNodeTreesRelatedByBchParent());
-            }
-            $query = NodeTreeQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByBranchRelatedByBchParent($this)
-                ->count($con);
-        }
-
-        return count($this->collNodeTreesRelatedByBchParent);
-    }
-
-    /**
-     * Method called to associate a NodeTree object to this object
-     * through the NodeTree foreign key attribute.
-     *
-     * @param    NodeTree $l NodeTree
-     * @return Branch The current object (for fluent API support)
-     */
-    public function addNodeTreeRelatedByBchParent(NodeTree $l)
-    {
-        if ($this->collNodeTreesRelatedByBchParent === null) {
-            $this->initNodeTreesRelatedByBchParent();
-            $this->collNodeTreesRelatedByBchParentPartial = true;
-        }
-        if (!in_array($l, $this->collNodeTreesRelatedByBchParent->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddNodeTreeRelatedByBchParent($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	NodeTreeRelatedByBchParent $nodeTreeRelatedByBchParent The nodeTreeRelatedByBchParent object to add.
-     */
-    protected function doAddNodeTreeRelatedByBchParent($nodeTreeRelatedByBchParent)
-    {
-        $this->collNodeTreesRelatedByBchParent[]= $nodeTreeRelatedByBchParent;
-        $nodeTreeRelatedByBchParent->setBranchRelatedByBchParent($this);
-    }
-
-    /**
-     * @param	NodeTreeRelatedByBchParent $nodeTreeRelatedByBchParent The nodeTreeRelatedByBchParent object to remove.
-     * @return Branch The current object (for fluent API support)
-     */
-    public function removeNodeTreeRelatedByBchParent($nodeTreeRelatedByBchParent)
-    {
-        if ($this->getNodeTreesRelatedByBchParent()->contains($nodeTreeRelatedByBchParent)) {
-            $this->collNodeTreesRelatedByBchParent->remove($this->collNodeTreesRelatedByBchParent->search($nodeTreeRelatedByBchParent));
-            if (null === $this->nodeTreesRelatedByBchParentScheduledForDeletion) {
-                $this->nodeTreesRelatedByBchParentScheduledForDeletion = clone $this->collNodeTreesRelatedByBchParent;
-                $this->nodeTreesRelatedByBchParentScheduledForDeletion->clear();
-            }
-            $this->nodeTreesRelatedByBchParentScheduledForDeletion[]= $nodeTreeRelatedByBchParent;
-            $nodeTreeRelatedByBchParent->setBranchRelatedByBchParent(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Branch is new, it will return
-     * an empty collection; or if this Branch has previously
-     * been saved, it will retrieve related NodeTreesRelatedByBchParent from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Branch.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByBchParentJoinUserRelatedByCreatedBy($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('UserRelatedByCreatedBy', $join_behavior);
-
-        return $this->getNodeTreesRelatedByBchParent($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Branch is new, it will return
-     * an empty collection; or if this Branch has previously
-     * been saved, it will retrieve related NodeTreesRelatedByBchParent from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Branch.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByBchParentJoinUserRelatedByUpdatedBy($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('UserRelatedByUpdatedBy', $join_behavior);
-
-        return $this->getNodeTreesRelatedByBchParent($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Branch is new, it will return
-     * an empty collection; or if this Branch has previously
-     * been saved, it will retrieve related NodeTreesRelatedByBchParent from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Branch.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByBchParentJoinLeaf($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('Leaf', $join_behavior);
-
-        return $this->getNodeTreesRelatedByBchParent($query, $con);
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2703,10 +2022,10 @@ abstract class BaseBranch extends BaseObject implements Persistent
         $this->bch_level = null;
         $this->bch_url = null;
         $this->created_by = null;
-        $this->created_at = null;
         $this->updated_by = null;
-        $this->updated_at = null;
         $this->tpl_id = null;
+        $this->created_at = null;
+        $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -2734,16 +2053,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collNodeTreesRelatedByBchId) {
-                foreach ($this->collNodeTreesRelatedByBchId as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collNodeTreesRelatedByBchParent) {
-                foreach ($this->collNodeTreesRelatedByBchParent as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->aTemplate instanceof Persistent) {
               $this->aTemplate->clearAllReferences($deep);
             }
@@ -2761,14 +2070,6 @@ abstract class BaseBranch extends BaseObject implements Persistent
             $this->collBchRuls->clearIterator();
         }
         $this->collBchRuls = null;
-        if ($this->collNodeTreesRelatedByBchId instanceof PropelCollection) {
-            $this->collNodeTreesRelatedByBchId->clearIterator();
-        }
-        $this->collNodeTreesRelatedByBchId = null;
-        if ($this->collNodeTreesRelatedByBchParent instanceof PropelCollection) {
-            $this->collNodeTreesRelatedByBchParent->clearIterator();
-        }
-        $this->collNodeTreesRelatedByBchParent = null;
         $this->aTemplate = null;
         $this->aUserRelatedByCreatedBy = null;
         $this->aUserRelatedByUpdatedBy = null;
@@ -2792,6 +2093,20 @@ abstract class BaseBranch extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     Branch The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = BranchPeer::UPDATED_AT;
+
+        return $this;
     }
 
 }

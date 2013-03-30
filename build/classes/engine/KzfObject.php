@@ -52,7 +52,7 @@ class KzfObject
 						}
 					}
 					$object->save();
-					$aResponse['message'] = "Object ".$class." with id ".$id." correctly updated";
+					$aResponse['message'] = "Object ".$class." with id ".$aData['id']." correctly updated";
 					break;			
 				case 'delete':
 					if (!array_key_exists('id', $aData) || !is_int($aData['id'])) {
@@ -99,6 +99,13 @@ class KzfObject
 		if (array_key_exists('crud_from', $aData)) {
 			$oObject->setCrudFrom($aData['crud_from']);
 		}
+		
+		if (!method_exists($class, 'setAction')) {
+			throw new \Exception("You must to define a method setAction in your class [".$class."]");
+		}
+		
+		$oObject->setAction('read');
+		
 		
 		return $oObject;
 	}	

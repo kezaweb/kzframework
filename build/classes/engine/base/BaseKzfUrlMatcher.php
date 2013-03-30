@@ -36,7 +36,7 @@ class BaseKzfUrlMatcher extends Symfony\Component\Routing\Matcher\UrlMatcher
 
         // tree
         if ($pathinfo === '/tree') {
-            return array (  '_controller' => 'Kzf\\Controller\\NodeTreeController::listAction',  '_route' => 'tree',);
+            return array (  '_controller' => 'Kzf\\Controller\\NodeController::listAction',  '_route' => 'tree',);
         }
 
         // rules
@@ -51,7 +51,7 @@ class BaseKzfUrlMatcher extends Symfony\Component\Routing\Matcher\UrlMatcher
 
         // node
         if ($pathinfo === '/node') {
-            return array (  '_controller' => 'Kzf\\Controller\\NodeTreeController::singleAction',  '_route' => 'node',);
+            return array (  '_controller' => 'Kzf\\Controller\\NodeController::singleAction',  '_route' => 'node',);
         }
 
         // rule
@@ -72,6 +72,11 @@ class BaseKzfUrlMatcher extends Symfony\Component\Routing\Matcher\UrlMatcher
         // branch
         if ($pathinfo === '/branch') {
             return array (  '_controller' => 'Kzf\\Controller\\BranchController::singleAction',  '_route' => 'branch',);
+        }
+
+        // leaves
+        if ($pathinfo === '/leaves') {
+            return array (  '_controller' => 'Kzf\\Controller\\LeafController::listAction',  '_route' => 'leaves',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
