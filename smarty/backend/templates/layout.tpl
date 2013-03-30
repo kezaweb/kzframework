@@ -8,6 +8,9 @@
     <script src="/backend/js/jquery-1.9.1.min.js"></script>
     <script src="/backend/js/bootstrap.min.js"></script>
     <script src="/backend/js/kzf.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery.hotkeys.js"></script>
+	<script type="text/javascript" src="js/jquery.jstree.js"></script>    
   <title>{block name=title}KZFramework{/block}</title>
 </head>
 

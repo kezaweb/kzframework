@@ -29,7 +29,7 @@ class KzfObject
 						}
 					}
 					$object->save();
-					$aResponse['message'] = "Object ".$class." correctly created";
+					$aResponse['message'] = "Object ".$class." correctly created";					
 					break;
 				case 'update':
 					if (!array_key_exists('id', $aData) || !is_int($aData['id'])) {
@@ -52,7 +52,7 @@ class KzfObject
 						}
 					}
 					$object->save();
-					$aResponse['message'] = "Object ".$class." with id ".$id." correctly updated";
+					$aResponse['message'] = "Object ".$class." with id ".$aData['id']." correctly updated";
 					break;			
 				case 'delete':
 					if (!array_key_exists('id', $aData) || !is_int($aData['id'])) {
@@ -68,6 +68,9 @@ class KzfObject
 					break;				
 			}
 			$aResponse['type'] = "Success";
+			if (method_exists($object, "getDataResponse")) {
+				$aResponse['data_response'] = $object->getDataResponse();
+			}			
 			$con->commit();
 		} catch (\Exception $e) {
 			$con->rollback();
@@ -78,6 +81,34 @@ class KzfObject
 		return json_encode($aResponse);
 		
 	}
+	
+	/* $aData contains the id of the object, and for few object, an attribute CrudFrom ( if templating si different according place in the application )*/
+	public static function findByData($aData, $class) {
+		if (!array_key_exists('id', $aData)) {
+			throw new \Exception("We can't hydrate your object [".$class."] without here id");
+		}
+		if (array_key_exists('crud_from', $aData) && !method_exists($class, 'setCrudFrom')) {
+			throw new \Exception("We want to affect crud_from attribute in your object [".$class."] but is not possible");
+		}
+		$classQuery = $class."Query";
+		$oObject = $classQuery::create()->findPk($aData['id']);
+		if (!is_object($oObject)) {
+			throw new \Exception("Object [".$class."] with id [".$aData['id']."] doesn't exist.");
+		}
+		
+		if (array_key_exists('crud_from', $aData)) {
+			$oObject->setCrudFrom($aData['crud_from']);
+		}
+		
+		if (!method_exists($class, 'setAction')) {
+			throw new \Exception("You must to define a method setAction in your class [".$class."]");
+		}
+		
+		$oObject->setAction('read');
+		
+		
+		return $oObject;
+	}	
 	
 	public static function convertFieldToCamelCase($string){
 		$string = str_replace('_', ' ', $string);

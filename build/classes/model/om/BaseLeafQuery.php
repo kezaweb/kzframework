@@ -16,7 +16,6 @@ use Kzf\Model\Leaf;
 use Kzf\Model\LeafPeer;
 use Kzf\Model\LeafQuery;
 use Kzf\Model\LefRul;
-use Kzf\Model\NodeTree;
 use Kzf\Model\User;
 
 /**
@@ -30,8 +29,8 @@ use Kzf\Model\User;
  * @method LeafQuery orderByLefPublishedAt($order = Criteria::ASC) Order by the lef_published_at column
  * @method LeafQuery orderByLefContent($order = Criteria::ASC) Order by the lef_content column
  * @method LeafQuery orderByCreatedBy($order = Criteria::ASC) Order by the created_by column
- * @method LeafQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method LeafQuery orderByUpdatedBy($order = Criteria::ASC) Order by the updated_by column
+ * @method LeafQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method LeafQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method LeafQuery groupById() Group by the id column
@@ -40,8 +39,8 @@ use Kzf\Model\User;
  * @method LeafQuery groupByLefPublishedAt() Group by the lef_published_at column
  * @method LeafQuery groupByLefContent() Group by the lef_content column
  * @method LeafQuery groupByCreatedBy() Group by the created_by column
- * @method LeafQuery groupByCreatedAt() Group by the created_at column
  * @method LeafQuery groupByUpdatedBy() Group by the updated_by column
+ * @method LeafQuery groupByCreatedAt() Group by the created_at column
  * @method LeafQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method LeafQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -60,10 +59,6 @@ use Kzf\Model\User;
  * @method LeafQuery rightJoinLefRul($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LefRul relation
  * @method LeafQuery innerJoinLefRul($relationAlias = null) Adds a INNER JOIN clause to the query using the LefRul relation
  *
- * @method LeafQuery leftJoinNodeTree($relationAlias = null) Adds a LEFT JOIN clause to the query using the NodeTree relation
- * @method LeafQuery rightJoinNodeTree($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NodeTree relation
- * @method LeafQuery innerJoinNodeTree($relationAlias = null) Adds a INNER JOIN clause to the query using the NodeTree relation
- *
  * @method Leaf findOne(PropelPDO $con = null) Return the first Leaf matching the query
  * @method Leaf findOneOrCreate(PropelPDO $con = null) Return the first Leaf matching the query, or a new Leaf object populated from the query conditions when no match is found
  *
@@ -72,8 +67,8 @@ use Kzf\Model\User;
  * @method Leaf findOneByLefPublishedAt(string $lef_published_at) Return the first Leaf filtered by the lef_published_at column
  * @method Leaf findOneByLefContent(resource $lef_content) Return the first Leaf filtered by the lef_content column
  * @method Leaf findOneByCreatedBy(int $created_by) Return the first Leaf filtered by the created_by column
- * @method Leaf findOneByCreatedAt(string $created_at) Return the first Leaf filtered by the created_at column
  * @method Leaf findOneByUpdatedBy(int $updated_by) Return the first Leaf filtered by the updated_by column
+ * @method Leaf findOneByCreatedAt(string $created_at) Return the first Leaf filtered by the created_at column
  * @method Leaf findOneByUpdatedAt(string $updated_at) Return the first Leaf filtered by the updated_at column
  *
  * @method array findById(int $id) Return Leaf objects filtered by the id column
@@ -82,8 +77,8 @@ use Kzf\Model\User;
  * @method array findByLefPublishedAt(string $lef_published_at) Return Leaf objects filtered by the lef_published_at column
  * @method array findByLefContent(resource $lef_content) Return Leaf objects filtered by the lef_content column
  * @method array findByCreatedBy(int $created_by) Return Leaf objects filtered by the created_by column
- * @method array findByCreatedAt(string $created_at) Return Leaf objects filtered by the created_at column
  * @method array findByUpdatedBy(int $updated_by) Return Leaf objects filtered by the updated_by column
+ * @method array findByCreatedAt(string $created_at) Return Leaf objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return Leaf objects filtered by the updated_at column
  *
  * @package    propel.generator.model.om
@@ -188,7 +183,7 @@ abstract class BaseLeafQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT id, lef_title, lef_active, lef_published_at, lef_content, created_by, created_at, updated_by, updated_at FROM leaf WHERE id = :p0';
+        $sql = 'SELECT id, lef_title, lef_active, lef_published_at, lef_content, created_by, updated_by, created_at, updated_at FROM leaf WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -477,49 +472,6 @@ abstract class BaseLeafQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return LeafQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(LeafPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(LeafPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(LeafPeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
      * Filter the query on the updated_by column
      *
      * Example usage:
@@ -561,6 +513,49 @@ abstract class BaseLeafQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(LeafPeer::UPDATED_BY, $updatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return LeafQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(LeafPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(LeafPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(LeafPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -833,80 +828,6 @@ abstract class BaseLeafQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related NodeTree object
-     *
-     * @param   NodeTree|PropelObjectCollection $nodeTree  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 LeafQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByNodeTree($nodeTree, $comparison = null)
-    {
-        if ($nodeTree instanceof NodeTree) {
-            return $this
-                ->addUsingAlias(LeafPeer::ID, $nodeTree->getLefId(), $comparison);
-        } elseif ($nodeTree instanceof PropelObjectCollection) {
-            return $this
-                ->useNodeTreeQuery()
-                ->filterByPrimaryKeys($nodeTree->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNodeTree() only accepts arguments of type NodeTree or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the NodeTree relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return LeafQuery The current query, for fluid interface
-     */
-    public function joinNodeTree($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('NodeTree');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'NodeTree');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the NodeTree relation NodeTree object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Kzf\Model\NodeTreeQuery A secondary query class using the current class as primary query
-     */
-    public function useNodeTreeQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinNodeTree($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'NodeTree', '\Kzf\Model\NodeTreeQuery');
-    }
-
-    /**
      * Exclude object from result
      *
      * @param   Leaf $leaf Object to remove from the list of results
@@ -922,4 +843,69 @@ abstract class BaseLeafQuery extends ModelCriteria
         return $this;
     }
 
+    // timestampable behavior
+
+    /**
+     * Filter by the latest updated
+     *
+     * @param      int $nbDays Maximum age of the latest update in days
+     *
+     * @return     LeafQuery The current query, for fluid interface
+     */
+    public function recentlyUpdated($nbDays = 7)
+    {
+        return $this->addUsingAlias(LeafPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by update date desc
+     *
+     * @return     LeafQuery The current query, for fluid interface
+     */
+    public function lastUpdatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(LeafPeer::UPDATED_AT);
+    }
+
+    /**
+     * Order by update date asc
+     *
+     * @return     LeafQuery The current query, for fluid interface
+     */
+    public function firstUpdatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(LeafPeer::UPDATED_AT);
+    }
+
+    /**
+     * Filter by the latest created
+     *
+     * @param      int $nbDays Maximum age of in days
+     *
+     * @return     LeafQuery The current query, for fluid interface
+     */
+    public function recentlyCreated($nbDays = 7)
+    {
+        return $this->addUsingAlias(LeafPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by create date desc
+     *
+     * @return     LeafQuery The current query, for fluid interface
+     */
+    public function lastCreatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(LeafPeer::CREATED_AT);
+    }
+
+    /**
+     * Order by create date asc
+     *
+     * @return     LeafQuery The current query, for fluid interface
+     */
+    public function firstCreatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(LeafPeer::CREATED_AT);
+    }
 }

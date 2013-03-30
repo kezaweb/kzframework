@@ -6,9 +6,8 @@
     <column name="rul_id" phpName="RulId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="bcr_option" phpName="BcrOption" type="LONGVARCHAR" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="rule" name="fk_bch_rul_rule1">
       <reference local="rul_id" foreign="id"/>
     </foreign-key>
@@ -42,9 +41,8 @@
     <column name="bch_level" phpName="BchLevel" type="INTEGER" required="false"/>
     <column name="bch_url" phpName="BchUrl" type="VARCHAR" size="90" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <column name="tpl_id" phpName="TplId" type="INTEGER" required="false"/>
     <foreign-key foreignTable="template" name="fk_branch_template1">
       <reference local="tpl_id" foreign="id"/>
@@ -70,9 +68,8 @@
     <column name="cre_name" phpName="CreName" type="VARCHAR" size="50" required="false"/>
     <column name="cre_level" phpName="CreLevel" type="INTEGER" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="user" name="fk_credential_user1">
       <reference local="created_by" foreign="id"/>
     </foreign-key>
@@ -93,9 +90,8 @@
     <column name="lef_published_at" phpName="LefPublishedAt" type="TIMESTAMP" required="false"/>
     <column name="lef_content" phpName="LefContent" type="BLOB" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="user" name="fk_leaf_user1">
       <reference local="created_by" foreign="id"/>
     </foreign-key>
@@ -114,9 +110,8 @@
     <column name="rul_id" phpName="RulId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="ler_option" phpName="LerOption" type="LONGVARCHAR" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="rule" name="fk_lef_rul_rule1">
       <reference local="rul_id" foreign="id"/>
     </foreign-key>
@@ -142,54 +137,27 @@
       <index-column name="updated_by"/>
     </index>
   </table>
-  <table name="node_tree" phpName="NodeTree" idMethod="native">
-    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
-    <column name="ndt_id" phpName="NdtId" type="INTEGER" required="false"/>
-    <column name="ndt_position" phpName="NdtPosition" type="INTEGER" required="false"/>
-    <column name="ndt_left" phpName="NdtLeft" type="INTEGER" required="false"/>
-    <column name="ndt_right" phpName="NdtRight" type="INTEGER" required="false"/>
-    <column name="ndt_level" phpName="NdtLevel" type="INTEGER" required="false"/>
-    <column name="ndt_title" phpName="NdtTitle" type="VARCHAR" size="150" required="false"/>
-    <column name="ndt_type" phpName="NdtType" type="VARCHAR" size="45" required="false"/>
-    <column name="ndt_cloud" phpName="NdtCloud" type="BOOLEAN" size="1" required="false"/>
-    <column name="ndt_virtual" phpName="NdtVirtual" type="BOOLEAN" size="1" required="false"/>
-    <column name="bch_id" phpName="BchId" type="INTEGER" required="false"/>
-    <column name="bch_parent" phpName="BchParent" type="INTEGER" required="false"/>
-    <column name="lef_id" phpName="LefId" type="INTEGER" required="false"/>
-    <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
-    <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
-    <foreign-key foreignTable="user" name="fk_node_tree_user1">
-      <reference local="created_by" foreign="id"/>
-    </foreign-key>
-    <foreign-key foreignTable="user" name="fk_node_tree_user2">
-      <reference local="updated_by" foreign="id"/>
-    </foreign-key>
-    <foreign-key foreignTable="leaf" name="fk_node_tree_leaf1">
-      <reference local="lef_id" foreign="id"/>
-    </foreign-key>
-    <foreign-key foreignTable="branch" name="fk_node_tree_branch">
-      <reference local="bch_id" foreign="id"/>
-    </foreign-key>
-    <foreign-key foreignTable="branch" name="fk_node_tree_branch_parent">
-      <reference local="bch_parent" foreign="id"/>
-    </foreign-key>
-    <index name="fk_node_tree_leaf1">
-      <index-column name="lef_id"/>
-    </index>
-    <index name="fk_node_tree_user1">
-      <index-column name="created_by"/>
-    </index>
-    <index name="fk_node_tree_user2">
-      <index-column name="updated_by"/>
-    </index>
-    <index name="fk_node_tree_branch">
-      <index-column name="bch_id"/>
-    </index>
-    <index name="fk_node_tree_branch_parent">
-      <index-column name="bch_parent"/>
-    </index>
+  <table name="node">
+	  <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+      <column name="nod_title" phpName="NodTitle" type="VARCHAR" size="150" required="false"/>
+      <column name="nod_left" phpName="NodLeft" type="INTEGER" required="false"/>
+      <column name="nod_right" phpName="NodRight" type="INTEGER" required="false"/>
+      <column name="nod_level" phpName="NodLevel" type="INTEGER" required="false"/>
+      <column name="nod_type" phpName="NodType" type="VARCHAR" size="45" required="false"/>
+      <column name="nod_cloud" phpName="NodCloud" type="INTEGER" size="1" required="false"/>
+      <column name="nod_virtual" phpName="NodVirtual" type="INTEGER" size="1" required="false"/>
+	  <column name="bch_id" phpName="BchId" type="INTEGER" required="false"/>
+	  <column name="bch_parent" phpName="BchParent" type="INTEGER" required="false"/>
+	  <column name="lef_id" phpName="LefId" type="INTEGER" required="false"/>
+      <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
+      <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
+	  <behavior name="timestampable" />
+	  <behavior name="nested_set">
+	    <parameter name="left_column" value="nod_left" />
+	    <parameter name="right_column" value="nod_right" />
+	    <parameter name="level_column" value="nod_level" />
+	    <parameter name="method_proxies" value="true" />
+	  </behavior>
   </table>
   <table name="rul_option" phpName="RulOption" idMethod="native">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" required="true"/>
@@ -199,9 +167,8 @@
     <column name="rou_pattern" phpName="RouPattern" type="LONGVARCHAR" required="false"/>
     <column name="rul_id" phpName="RulId" type="INTEGER" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="rule" name="fk_rul_option_rule1">
       <reference local="rul_id" foreign="id"/>
     </foreign-key>
@@ -228,9 +195,8 @@
     <column name="rul_actif" phpName="RulActif" type="BOOLEAN" size="1" required="false"/>
     <column name="tru_id" phpName="TruId" type="INTEGER" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="type_rule" name="fk_rule_type_rule1">
       <reference local="tru_id" foreign="id"/>
     </foreign-key>
@@ -256,9 +222,8 @@
     <column name="tpl_desc" phpName="TplDesc" type="LONGVARCHAR" required="false"/>
     <column name="tpl_file" phpName="TplFile" type="VARCHAR" size="100" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="user" name="fk_template_user1">
       <reference local="created_by" foreign="id"/>
     </foreign-key>
@@ -276,9 +241,8 @@
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="is_in_store" phpName="IsInStore" type="BOOLEAN" size="1" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="user" name="fk_type_rule_user1">
       <reference local="created_by" foreign="id"/>
     </foreign-key>
@@ -309,9 +273,8 @@
     <column name="usr_cp" phpName="UsrCp" type="INTEGER" size="5" required="false"/>
     <column name="usr_avatar" phpName="UsrAvatar" type="VARCHAR" size="100" required="false"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
+	<behavior name="timestampable" />
     <foreign-key foreignTable="user" name="fk_created_by_user">
       <reference local="created_by" foreign="id"/>
     </foreign-key>
@@ -329,9 +292,7 @@
     <column name="usr_id" phpName="UsrId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="cre_id" phpName="CreId" type="INTEGER" primaryKey="true" required="true"/>
     <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
-    <column name="created_at" phpName="CreatedAt" type="TIMESTAMP" required="false"/>
     <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
-    <column name="updated_at" phpName="UpdatedAt" type="TIMESTAMP" required="false"/>
     <foreign-key foreignTable="user" name="fk_usr_cre_user1">
       <reference local="usr_id" foreign="id"/>
     </foreign-key>

@@ -67,17 +67,17 @@ abstract class BaseBranchPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'branch.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'branch.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'branch.updated_by';
 
-    /** the column name for the updated_at field */
-    const UPDATED_AT = 'branch.updated_at';
-
     /** the column name for the tpl_id field */
     const TPL_ID = 'branch.tpl_id';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'branch.created_at';
+
+    /** the column name for the updated_at field */
+    const UPDATED_AT = 'branch.updated_at';
 
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -98,11 +98,11 @@ abstract class BaseBranchPeer
      * e.g. BranchPeer::$fieldNames[BranchPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'BchTitle', 'BchActive', 'BchPublishedAt', 'BchLevel', 'BchUrl', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', 'TplId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'bchTitle', 'bchActive', 'bchPublishedAt', 'bchLevel', 'bchUrl', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', 'tplId', ),
-        BasePeer::TYPE_COLNAME => array (BranchPeer::ID, BranchPeer::BCH_TITLE, BranchPeer::BCH_ACTIVE, BranchPeer::BCH_PUBLISHED_AT, BranchPeer::BCH_LEVEL, BranchPeer::BCH_URL, BranchPeer::CREATED_BY, BranchPeer::CREATED_AT, BranchPeer::UPDATED_BY, BranchPeer::UPDATED_AT, BranchPeer::TPL_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'BCH_TITLE', 'BCH_ACTIVE', 'BCH_PUBLISHED_AT', 'BCH_LEVEL', 'BCH_URL', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', 'TPL_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'bch_title', 'bch_active', 'bch_published_at', 'bch_level', 'bch_url', 'created_by', 'created_at', 'updated_by', 'updated_at', 'tpl_id', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'BchTitle', 'BchActive', 'BchPublishedAt', 'BchLevel', 'BchUrl', 'CreatedBy', 'UpdatedBy', 'TplId', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'bchTitle', 'bchActive', 'bchPublishedAt', 'bchLevel', 'bchUrl', 'createdBy', 'updatedBy', 'tplId', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (BranchPeer::ID, BranchPeer::BCH_TITLE, BranchPeer::BCH_ACTIVE, BranchPeer::BCH_PUBLISHED_AT, BranchPeer::BCH_LEVEL, BranchPeer::BCH_URL, BranchPeer::CREATED_BY, BranchPeer::UPDATED_BY, BranchPeer::TPL_ID, BranchPeer::CREATED_AT, BranchPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'BCH_TITLE', 'BCH_ACTIVE', 'BCH_PUBLISHED_AT', 'BCH_LEVEL', 'BCH_URL', 'CREATED_BY', 'UPDATED_BY', 'TPL_ID', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'bch_title', 'bch_active', 'bch_published_at', 'bch_level', 'bch_url', 'created_by', 'updated_by', 'tpl_id', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
@@ -113,11 +113,11 @@ abstract class BaseBranchPeer
      * e.g. BranchPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'BchTitle' => 1, 'BchActive' => 2, 'BchPublishedAt' => 3, 'BchLevel' => 4, 'BchUrl' => 5, 'CreatedBy' => 6, 'CreatedAt' => 7, 'UpdatedBy' => 8, 'UpdatedAt' => 9, 'TplId' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'bchTitle' => 1, 'bchActive' => 2, 'bchPublishedAt' => 3, 'bchLevel' => 4, 'bchUrl' => 5, 'createdBy' => 6, 'createdAt' => 7, 'updatedBy' => 8, 'updatedAt' => 9, 'tplId' => 10, ),
-        BasePeer::TYPE_COLNAME => array (BranchPeer::ID => 0, BranchPeer::BCH_TITLE => 1, BranchPeer::BCH_ACTIVE => 2, BranchPeer::BCH_PUBLISHED_AT => 3, BranchPeer::BCH_LEVEL => 4, BranchPeer::BCH_URL => 5, BranchPeer::CREATED_BY => 6, BranchPeer::CREATED_AT => 7, BranchPeer::UPDATED_BY => 8, BranchPeer::UPDATED_AT => 9, BranchPeer::TPL_ID => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'BCH_TITLE' => 1, 'BCH_ACTIVE' => 2, 'BCH_PUBLISHED_AT' => 3, 'BCH_LEVEL' => 4, 'BCH_URL' => 5, 'CREATED_BY' => 6, 'CREATED_AT' => 7, 'UPDATED_BY' => 8, 'UPDATED_AT' => 9, 'TPL_ID' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'bch_title' => 1, 'bch_active' => 2, 'bch_published_at' => 3, 'bch_level' => 4, 'bch_url' => 5, 'created_by' => 6, 'created_at' => 7, 'updated_by' => 8, 'updated_at' => 9, 'tpl_id' => 10, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'BchTitle' => 1, 'BchActive' => 2, 'BchPublishedAt' => 3, 'BchLevel' => 4, 'BchUrl' => 5, 'CreatedBy' => 6, 'UpdatedBy' => 7, 'TplId' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'bchTitle' => 1, 'bchActive' => 2, 'bchPublishedAt' => 3, 'bchLevel' => 4, 'bchUrl' => 5, 'createdBy' => 6, 'updatedBy' => 7, 'tplId' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
+        BasePeer::TYPE_COLNAME => array (BranchPeer::ID => 0, BranchPeer::BCH_TITLE => 1, BranchPeer::BCH_ACTIVE => 2, BranchPeer::BCH_PUBLISHED_AT => 3, BranchPeer::BCH_LEVEL => 4, BranchPeer::BCH_URL => 5, BranchPeer::CREATED_BY => 6, BranchPeer::UPDATED_BY => 7, BranchPeer::TPL_ID => 8, BranchPeer::CREATED_AT => 9, BranchPeer::UPDATED_AT => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'BCH_TITLE' => 1, 'BCH_ACTIVE' => 2, 'BCH_PUBLISHED_AT' => 3, 'BCH_LEVEL' => 4, 'BCH_URL' => 5, 'CREATED_BY' => 6, 'UPDATED_BY' => 7, 'TPL_ID' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'bch_title' => 1, 'bch_active' => 2, 'bch_published_at' => 3, 'bch_level' => 4, 'bch_url' => 5, 'created_by' => 6, 'updated_by' => 7, 'tpl_id' => 8, 'created_at' => 9, 'updated_at' => 10, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
@@ -199,10 +199,10 @@ abstract class BaseBranchPeer
             $criteria->addSelectColumn(BranchPeer::BCH_LEVEL);
             $criteria->addSelectColumn(BranchPeer::BCH_URL);
             $criteria->addSelectColumn(BranchPeer::CREATED_BY);
-            $criteria->addSelectColumn(BranchPeer::CREATED_AT);
             $criteria->addSelectColumn(BranchPeer::UPDATED_BY);
-            $criteria->addSelectColumn(BranchPeer::UPDATED_AT);
             $criteria->addSelectColumn(BranchPeer::TPL_ID);
+            $criteria->addSelectColumn(BranchPeer::CREATED_AT);
+            $criteria->addSelectColumn(BranchPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.bch_title');
@@ -211,10 +211,10 @@ abstract class BaseBranchPeer
             $criteria->addSelectColumn($alias . '.bch_level');
             $criteria->addSelectColumn($alias . '.bch_url');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
-            $criteria->addSelectColumn($alias . '.updated_at');
             $criteria->addSelectColumn($alias . '.tpl_id');
+            $criteria->addSelectColumn($alias . '.created_at');
+            $criteria->addSelectColumn($alias . '.updated_at');
         }
     }
 

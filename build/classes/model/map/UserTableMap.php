@@ -50,8 +50,8 @@ class UserTableMap extends TableMap
         $this->addColumn('usr_cp', 'UsrCp', 'INTEGER', false, 5, null);
         $this->addColumn('usr_avatar', 'UsrAvatar', 'VARCHAR', false, 100, null);
         $this->addForeignKey('created_by', 'CreatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('updated_by', 'UpdatedBy', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
@@ -73,8 +73,6 @@ class UserTableMap extends TableMap
         $this->addRelation('LeafRelatedByUpdatedBy', 'Kzf\\Model\\Leaf', RelationMap::ONE_TO_MANY, array('id' => 'updated_by', ), null, null, 'LeafsRelatedByUpdatedBy');
         $this->addRelation('LefRulRelatedByCreatedBy', 'Kzf\\Model\\LefRul', RelationMap::ONE_TO_MANY, array('id' => 'created_by', ), null, null, 'LefRulsRelatedByCreatedBy');
         $this->addRelation('LefRulRelatedByUpdatedBy', 'Kzf\\Model\\LefRul', RelationMap::ONE_TO_MANY, array('id' => 'updated_by', ), null, null, 'LefRulsRelatedByUpdatedBy');
-        $this->addRelation('NodeTreeRelatedByCreatedBy', 'Kzf\\Model\\NodeTree', RelationMap::ONE_TO_MANY, array('id' => 'created_by', ), null, null, 'NodeTreesRelatedByCreatedBy');
-        $this->addRelation('NodeTreeRelatedByUpdatedBy', 'Kzf\\Model\\NodeTree', RelationMap::ONE_TO_MANY, array('id' => 'updated_by', ), null, null, 'NodeTreesRelatedByUpdatedBy');
         $this->addRelation('RulOptionRelatedByCreatedBy', 'Kzf\\Model\\RulOption', RelationMap::ONE_TO_MANY, array('id' => 'created_by', ), null, null, 'RulOptionsRelatedByCreatedBy');
         $this->addRelation('RulOptionRelatedByUpdatedBy', 'Kzf\\Model\\RulOption', RelationMap::ONE_TO_MANY, array('id' => 'updated_by', ), null, null, 'RulOptionsRelatedByUpdatedBy');
         $this->addRelation('RuleRelatedByCreatedBy', 'Kzf\\Model\\Rule', RelationMap::ONE_TO_MANY, array('id' => 'created_by', ), null, null, 'RulesRelatedByCreatedBy');
@@ -89,5 +87,22 @@ class UserTableMap extends TableMap
         $this->addRelation('UsrCreRelatedByCreatedBy', 'Kzf\\Model\\UsrCre', RelationMap::ONE_TO_MANY, array('id' => 'created_by', ), null, null, 'UsrCresRelatedByCreatedBy');
         $this->addRelation('UsrCreRelatedByUpdatedBy', 'Kzf\\Model\\UsrCre', RelationMap::ONE_TO_MANY, array('id' => 'updated_by', ), null, null, 'UsrCresRelatedByUpdatedBy');
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
+        );
+    } // getBehaviors()
 
 } // UserTableMap

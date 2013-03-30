@@ -2,11 +2,11 @@
 
 namespace Kzf\Model;
 
-use Kzf\Model\om\BaseNodeTree;
+use Kzf\Model\om\BaseNodeQuery;
 
 
 /**
- * Skeleton subclass for representing a row from the 'node_tree' table.
+ * Skeleton subclass for performing query and update operations on the 'node' table.
  *
  *
  *
@@ -16,6 +16,6 @@ use Kzf\Model\om\BaseNodeTree;
  *
  * @package    propel.generator.model
  */
-class NodeTree extends BaseNodeTree
+class NodeQuery extends BaseNodeQuery
 {
 }

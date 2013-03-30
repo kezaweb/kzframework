@@ -32,7 +32,7 @@ class BaseController
 		$response = new Response(
 				$json,
 				200,
-				array('content-type' => 'text/json')
+				array('content-type' => 'application/json')
 		);
 		
 		return $response;

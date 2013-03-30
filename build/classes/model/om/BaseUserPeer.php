@@ -68,11 +68,11 @@ abstract class BaseUserPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'user.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'user.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'user.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'user.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'user.updated_at';
@@ -96,11 +96,11 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[UserPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'UsrFirstName', 'UsrLastName', 'UsrLogin', 'UsrPassword', 'UsrCp', 'UsrAvatar', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'usrFirstName', 'usrLastName', 'usrLogin', 'usrPassword', 'usrCp', 'usrAvatar', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USR_FIRST_NAME, UserPeer::USR_LAST_NAME, UserPeer::USR_LOGIN, UserPeer::USR_PASSWORD, UserPeer::USR_CP, UserPeer::USR_AVATAR, UserPeer::CREATED_BY, UserPeer::CREATED_AT, UserPeer::UPDATED_BY, UserPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USR_FIRST_NAME', 'USR_LAST_NAME', 'USR_LOGIN', 'USR_PASSWORD', 'USR_CP', 'USR_AVATAR', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'usr_first_name', 'usr_last_name', 'usr_login', 'usr_password', 'usr_cp', 'usr_avatar', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'UsrFirstName', 'UsrLastName', 'UsrLogin', 'UsrPassword', 'UsrCp', 'UsrAvatar', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'usrFirstName', 'usrLastName', 'usrLogin', 'usrPassword', 'usrCp', 'usrAvatar', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID, UserPeer::USR_FIRST_NAME, UserPeer::USR_LAST_NAME, UserPeer::USR_LOGIN, UserPeer::USR_PASSWORD, UserPeer::USR_CP, UserPeer::USR_AVATAR, UserPeer::CREATED_BY, UserPeer::UPDATED_BY, UserPeer::CREATED_AT, UserPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'USR_FIRST_NAME', 'USR_LAST_NAME', 'USR_LOGIN', 'USR_PASSWORD', 'USR_CP', 'USR_AVATAR', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'usr_first_name', 'usr_last_name', 'usr_login', 'usr_password', 'usr_cp', 'usr_avatar', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
@@ -111,11 +111,11 @@ abstract class BaseUserPeer
      * e.g. UserPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UsrFirstName' => 1, 'UsrLastName' => 2, 'UsrLogin' => 3, 'UsrPassword' => 4, 'UsrCp' => 5, 'UsrAvatar' => 6, 'CreatedBy' => 7, 'CreatedAt' => 8, 'UpdatedBy' => 9, 'UpdatedAt' => 10, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'usrFirstName' => 1, 'usrLastName' => 2, 'usrLogin' => 3, 'usrPassword' => 4, 'usrCp' => 5, 'usrAvatar' => 6, 'createdBy' => 7, 'createdAt' => 8, 'updatedBy' => 9, 'updatedAt' => 10, ),
-        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USR_FIRST_NAME => 1, UserPeer::USR_LAST_NAME => 2, UserPeer::USR_LOGIN => 3, UserPeer::USR_PASSWORD => 4, UserPeer::USR_CP => 5, UserPeer::USR_AVATAR => 6, UserPeer::CREATED_BY => 7, UserPeer::CREATED_AT => 8, UserPeer::UPDATED_BY => 9, UserPeer::UPDATED_AT => 10, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USR_FIRST_NAME' => 1, 'USR_LAST_NAME' => 2, 'USR_LOGIN' => 3, 'USR_PASSWORD' => 4, 'USR_CP' => 5, 'USR_AVATAR' => 6, 'CREATED_BY' => 7, 'CREATED_AT' => 8, 'UPDATED_BY' => 9, 'UPDATED_AT' => 10, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'usr_first_name' => 1, 'usr_last_name' => 2, 'usr_login' => 3, 'usr_password' => 4, 'usr_cp' => 5, 'usr_avatar' => 6, 'created_by' => 7, 'created_at' => 8, 'updated_by' => 9, 'updated_at' => 10, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UsrFirstName' => 1, 'UsrLastName' => 2, 'UsrLogin' => 3, 'UsrPassword' => 4, 'UsrCp' => 5, 'UsrAvatar' => 6, 'CreatedBy' => 7, 'UpdatedBy' => 8, 'CreatedAt' => 9, 'UpdatedAt' => 10, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'usrFirstName' => 1, 'usrLastName' => 2, 'usrLogin' => 3, 'usrPassword' => 4, 'usrCp' => 5, 'usrAvatar' => 6, 'createdBy' => 7, 'updatedBy' => 8, 'createdAt' => 9, 'updatedAt' => 10, ),
+        BasePeer::TYPE_COLNAME => array (UserPeer::ID => 0, UserPeer::USR_FIRST_NAME => 1, UserPeer::USR_LAST_NAME => 2, UserPeer::USR_LOGIN => 3, UserPeer::USR_PASSWORD => 4, UserPeer::USR_CP => 5, UserPeer::USR_AVATAR => 6, UserPeer::CREATED_BY => 7, UserPeer::UPDATED_BY => 8, UserPeer::CREATED_AT => 9, UserPeer::UPDATED_AT => 10, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'USR_FIRST_NAME' => 1, 'USR_LAST_NAME' => 2, 'USR_LOGIN' => 3, 'USR_PASSWORD' => 4, 'USR_CP' => 5, 'USR_AVATAR' => 6, 'CREATED_BY' => 7, 'UPDATED_BY' => 8, 'CREATED_AT' => 9, 'UPDATED_AT' => 10, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'usr_first_name' => 1, 'usr_last_name' => 2, 'usr_login' => 3, 'usr_password' => 4, 'usr_cp' => 5, 'usr_avatar' => 6, 'created_by' => 7, 'updated_by' => 8, 'created_at' => 9, 'updated_at' => 10, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, )
     );
 
@@ -198,8 +198,8 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn(UserPeer::USR_CP);
             $criteria->addSelectColumn(UserPeer::USR_AVATAR);
             $criteria->addSelectColumn(UserPeer::CREATED_BY);
-            $criteria->addSelectColumn(UserPeer::CREATED_AT);
             $criteria->addSelectColumn(UserPeer::UPDATED_BY);
+            $criteria->addSelectColumn(UserPeer::CREATED_AT);
             $criteria->addSelectColumn(UserPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -210,8 +210,8 @@ abstract class BaseUserPeer
             $criteria->addSelectColumn($alias . '.usr_cp');
             $criteria->addSelectColumn($alias . '.usr_avatar');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

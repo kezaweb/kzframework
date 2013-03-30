@@ -7,7 +7,8 @@ class KzfShellRun extends \Kzf\Engine\KzfShellTools
 {
 	protected $classmap = null;
 	
-	public function execute($argv, $argc, $classmap){
+	public function execute($argv, $argc, $classmap)
+	{
 		$this->argv = $argv;
 		$this->argc = $argc;
 		$this->classmap = $classmap;
@@ -25,48 +26,49 @@ class KzfShellRun extends \Kzf\Engine\KzfShellTools
 		}
 	}
 
-	public function processPropel($argv){
+	public function processPropel($argv)
+	{
 		$this->output("# Using propel shell #",parent::$MSG_SUCCESS);
 		exec(KZF_DIR."vendor/bin/propel-gen ".KZF_DIR."config ".implode(' ',$argv),&$output);
 		$this->outputShell($output);
 	}
 	
-	public function processPhpunit($argv){
+	public function processPhpunit($argv)
+	{
 		$this->output("# Using phpunit shell #",parent::$MSG_SUCCESS);
 		exec(KZF_DIR."vendor/bin/phpunit ".implode(' ',$argv),&$output);
 		$this->outputShell($output);
 	}	
 	
-	public function processHelp($argv){
+	public function processHelp($argv)
+	{
 		// This function describes processes allowed by the shell
 		$this->output("#################### How To Using Kzframework #######################",parent::$MSG_SUCCESS);
 		$this->output(" ");
 		$this->output("~~~ Kzframework Methods ~~~");
 		$this->output("    -build");
-		$this->output("            This method build your schema.xml and your model according database kzf_model and load a new schema kzf_fixtures");
+		$this->output("            This method build your model according your schema and update kzf_fixtures");
 		$this->output("    -build-and-migrate");
-		$this->output("            This method build your schema according database kzf_model, load a new schema kzf_fixtures, and can modify your schema kzf and play units tests");
+		$this->output("            This method build your model according your schema, load a new schema kzf_fixtures, and play units tests");
 		$this->output("    -play-tests");
 		$this->output("            This method play units tests");
+		$this->output("    -build-routes");
+		$this->output("            Reconstruire les routes");		
 		$this->output(" ");
 		$this->output("~~~ Phpunit ~~~");		
 		$this->output("    -phpunit");		
 		$this->output("            You can use all arguments used for phpunit shell");
 		$this->output(" ");
 		$this->output("~~~ Propel ~~~");
-		$this->output("    -propel-gen");		
+		$this->output("    -propel");		
 		$this->output("            You can use all arguments used for propel-gen shell");		
 		$this->output(" ");
 		$this->output(" ");
 		$this->output("########################## Enjoy coding ;-) #######################",parent::$MSG_SUCCESS);		
 	}	
 	
-	public function processBuild($argv) {
-		$propel_params = array('reverse');
-		$this->output("# Generate schema according kzf_model #",parent::$MSG_SUCCESS);
-		$this->processPropel($propel_params);		
-		// Modify the schema to add namespace Kzf
-		$this->addNamespaceInSchema();
+	public function processBuild($argv)
+	{
 		$this->output("# Generate model with propel according schema #",parent::$MSG_SUCCESS);
 		$propel_params = array('om');
 		$this->processPropel($propel_params);	
@@ -89,13 +91,15 @@ class KzfShellRun extends \Kzf\Engine\KzfShellTools
 		$this->processBuildRoutes($argv);
 	}
 	
-	public function processPlayTests($argv) {
+	public function processPlayTests($argv)
+	{
 		$phpunit_params = array('--colors','-c',KZF_DIR.'test/phpunit.xml','--bootstrap',KZF_DIR.'test/bootstrap.php', KZF_DIR.'test/unit');
 		$this->output("# Playing your unit test #",parent::$MSG_SUCCESS);
 		$this->processPhpunit($phpunit_params);		
 	}
 	
-	public function processBuildRoutes($argv) {
+	public function processBuildRoutes($argv)
+	{
 		$routes = include KZF_DIR.'build/conf/routes.php';
 		$dumper = new \Symfony\Component\Routing\Matcher\Dumper\PhpMatcherDumper($routes);
 		$this->output("# Building of build/classes/engine/base/BaseKzfUrlMatcher.php #",parent::$MSG_SUCCESS);
@@ -109,9 +113,12 @@ use Symfony as Symfony;";
 		$dump = str_replace($search, $replace, $dumper->dump(array('class'=>"BaseKzfUrlMatcher")));
 		fwrite($fp, $dump);
 		fclose($fp);
+		exec("php ".KZF_DIR."composer.phar update");
+		
 	}
 	
-	public function processBuildAndMigrate($argv) {
+	public function processBuildAndMigrate($argv)
+	{
 		$this->processBuild($argv);
 		$propel_params = array('diff');
 		$this->output("# Generate diff beetween schema kzf_model and kzf #",parent::$MSG_SUCCESS);
@@ -119,16 +126,6 @@ use Symfony as Symfony;";
 		$propel_params = array('migrate');
 		$this->output("# Migrate the changes on kzf database #",parent::$MSG_SUCCESS);
 		$this->processPropel($propel_params);			
-		
-	}
-	
-	public function addNamespaceInSchema() {
-		$dom = new \DomDocument();
-		$dom->load(KZF_DIR.'config/schema.xml');
-		$db = $dom->getElementsByTagName('database')->item(0);
-		$db->setAttribute("namespace","Kzf\Model");
-		$dom->appendChild($db);
-		$dom->save(KZF_DIR.'config/schema.xml');
 		
 	}
 }

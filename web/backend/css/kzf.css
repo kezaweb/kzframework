@@ -2,3 +2,81 @@
   margin:0px 0px 0px 10px;
   display:none;
 }
+
+/* JSTree CSS */
+.jstree-kzf li, 
+/*.jstree-kzf ins { background-image:url("/backend/img/glyphicons-halflings.png"); background-repeat:no-repeat; background-color:transparent; }
+*/
+.jstree-kzf li { background-position:-90px 0; /*background-repeat:repeat-y;*/  }
+.jstree-kzf li.jstree-last { background:transparent; }
+.jstree-kzf li[rel="folder"].jstree-closed > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -384px -120px }
+.jstree-kzf li[rel="folder"].jstree-leaf > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -384px -120px }
+.jstree-kzf li[rel="folder"].jstree-folder > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -384px -120px }
+.jstree-kzf li[rel="folder"].jstree-open > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -408px -120px; width: 16px; }
+.jstree-kzf li[rel="default"] > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -48px -120px }
+.jstree-kzf li[rel="drive"] > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -336px -144px }
+
+.jstree-kzf .jstree-hovered { background:#ededed; border:1px solid #ededed; padding:0 2px 0 1px; }
+.jstree-kzf .jstree-clicked { background:#e1e1e1; border:1px solid #e1e1e1; padding:0 2px 0 1px; }
+.jstree-kzf a .jstree-icon { background-position:-56px -19px; }
+.jstree-kzf .jstree-closed > ins.jstree-icon { background-image: url("/backend/img/glyphicons-halflings.png"); background-position:-408px -96px; cursor:pointer;}
+.jstree-kzf .jstree-open > ins.jstree-icon { background-image: url("/backend/img/glyphicons-halflings.png"); background-position:-433px -96px; cursor:pointer;}
+.jstree-kzf a.jstree-loading .jstree-icon { background:url("/backend/img/16load.gif") center center no-repeat !important; }
+
+.jstree-kzf.jstree-focused { background:white; }
+
+.jstree-kzf .jstree-no-dots li, 
+.jstree-kzf .jstree-no-dots .jstree-leaf > ins { background:transparent; }
+.jstree-kzf .jstree-no-dots .jstree-open > ins { background-position:-0px 18; }
+.jstree-kzf .jstree-no-dots .jstree-closed > ins { background-position:0 0; }
+
+.jstree-kzf .jstree-no-icons a .jstree-icon { display:none; }
+
+.jstree-kzf .jstree-search { font-style:italic; }
+
+.jstree-kzf .jstree-no-icons .jstree-checkbox { display:inline-block; }
+.jstree-kzf .jstree-no-checkboxes .jstree-checkbox { display:none !important; }
+.jstree-kzf .jstree-checked > a > .jstree-checkbox { background-position:-38px -19px; }
+.jstree-kzf .jstree-unchecked > a > .jstree-checkbox { background-position:-2px -19px; }
+.jstree-kzf .jstree-undetermined > a > .jstree-checkbox { background-position:-20px -19px; }
+.jstree-kzf .jstree-checked > a > .jstree-checkbox:hover { background-position:-38px -37px; }
+.jstree-kzf .jstree-unchecked > a > .jstree-checkbox:hover { background-position:-2px -37px; }
+.jstree-kzf .jstree-undetermined > a > .jstree-checkbox:hover { background-position:-20px -37px; }
+
+#vakata-dragged.jstree-kzf ins { background:transparent !important; }
+#vakata-dragged.jstree-kzf .jstree-ok { background:url("../img/glyphicons-halflings.png") -2px -53px no-repeat !important; }
+#vakata-dragged.jstree-kzf .jstree-invalid { background:url("../img/glyphicons-halflings.png") -18px -53px no-repeat !important; }
+#jstree-marker.jstree-kzf { background:url("../img/glyphicons-halflings.png") -41px -57px no-repeat !important; text-indent:-100px; }
+
+.jstree-kzf a.jstree-search { color:aqua; }
+.jstree-kzf .jstree-locked a { color:silver; cursor:default; }
+
+#vakata-contextmenu.jstree-kzf-context, 
+#vakata-contextmenu.jstree-kzf-context li ul { background:#f0f0f0; border:1px solid #979797; -moz-box-shadow: 1px 1px 2px #999; -webkit-box-shadow: 1px 1px 2px #999; box-shadow: 1px 1px 2px #999; }
+#vakata-contextmenu.jstree-kzf-context li { }
+#vakata-contextmenu.jstree-kzf-context a { color:black; }
+#vakata-contextmenu.jstree-kzf-context a:hover, 
+#vakata-contextmenu.jstree-kzf-context .vakata-hover > a { padding:0 5px; background:#e8eff7; border:1px solid #aecff7; color:black; -moz-border-radius:2px; -webkit-border-radius:2px; border-radius:2px; }
+#vakata-contextmenu.jstree-kzf-context li.jstree-contextmenu-disabled a, 
+#vakata-contextmenu.jstree-kzf-context li.jstree-contextmenu-disabled a:hover { color:silver; background:transparent; border:0; padding:1px 4px; }
+#vakata-contextmenu.jstree-kzf-context li.vakata-separator { background:white; border-top:1px solid #e0e0e0; margin:0; }
+#vakata-contextmenu.jstree-kzf-context li ul { margin-left:-4px; }
+*/
+/* IE6 BEGIN */
+.jstree-kzf li, 
+.jstree-kzf ins,
+#vakata-dragged.jstree-kzf .jstree-invalid, 
+#vakata-dragged.jstree-kzf .jstree-ok, 
+#jstree-marker.jstree-kzf { _background-image:url("../img/glyphicons-halflings.png"); }
+.jstree-kzf .jstree-open ins { _background-position:-72px 0; }
+.jstree-kzf .jstree-closed ins { _background-position:-54px 0; }
+.jstree-kzf .jstree-leaf ins { _background-position:-36px 0; }
+.jstree-kzf .jstree-open a ins.jstree-icon { _background-position:-56px -36px; }
+.jstree-kzf .jstree-closed a ins.jstree-icon { _background-position:-56px -19px; }
+.jstree-kzf .jstree-leaf a ins.jstree-icon { _background-position:-56px -19px; }
+#vakata-contextmenu.jstree-kzf-context ins { _display:none; }
+#vakata-contextmenu.jstree-kzf-context li { _zoom:1; }
+.jstree-kzf .jstree-undetermined a .jstree-checkbox { _background-position:-20px -19px; }
+.jstree-kzf .jstree-checked a .jstree-checkbox { _background-position:-38px -19px; }
+.jstree-kzf .jstree-unchecked a .jstree-checkbox { _background-position:-2px -19px; }
+/* IE6 END */

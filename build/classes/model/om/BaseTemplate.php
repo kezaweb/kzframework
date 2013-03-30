@@ -82,16 +82,16 @@ abstract class BaseTemplate extends BaseObject implements Persistent
     protected $created_by;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
      * The value for the updated_by field.
      * @var        int
      */
     protected $updated_by;
+
+    /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
 
     /**
      * The value for the updated_at field.
@@ -192,6 +192,16 @@ abstract class BaseTemplate extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [updated_by] column value.
+     *
+     * @return int
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updated_by;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -229,16 +239,6 @@ abstract class BaseTemplate extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    /**
-     * Get the [updated_by] column value.
-     *
-     * @return int
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updated_by;
     }
 
     /**
@@ -391,29 +391,6 @@ abstract class BaseTemplate extends BaseObject implements Persistent
     } // setCreatedBy()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Template The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = TemplatePeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
      * Set the value of [updated_by] column.
      *
      * @param int $v new value
@@ -437,6 +414,29 @@ abstract class BaseTemplate extends BaseObject implements Persistent
 
         return $this;
     } // setUpdatedBy()
+
+    /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Template The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = TemplatePeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
@@ -498,8 +498,8 @@ abstract class BaseTemplate extends BaseObject implements Persistent
             $this->tpl_desc = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->tpl_file = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->created_by = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->created_at = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->updated_by = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->updated_by = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->updated_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->resetModified();
 
@@ -653,8 +653,19 @@ abstract class BaseTemplate extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(TemplatePeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(TemplatePeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(TemplatePeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -783,11 +794,11 @@ abstract class BaseTemplate extends BaseObject implements Persistent
         if ($this->isColumnModified(TemplatePeer::CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'created_by';
         }
-        if ($this->isColumnModified(TemplatePeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'created_at';
-        }
         if ($this->isColumnModified(TemplatePeer::UPDATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'updated_by';
+        }
+        if ($this->isColumnModified(TemplatePeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = 'created_at';
         }
         if ($this->isColumnModified(TemplatePeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'updated_at';
@@ -818,11 +829,11 @@ abstract class BaseTemplate extends BaseObject implements Persistent
                     case 'created_by':
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case 'created_at':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
                     case 'updated_by':
                         $stmt->bindValue($identifier, $this->updated_by, PDO::PARAM_INT);
+                        break;
+                    case 'created_at':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
                     case 'updated_at':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
@@ -1003,10 +1014,10 @@ abstract class BaseTemplate extends BaseObject implements Persistent
                 return $this->getCreatedBy();
                 break;
             case 5:
-                return $this->getCreatedAt();
+                return $this->getUpdatedBy();
                 break;
             case 6:
-                return $this->getUpdatedBy();
+                return $this->getCreatedAt();
                 break;
             case 7:
                 return $this->getUpdatedAt();
@@ -1045,8 +1056,8 @@ abstract class BaseTemplate extends BaseObject implements Persistent
             $keys[2] => $this->getTplDesc(),
             $keys[3] => $this->getTplFile(),
             $keys[4] => $this->getCreatedBy(),
-            $keys[5] => $this->getCreatedAt(),
-            $keys[6] => $this->getUpdatedBy(),
+            $keys[5] => $this->getUpdatedBy(),
+            $keys[6] => $this->getCreatedAt(),
             $keys[7] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
@@ -1109,10 +1120,10 @@ abstract class BaseTemplate extends BaseObject implements Persistent
                 $this->setCreatedBy($value);
                 break;
             case 5:
-                $this->setCreatedAt($value);
+                $this->setUpdatedBy($value);
                 break;
             case 6:
-                $this->setUpdatedBy($value);
+                $this->setCreatedAt($value);
                 break;
             case 7:
                 $this->setUpdatedAt($value);
@@ -1146,8 +1157,8 @@ abstract class BaseTemplate extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setTplDesc($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setTplFile($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setCreatedBy($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setUpdatedBy($arr[$keys[6]]);
+        if (array_key_exists($keys[5], $arr)) $this->setUpdatedBy($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setUpdatedAt($arr[$keys[7]]);
     }
 
@@ -1165,8 +1176,8 @@ abstract class BaseTemplate extends BaseObject implements Persistent
         if ($this->isColumnModified(TemplatePeer::TPL_DESC)) $criteria->add(TemplatePeer::TPL_DESC, $this->tpl_desc);
         if ($this->isColumnModified(TemplatePeer::TPL_FILE)) $criteria->add(TemplatePeer::TPL_FILE, $this->tpl_file);
         if ($this->isColumnModified(TemplatePeer::CREATED_BY)) $criteria->add(TemplatePeer::CREATED_BY, $this->created_by);
-        if ($this->isColumnModified(TemplatePeer::CREATED_AT)) $criteria->add(TemplatePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(TemplatePeer::UPDATED_BY)) $criteria->add(TemplatePeer::UPDATED_BY, $this->updated_by);
+        if ($this->isColumnModified(TemplatePeer::CREATED_AT)) $criteria->add(TemplatePeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(TemplatePeer::UPDATED_AT)) $criteria->add(TemplatePeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
@@ -1235,8 +1246,8 @@ abstract class BaseTemplate extends BaseObject implements Persistent
         $copyObj->setTplDesc($this->getTplDesc());
         $copyObj->setTplFile($this->getTplFile());
         $copyObj->setCreatedBy($this->getCreatedBy());
-        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedBy($this->getUpdatedBy());
+        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1700,8 +1711,8 @@ abstract class BaseTemplate extends BaseObject implements Persistent
         $this->tpl_desc = null;
         $this->tpl_file = null;
         $this->created_by = null;
-        $this->created_at = null;
         $this->updated_by = null;
+        $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
@@ -1766,6 +1777,20 @@ abstract class BaseTemplate extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     Template The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = TemplatePeer::UPDATED_AT;
+
+        return $this;
     }
 
 }

@@ -17,7 +17,6 @@ use Kzf\Model\Branch;
 use Kzf\Model\Credential;
 use Kzf\Model\Leaf;
 use Kzf\Model\LefRul;
-use Kzf\Model\NodeTree;
 use Kzf\Model\RulOption;
 use Kzf\Model\Rule;
 use Kzf\Model\Template;
@@ -40,8 +39,8 @@ use Kzf\Model\UsrCre;
  * @method UserQuery orderByUsrCp($order = Criteria::ASC) Order by the usr_cp column
  * @method UserQuery orderByUsrAvatar($order = Criteria::ASC) Order by the usr_avatar column
  * @method UserQuery orderByCreatedBy($order = Criteria::ASC) Order by the created_by column
- * @method UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method UserQuery orderByUpdatedBy($order = Criteria::ASC) Order by the updated_by column
+ * @method UserQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method UserQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method UserQuery groupById() Group by the id column
@@ -52,8 +51,8 @@ use Kzf\Model\UsrCre;
  * @method UserQuery groupByUsrCp() Group by the usr_cp column
  * @method UserQuery groupByUsrAvatar() Group by the usr_avatar column
  * @method UserQuery groupByCreatedBy() Group by the created_by column
- * @method UserQuery groupByCreatedAt() Group by the created_at column
  * @method UserQuery groupByUpdatedBy() Group by the updated_by column
+ * @method UserQuery groupByCreatedAt() Group by the created_at column
  * @method UserQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method UserQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -107,14 +106,6 @@ use Kzf\Model\UsrCre;
  * @method UserQuery leftJoinLefRulRelatedByUpdatedBy($relationAlias = null) Adds a LEFT JOIN clause to the query using the LefRulRelatedByUpdatedBy relation
  * @method UserQuery rightJoinLefRulRelatedByUpdatedBy($relationAlias = null) Adds a RIGHT JOIN clause to the query using the LefRulRelatedByUpdatedBy relation
  * @method UserQuery innerJoinLefRulRelatedByUpdatedBy($relationAlias = null) Adds a INNER JOIN clause to the query using the LefRulRelatedByUpdatedBy relation
- *
- * @method UserQuery leftJoinNodeTreeRelatedByCreatedBy($relationAlias = null) Adds a LEFT JOIN clause to the query using the NodeTreeRelatedByCreatedBy relation
- * @method UserQuery rightJoinNodeTreeRelatedByCreatedBy($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NodeTreeRelatedByCreatedBy relation
- * @method UserQuery innerJoinNodeTreeRelatedByCreatedBy($relationAlias = null) Adds a INNER JOIN clause to the query using the NodeTreeRelatedByCreatedBy relation
- *
- * @method UserQuery leftJoinNodeTreeRelatedByUpdatedBy($relationAlias = null) Adds a LEFT JOIN clause to the query using the NodeTreeRelatedByUpdatedBy relation
- * @method UserQuery rightJoinNodeTreeRelatedByUpdatedBy($relationAlias = null) Adds a RIGHT JOIN clause to the query using the NodeTreeRelatedByUpdatedBy relation
- * @method UserQuery innerJoinNodeTreeRelatedByUpdatedBy($relationAlias = null) Adds a INNER JOIN clause to the query using the NodeTreeRelatedByUpdatedBy relation
  *
  * @method UserQuery leftJoinRulOptionRelatedByCreatedBy($relationAlias = null) Adds a LEFT JOIN clause to the query using the RulOptionRelatedByCreatedBy relation
  * @method UserQuery rightJoinRulOptionRelatedByCreatedBy($relationAlias = null) Adds a RIGHT JOIN clause to the query using the RulOptionRelatedByCreatedBy relation
@@ -178,8 +169,8 @@ use Kzf\Model\UsrCre;
  * @method User findOneByUsrCp(int $usr_cp) Return the first User filtered by the usr_cp column
  * @method User findOneByUsrAvatar(string $usr_avatar) Return the first User filtered by the usr_avatar column
  * @method User findOneByCreatedBy(int $created_by) Return the first User filtered by the created_by column
- * @method User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
  * @method User findOneByUpdatedBy(int $updated_by) Return the first User filtered by the updated_by column
+ * @method User findOneByCreatedAt(string $created_at) Return the first User filtered by the created_at column
  * @method User findOneByUpdatedAt(string $updated_at) Return the first User filtered by the updated_at column
  *
  * @method array findById(int $id) Return User objects filtered by the id column
@@ -190,8 +181,8 @@ use Kzf\Model\UsrCre;
  * @method array findByUsrCp(int $usr_cp) Return User objects filtered by the usr_cp column
  * @method array findByUsrAvatar(string $usr_avatar) Return User objects filtered by the usr_avatar column
  * @method array findByCreatedBy(int $created_by) Return User objects filtered by the created_by column
- * @method array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
  * @method array findByUpdatedBy(int $updated_by) Return User objects filtered by the updated_by column
+ * @method array findByCreatedAt(string $created_at) Return User objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return User objects filtered by the updated_at column
  *
  * @package    propel.generator.model.om
@@ -296,7 +287,7 @@ abstract class BaseUserQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT id, usr_first_name, usr_last_name, usr_login, usr_password, usr_cp, usr_avatar, created_by, created_at, updated_by, updated_at FROM user WHERE id = :p0';
+        $sql = 'SELECT id, usr_first_name, usr_last_name, usr_login, usr_password, usr_cp, usr_avatar, created_by, updated_by, created_at, updated_at FROM user WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -659,49 +650,6 @@ abstract class BaseUserQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
      * Filter the query on the updated_by column
      *
      * Example usage:
@@ -743,6 +691,49 @@ abstract class BaseUserQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(UserPeer::UPDATED_BY, $updatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return UserQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(UserPeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -1678,154 +1669,6 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this
             ->joinLefRulRelatedByUpdatedBy($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'LefRulRelatedByUpdatedBy', '\Kzf\Model\LefRulQuery');
-    }
-
-    /**
-     * Filter the query by a related NodeTree object
-     *
-     * @param   NodeTree|PropelObjectCollection $nodeTree  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 UserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByNodeTreeRelatedByCreatedBy($nodeTree, $comparison = null)
-    {
-        if ($nodeTree instanceof NodeTree) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $nodeTree->getCreatedBy(), $comparison);
-        } elseif ($nodeTree instanceof PropelObjectCollection) {
-            return $this
-                ->useNodeTreeRelatedByCreatedByQuery()
-                ->filterByPrimaryKeys($nodeTree->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNodeTreeRelatedByCreatedBy() only accepts arguments of type NodeTree or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the NodeTreeRelatedByCreatedBy relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinNodeTreeRelatedByCreatedBy($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('NodeTreeRelatedByCreatedBy');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'NodeTreeRelatedByCreatedBy');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the NodeTreeRelatedByCreatedBy relation NodeTree object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Kzf\Model\NodeTreeQuery A secondary query class using the current class as primary query
-     */
-    public function useNodeTreeRelatedByCreatedByQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinNodeTreeRelatedByCreatedBy($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'NodeTreeRelatedByCreatedBy', '\Kzf\Model\NodeTreeQuery');
-    }
-
-    /**
-     * Filter the query by a related NodeTree object
-     *
-     * @param   NodeTree|PropelObjectCollection $nodeTree  the related object to use as filter
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return                 UserQuery The current query, for fluid interface
-     * @throws PropelException - if the provided filter is invalid.
-     */
-    public function filterByNodeTreeRelatedByUpdatedBy($nodeTree, $comparison = null)
-    {
-        if ($nodeTree instanceof NodeTree) {
-            return $this
-                ->addUsingAlias(UserPeer::ID, $nodeTree->getUpdatedBy(), $comparison);
-        } elseif ($nodeTree instanceof PropelObjectCollection) {
-            return $this
-                ->useNodeTreeRelatedByUpdatedByQuery()
-                ->filterByPrimaryKeys($nodeTree->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByNodeTreeRelatedByUpdatedBy() only accepts arguments of type NodeTree or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the NodeTreeRelatedByUpdatedBy relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return UserQuery The current query, for fluid interface
-     */
-    public function joinNodeTreeRelatedByUpdatedBy($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('NodeTreeRelatedByUpdatedBy');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'NodeTreeRelatedByUpdatedBy');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the NodeTreeRelatedByUpdatedBy relation NodeTree object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   \Kzf\Model\NodeTreeQuery A secondary query class using the current class as primary query
-     */
-    public function useNodeTreeRelatedByUpdatedByQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinNodeTreeRelatedByUpdatedBy($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'NodeTreeRelatedByUpdatedBy', '\Kzf\Model\NodeTreeQuery');
     }
 
     /**
@@ -2806,4 +2649,69 @@ abstract class BaseUserQuery extends ModelCriteria
         return $this;
     }
 
+    // timestampable behavior
+
+    /**
+     * Filter by the latest updated
+     *
+     * @param      int $nbDays Maximum age of the latest update in days
+     *
+     * @return     UserQuery The current query, for fluid interface
+     */
+    public function recentlyUpdated($nbDays = 7)
+    {
+        return $this->addUsingAlias(UserPeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by update date desc
+     *
+     * @return     UserQuery The current query, for fluid interface
+     */
+    public function lastUpdatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(UserPeer::UPDATED_AT);
+    }
+
+    /**
+     * Order by update date asc
+     *
+     * @return     UserQuery The current query, for fluid interface
+     */
+    public function firstUpdatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(UserPeer::UPDATED_AT);
+    }
+
+    /**
+     * Filter by the latest created
+     *
+     * @param      int $nbDays Maximum age of in days
+     *
+     * @return     UserQuery The current query, for fluid interface
+     */
+    public function recentlyCreated($nbDays = 7)
+    {
+        return $this->addUsingAlias(UserPeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by create date desc
+     *
+     * @return     UserQuery The current query, for fluid interface
+     */
+    public function lastCreatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(UserPeer::CREATED_AT);
+    }
+
+    /**
+     * Order by create date asc
+     *
+     * @return     UserQuery The current query, for fluid interface
+     */
+    public function firstCreatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(UserPeer::CREATED_AT);
+    }
 }

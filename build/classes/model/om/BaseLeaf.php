@@ -20,8 +20,6 @@ use Kzf\Model\LeafPeer;
 use Kzf\Model\LeafQuery;
 use Kzf\Model\LefRul;
 use Kzf\Model\LefRulQuery;
-use Kzf\Model\NodeTree;
-use Kzf\Model\NodeTreeQuery;
 use Kzf\Model\User;
 use Kzf\Model\UserQuery;
 
@@ -90,16 +88,16 @@ abstract class BaseLeaf extends BaseObject implements Persistent
     protected $created_by;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
      * The value for the updated_by field.
      * @var        int
      */
     protected $updated_by;
+
+    /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
 
     /**
      * The value for the updated_at field.
@@ -122,12 +120,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
      */
     protected $collLefRuls;
     protected $collLefRulsPartial;
-
-    /**
-     * @var        PropelObjectCollection|NodeTree[] Collection to store aggregation of NodeTree objects.
-     */
-    protected $collNodeTrees;
-    protected $collNodeTreesPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -154,12 +146,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
      * @var		PropelObjectCollection
      */
     protected $lefRulsScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $nodeTreesScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -252,6 +238,16 @@ abstract class BaseLeaf extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [updated_by] column value.
+     *
+     * @return int
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updated_by;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -289,16 +285,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    /**
-     * Get the [updated_by] column value.
-     *
-     * @return int
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updated_by;
     }
 
     /**
@@ -485,29 +471,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
     } // setCreatedBy()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return Leaf The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = LeafPeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
      * Set the value of [updated_by] column.
      *
      * @param int $v new value
@@ -531,6 +494,29 @@ abstract class BaseLeaf extends BaseObject implements Persistent
 
         return $this;
     } // setUpdatedBy()
+
+    /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return Leaf The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = LeafPeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
@@ -599,8 +585,8 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                 $this->lef_content = null;
             }
             $this->created_by = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
-            $this->created_at = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-            $this->updated_by = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->updated_by = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
+            $this->created_at = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
             $this->updated_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
             $this->resetModified();
 
@@ -682,8 +668,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
             $this->aUserRelatedByUpdatedBy = null;
             $this->collLefRuls = null;
 
-            $this->collNodeTrees = null;
-
         } // if (deep)
     }
 
@@ -756,8 +740,19 @@ abstract class BaseLeaf extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(LeafPeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(LeafPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(LeafPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -849,24 +844,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                 }
             }
 
-            if ($this->nodeTreesScheduledForDeletion !== null) {
-                if (!$this->nodeTreesScheduledForDeletion->isEmpty()) {
-                    foreach ($this->nodeTreesScheduledForDeletion as $nodeTree) {
-                        // need to save related object because we set the relation to null
-                        $nodeTree->save($con);
-                    }
-                    $this->nodeTreesScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNodeTrees !== null) {
-                foreach ($this->collNodeTrees as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
             $this->alreadyInSave = false;
 
         }
@@ -911,11 +888,11 @@ abstract class BaseLeaf extends BaseObject implements Persistent
         if ($this->isColumnModified(LeafPeer::CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'created_by';
         }
-        if ($this->isColumnModified(LeafPeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'created_at';
-        }
         if ($this->isColumnModified(LeafPeer::UPDATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'updated_by';
+        }
+        if ($this->isColumnModified(LeafPeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = 'created_at';
         }
         if ($this->isColumnModified(LeafPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'updated_at';
@@ -952,11 +929,11 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                     case 'created_by':
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case 'created_at':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
                     case 'updated_by':
                         $stmt->bindValue($identifier, $this->updated_by, PDO::PARAM_INT);
+                        break;
+                    case 'created_at':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
                     case 'updated_at':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
@@ -1086,14 +1063,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collNodeTrees !== null) {
-                    foreach ($this->collNodeTrees as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
 
             $this->alreadyInValidation = false;
         }
@@ -1148,10 +1117,10 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                 return $this->getCreatedBy();
                 break;
             case 6:
-                return $this->getCreatedAt();
+                return $this->getUpdatedBy();
                 break;
             case 7:
-                return $this->getUpdatedBy();
+                return $this->getCreatedAt();
                 break;
             case 8:
                 return $this->getUpdatedAt();
@@ -1191,8 +1160,8 @@ abstract class BaseLeaf extends BaseObject implements Persistent
             $keys[3] => $this->getLefPublishedAt(),
             $keys[4] => $this->getLefContent(),
             $keys[5] => $this->getCreatedBy(),
-            $keys[6] => $this->getCreatedAt(),
-            $keys[7] => $this->getUpdatedBy(),
+            $keys[6] => $this->getUpdatedBy(),
+            $keys[7] => $this->getCreatedAt(),
             $keys[8] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
@@ -1204,9 +1173,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
             }
             if (null !== $this->collLefRuls) {
                 $result['LefRuls'] = $this->collLefRuls->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNodeTrees) {
-                $result['NodeTrees'] = $this->collNodeTrees->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1261,10 +1227,10 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                 $this->setCreatedBy($value);
                 break;
             case 6:
-                $this->setCreatedAt($value);
+                $this->setUpdatedBy($value);
                 break;
             case 7:
-                $this->setUpdatedBy($value);
+                $this->setCreatedAt($value);
                 break;
             case 8:
                 $this->setUpdatedAt($value);
@@ -1299,8 +1265,8 @@ abstract class BaseLeaf extends BaseObject implements Persistent
         if (array_key_exists($keys[3], $arr)) $this->setLefPublishedAt($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setLefContent($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setCreatedBy($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setCreatedAt($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setUpdatedBy($arr[$keys[7]]);
+        if (array_key_exists($keys[6], $arr)) $this->setUpdatedBy($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
         if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
     }
 
@@ -1319,8 +1285,8 @@ abstract class BaseLeaf extends BaseObject implements Persistent
         if ($this->isColumnModified(LeafPeer::LEF_PUBLISHED_AT)) $criteria->add(LeafPeer::LEF_PUBLISHED_AT, $this->lef_published_at);
         if ($this->isColumnModified(LeafPeer::LEF_CONTENT)) $criteria->add(LeafPeer::LEF_CONTENT, $this->lef_content);
         if ($this->isColumnModified(LeafPeer::CREATED_BY)) $criteria->add(LeafPeer::CREATED_BY, $this->created_by);
-        if ($this->isColumnModified(LeafPeer::CREATED_AT)) $criteria->add(LeafPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(LeafPeer::UPDATED_BY)) $criteria->add(LeafPeer::UPDATED_BY, $this->updated_by);
+        if ($this->isColumnModified(LeafPeer::CREATED_AT)) $criteria->add(LeafPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(LeafPeer::UPDATED_AT)) $criteria->add(LeafPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
@@ -1390,8 +1356,8 @@ abstract class BaseLeaf extends BaseObject implements Persistent
         $copyObj->setLefPublishedAt($this->getLefPublishedAt());
         $copyObj->setLefContent($this->getLefContent());
         $copyObj->setCreatedBy($this->getCreatedBy());
-        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedBy($this->getUpdatedBy());
+        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
@@ -1404,12 +1370,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
             foreach ($this->getLefRuls() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addLefRul($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getNodeTrees() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNodeTree($relObj->copy($deepCopy));
                 }
             }
 
@@ -1580,9 +1540,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
     {
         if ('LefRul' == $relationName) {
             $this->initLefRuls();
-        }
-        if ('NodeTree' == $relationName) {
-            $this->initNodeTrees();
         }
     }
 
@@ -1880,324 +1837,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
     }
 
     /**
-     * Clears out the collNodeTrees collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return Leaf The current object (for fluent API support)
-     * @see        addNodeTrees()
-     */
-    public function clearNodeTrees()
-    {
-        $this->collNodeTrees = null; // important to set this to null since that means it is uninitialized
-        $this->collNodeTreesPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collNodeTrees collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNodeTrees($v = true)
-    {
-        $this->collNodeTreesPartial = $v;
-    }
-
-    /**
-     * Initializes the collNodeTrees collection.
-     *
-     * By default this just sets the collNodeTrees collection to an empty array (like clearcollNodeTrees());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNodeTrees($overrideExisting = true)
-    {
-        if (null !== $this->collNodeTrees && !$overrideExisting) {
-            return;
-        }
-        $this->collNodeTrees = new PropelObjectCollection();
-        $this->collNodeTrees->setModel('NodeTree');
-    }
-
-    /**
-     * Gets an array of NodeTree objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this Leaf is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     * @throws PropelException
-     */
-    public function getNodeTrees($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesPartial && !$this->isNew();
-        if (null === $this->collNodeTrees || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNodeTrees) {
-                // return empty collection
-                $this->initNodeTrees();
-            } else {
-                $collNodeTrees = NodeTreeQuery::create(null, $criteria)
-                    ->filterByLeaf($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNodeTreesPartial && count($collNodeTrees)) {
-                      $this->initNodeTrees(false);
-
-                      foreach($collNodeTrees as $obj) {
-                        if (false == $this->collNodeTrees->contains($obj)) {
-                          $this->collNodeTrees->append($obj);
-                        }
-                      }
-
-                      $this->collNodeTreesPartial = true;
-                    }
-
-                    $collNodeTrees->getInternalIterator()->rewind();
-                    return $collNodeTrees;
-                }
-
-                if($partial && $this->collNodeTrees) {
-                    foreach($this->collNodeTrees as $obj) {
-                        if($obj->isNew()) {
-                            $collNodeTrees[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNodeTrees = $collNodeTrees;
-                $this->collNodeTreesPartial = false;
-            }
-        }
-
-        return $this->collNodeTrees;
-    }
-
-    /**
-     * Sets a collection of NodeTree objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $nodeTrees A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return Leaf The current object (for fluent API support)
-     */
-    public function setNodeTrees(PropelCollection $nodeTrees, PropelPDO $con = null)
-    {
-        $nodeTreesToDelete = $this->getNodeTrees(new Criteria(), $con)->diff($nodeTrees);
-
-        $this->nodeTreesScheduledForDeletion = unserialize(serialize($nodeTreesToDelete));
-
-        foreach ($nodeTreesToDelete as $nodeTreeRemoved) {
-            $nodeTreeRemoved->setLeaf(null);
-        }
-
-        $this->collNodeTrees = null;
-        foreach ($nodeTrees as $nodeTree) {
-            $this->addNodeTree($nodeTree);
-        }
-
-        $this->collNodeTrees = $nodeTrees;
-        $this->collNodeTreesPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related NodeTree objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related NodeTree objects.
-     * @throws PropelException
-     */
-    public function countNodeTrees(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesPartial && !$this->isNew();
-        if (null === $this->collNodeTrees || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNodeTrees) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getNodeTrees());
-            }
-            $query = NodeTreeQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByLeaf($this)
-                ->count($con);
-        }
-
-        return count($this->collNodeTrees);
-    }
-
-    /**
-     * Method called to associate a NodeTree object to this object
-     * through the NodeTree foreign key attribute.
-     *
-     * @param    NodeTree $l NodeTree
-     * @return Leaf The current object (for fluent API support)
-     */
-    public function addNodeTree(NodeTree $l)
-    {
-        if ($this->collNodeTrees === null) {
-            $this->initNodeTrees();
-            $this->collNodeTreesPartial = true;
-        }
-        if (!in_array($l, $this->collNodeTrees->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddNodeTree($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	NodeTree $nodeTree The nodeTree object to add.
-     */
-    protected function doAddNodeTree($nodeTree)
-    {
-        $this->collNodeTrees[]= $nodeTree;
-        $nodeTree->setLeaf($this);
-    }
-
-    /**
-     * @param	NodeTree $nodeTree The nodeTree object to remove.
-     * @return Leaf The current object (for fluent API support)
-     */
-    public function removeNodeTree($nodeTree)
-    {
-        if ($this->getNodeTrees()->contains($nodeTree)) {
-            $this->collNodeTrees->remove($this->collNodeTrees->search($nodeTree));
-            if (null === $this->nodeTreesScheduledForDeletion) {
-                $this->nodeTreesScheduledForDeletion = clone $this->collNodeTrees;
-                $this->nodeTreesScheduledForDeletion->clear();
-            }
-            $this->nodeTreesScheduledForDeletion[]= $nodeTree;
-            $nodeTree->setLeaf(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Leaf is new, it will return
-     * an empty collection; or if this Leaf has previously
-     * been saved, it will retrieve related NodeTrees from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Leaf.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesJoinUserRelatedByCreatedBy($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('UserRelatedByCreatedBy', $join_behavior);
-
-        return $this->getNodeTrees($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Leaf is new, it will return
-     * an empty collection; or if this Leaf has previously
-     * been saved, it will retrieve related NodeTrees from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Leaf.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesJoinUserRelatedByUpdatedBy($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('UserRelatedByUpdatedBy', $join_behavior);
-
-        return $this->getNodeTrees($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Leaf is new, it will return
-     * an empty collection; or if this Leaf has previously
-     * been saved, it will retrieve related NodeTrees from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Leaf.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesJoinBranchRelatedByBchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('BranchRelatedByBchId', $join_behavior);
-
-        return $this->getNodeTrees($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Leaf is new, it will return
-     * an empty collection; or if this Leaf has previously
-     * been saved, it will retrieve related NodeTrees from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Leaf.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesJoinBranchRelatedByBchParent($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('BranchRelatedByBchParent', $join_behavior);
-
-        return $this->getNodeTrees($query, $con);
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -2208,8 +1847,8 @@ abstract class BaseLeaf extends BaseObject implements Persistent
         $this->lef_published_at = null;
         $this->lef_content = null;
         $this->created_by = null;
-        $this->created_at = null;
         $this->updated_by = null;
+        $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
@@ -2238,11 +1877,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
                     $o->clearAllReferences($deep);
                 }
             }
-            if ($this->collNodeTrees) {
-                foreach ($this->collNodeTrees as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
             if ($this->aUserRelatedByCreatedBy instanceof Persistent) {
               $this->aUserRelatedByCreatedBy->clearAllReferences($deep);
             }
@@ -2257,10 +1891,6 @@ abstract class BaseLeaf extends BaseObject implements Persistent
             $this->collLefRuls->clearIterator();
         }
         $this->collLefRuls = null;
-        if ($this->collNodeTrees instanceof PropelCollection) {
-            $this->collNodeTrees->clearIterator();
-        }
-        $this->collNodeTrees = null;
         $this->aUserRelatedByCreatedBy = null;
         $this->aUserRelatedByUpdatedBy = null;
     }
@@ -2283,6 +1913,20 @@ abstract class BaseLeaf extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     Leaf The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = LeafPeer::UPDATED_AT;
+
+        return $this;
     }
 
 }

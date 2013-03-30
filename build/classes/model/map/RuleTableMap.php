@@ -48,8 +48,8 @@ class RuleTableMap extends TableMap
         $this->addColumn('rul_actif', 'RulActif', 'BOOLEAN', false, 1, null);
         $this->addForeignKey('tru_id', 'TruId', 'INTEGER', 'type_rule', 'id', false, null, null);
         $this->addForeignKey('created_by', 'CreatedBy', 'INTEGER', 'user', 'id', false, null, null);
-        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addForeignKey('updated_by', 'UpdatedBy', 'INTEGER', 'user', 'id', false, null, null);
+        $this->addColumn('created_at', 'CreatedAt', 'TIMESTAMP', false, null, null);
         $this->addColumn('updated_at', 'UpdatedAt', 'TIMESTAMP', false, null, null);
         // validators
     } // initialize()
@@ -66,5 +66,22 @@ class RuleTableMap extends TableMap
         $this->addRelation('LefRul', 'Kzf\\Model\\LefRul', RelationMap::ONE_TO_MANY, array('id' => 'rul_id', ), null, null, 'LefRuls');
         $this->addRelation('RulOption', 'Kzf\\Model\\RulOption', RelationMap::ONE_TO_MANY, array('id' => 'rul_id', ), null, null, 'RulOptions');
     } // buildRelations()
+
+    /**
+     *
+     * Gets the list of behaviors registered for this table
+     *
+     * @return array Associative array (name => parameters) of behaviors
+     */
+    public function getBehaviors()
+    {
+        return array(
+            'timestampable' =>  array (
+  'create_column' => 'created_at',
+  'update_column' => 'updated_at',
+  'disable_updated_at' => 'false',
+),
+        );
+    } // getBehaviors()
 
 } // RuleTableMap

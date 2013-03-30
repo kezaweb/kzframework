@@ -25,8 +25,6 @@ use Kzf\Model\Leaf;
 use Kzf\Model\LeafQuery;
 use Kzf\Model\LefRul;
 use Kzf\Model\LefRulQuery;
-use Kzf\Model\NodeTree;
-use Kzf\Model\NodeTreeQuery;
 use Kzf\Model\RulOption;
 use Kzf\Model\RulOptionQuery;
 use Kzf\Model\Rule;
@@ -118,16 +116,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     protected $created_by;
 
     /**
-     * The value for the created_at field.
-     * @var        string
-     */
-    protected $created_at;
-
-    /**
      * The value for the updated_by field.
      * @var        int
      */
     protected $updated_by;
+
+    /**
+     * The value for the created_at field.
+     * @var        string
+     */
+    protected $created_at;
 
     /**
      * The value for the updated_at field.
@@ -204,18 +202,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      */
     protected $collLefRulsRelatedByUpdatedBy;
     protected $collLefRulsRelatedByUpdatedByPartial;
-
-    /**
-     * @var        PropelObjectCollection|NodeTree[] Collection to store aggregation of NodeTree objects.
-     */
-    protected $collNodeTreesRelatedByCreatedBy;
-    protected $collNodeTreesRelatedByCreatedByPartial;
-
-    /**
-     * @var        PropelObjectCollection|NodeTree[] Collection to store aggregation of NodeTree objects.
-     */
-    protected $collNodeTreesRelatedByUpdatedBy;
-    protected $collNodeTreesRelatedByUpdatedByPartial;
 
     /**
      * @var        PropelObjectCollection|RulOption[] Collection to store aggregation of RulOption objects.
@@ -379,18 +365,6 @@ abstract class BaseUser extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $nodeTreesRelatedByCreatedByScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $nodeTreesRelatedByUpdatedByScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
     protected $rulOptionsRelatedByCreatedByScheduledForDeletion = null;
 
     /**
@@ -546,6 +520,16 @@ abstract class BaseUser extends BaseObject implements Persistent
     }
 
     /**
+     * Get the [updated_by] column value.
+     *
+     * @return int
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updated_by;
+    }
+
+    /**
      * Get the [optionally formatted] temporal [created_at] column value.
      *
      *
@@ -583,16 +567,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         return $dt->format($format);
 
-    }
-
-    /**
-     * Get the [updated_by] column value.
-     *
-     * @return int
-     */
-    public function getUpdatedBy()
-    {
-        return $this->updated_by;
     }
 
     /**
@@ -808,29 +782,6 @@ abstract class BaseUser extends BaseObject implements Persistent
     } // setCreatedBy()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
-     *
-     * @param mixed $v string, integer (timestamp), or DateTime value.
-     *               Empty strings are treated as null.
-     * @return User The current object (for fluent API support)
-     */
-    public function setCreatedAt($v)
-    {
-        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
-            if ($currentDateAsString !== $newDateAsString) {
-                $this->created_at = $newDateAsString;
-                $this->modifiedColumns[] = UserPeer::CREATED_AT;
-            }
-        } // if either are not null
-
-
-        return $this;
-    } // setCreatedAt()
-
-    /**
      * Set the value of [updated_by] column.
      *
      * @param int $v new value
@@ -854,6 +805,29 @@ abstract class BaseUser extends BaseObject implements Persistent
 
         return $this;
     } // setUpdatedBy()
+
+    /**
+     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     *
+     * @param mixed $v string, integer (timestamp), or DateTime value.
+     *               Empty strings are treated as null.
+     * @return User The current object (for fluent API support)
+     */
+    public function setCreatedAt($v)
+    {
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->created_at !== null || $dt !== null) {
+            $currentDateAsString = ($this->created_at !== null && $tmpDt = new DateTime($this->created_at)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+            $newDateAsString = $dt ? $dt->format('Y-m-d H:i:s') : null;
+            if ($currentDateAsString !== $newDateAsString) {
+                $this->created_at = $newDateAsString;
+                $this->modifiedColumns[] = UserPeer::CREATED_AT;
+            }
+        } // if either are not null
+
+
+        return $this;
+    } // setCreatedAt()
 
     /**
      * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
@@ -918,8 +892,8 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->usr_cp = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->usr_avatar = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
             $this->created_by = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->created_at = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-            $this->updated_by = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->updated_by = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->created_at = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
             $this->updated_at = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
             $this->resetModified();
 
@@ -1019,10 +993,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             $this->collLefRulsRelatedByUpdatedBy = null;
 
-            $this->collNodeTreesRelatedByCreatedBy = null;
-
-            $this->collNodeTreesRelatedByUpdatedBy = null;
-
             $this->collRulOptionsRelatedByCreatedBy = null;
 
             $this->collRulOptionsRelatedByUpdatedBy = null;
@@ -1121,8 +1091,19 @@ abstract class BaseUser extends BaseObject implements Persistent
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
+                // timestampable behavior
+                if (!$this->isColumnModified(UserPeer::CREATED_AT)) {
+                    $this->setCreatedAt(time());
+                }
+                if (!$this->isColumnModified(UserPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
+                // timestampable behavior
+                if ($this->isModified() && !$this->isColumnModified(UserPeer::UPDATED_AT)) {
+                    $this->setUpdatedAt(time());
+                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -1366,42 +1347,6 @@ abstract class BaseUser extends BaseObject implements Persistent
 
             if ($this->collLefRulsRelatedByUpdatedBy !== null) {
                 foreach ($this->collLefRulsRelatedByUpdatedBy as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->nodeTreesRelatedByCreatedByScheduledForDeletion !== null) {
-                if (!$this->nodeTreesRelatedByCreatedByScheduledForDeletion->isEmpty()) {
-                    foreach ($this->nodeTreesRelatedByCreatedByScheduledForDeletion as $nodeTreeRelatedByCreatedBy) {
-                        // need to save related object because we set the relation to null
-                        $nodeTreeRelatedByCreatedBy->save($con);
-                    }
-                    $this->nodeTreesRelatedByCreatedByScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNodeTreesRelatedByCreatedBy !== null) {
-                foreach ($this->collNodeTreesRelatedByCreatedBy as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->nodeTreesRelatedByUpdatedByScheduledForDeletion !== null) {
-                if (!$this->nodeTreesRelatedByUpdatedByScheduledForDeletion->isEmpty()) {
-                    foreach ($this->nodeTreesRelatedByUpdatedByScheduledForDeletion as $nodeTreeRelatedByUpdatedBy) {
-                        // need to save related object because we set the relation to null
-                        $nodeTreeRelatedByUpdatedBy->save($con);
-                    }
-                    $this->nodeTreesRelatedByUpdatedByScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collNodeTreesRelatedByUpdatedBy !== null) {
-                foreach ($this->collNodeTreesRelatedByUpdatedBy as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -1691,11 +1636,11 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::CREATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'created_by';
         }
-        if ($this->isColumnModified(UserPeer::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'created_at';
-        }
         if ($this->isColumnModified(UserPeer::UPDATED_BY)) {
             $modifiedColumns[':p' . $index++]  = 'updated_by';
+        }
+        if ($this->isColumnModified(UserPeer::CREATED_AT)) {
+            $modifiedColumns[':p' . $index++]  = 'created_at';
         }
         if ($this->isColumnModified(UserPeer::UPDATED_AT)) {
             $modifiedColumns[':p' . $index++]  = 'updated_at';
@@ -1735,11 +1680,11 @@ abstract class BaseUser extends BaseObject implements Persistent
                     case 'created_by':
                         $stmt->bindValue($identifier, $this->created_by, PDO::PARAM_INT);
                         break;
-                    case 'created_at':
-                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
-                        break;
                     case 'updated_by':
                         $stmt->bindValue($identifier, $this->updated_by, PDO::PARAM_INT);
+                        break;
+                    case 'created_at':
+                        $stmt->bindValue($identifier, $this->created_at, PDO::PARAM_STR);
                         break;
                     case 'updated_at':
                         $stmt->bindValue($identifier, $this->updated_at, PDO::PARAM_STR);
@@ -1941,22 +1886,6 @@ abstract class BaseUser extends BaseObject implements Persistent
                     }
                 }
 
-                if ($this->collNodeTreesRelatedByCreatedBy !== null) {
-                    foreach ($this->collNodeTreesRelatedByCreatedBy as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
-                if ($this->collNodeTreesRelatedByUpdatedBy !== null) {
-                    foreach ($this->collNodeTreesRelatedByUpdatedBy as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
-
                 if ($this->collRulOptionsRelatedByCreatedBy !== null) {
                     foreach ($this->collRulOptionsRelatedByCreatedBy as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
@@ -2121,10 +2050,10 @@ abstract class BaseUser extends BaseObject implements Persistent
                 return $this->getCreatedBy();
                 break;
             case 8:
-                return $this->getCreatedAt();
+                return $this->getUpdatedBy();
                 break;
             case 9:
-                return $this->getUpdatedBy();
+                return $this->getCreatedAt();
                 break;
             case 10:
                 return $this->getUpdatedAt();
@@ -2166,8 +2095,8 @@ abstract class BaseUser extends BaseObject implements Persistent
             $keys[5] => $this->getUsrCp(),
             $keys[6] => $this->getUsrAvatar(),
             $keys[7] => $this->getCreatedBy(),
-            $keys[8] => $this->getCreatedAt(),
-            $keys[9] => $this->getUpdatedBy(),
+            $keys[8] => $this->getUpdatedBy(),
+            $keys[9] => $this->getCreatedAt(),
             $keys[10] => $this->getUpdatedAt(),
         );
         if ($includeForeignObjects) {
@@ -2206,12 +2135,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if (null !== $this->collLefRulsRelatedByUpdatedBy) {
                 $result['LefRulsRelatedByUpdatedBy'] = $this->collLefRulsRelatedByUpdatedBy->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNodeTreesRelatedByCreatedBy) {
-                $result['NodeTreesRelatedByCreatedBy'] = $this->collNodeTreesRelatedByCreatedBy->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collNodeTreesRelatedByUpdatedBy) {
-                $result['NodeTreesRelatedByUpdatedBy'] = $this->collNodeTreesRelatedByUpdatedBy->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
             if (null !== $this->collRulOptionsRelatedByCreatedBy) {
                 $result['RulOptionsRelatedByCreatedBy'] = $this->collRulOptionsRelatedByCreatedBy->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
@@ -2311,10 +2234,10 @@ abstract class BaseUser extends BaseObject implements Persistent
                 $this->setCreatedBy($value);
                 break;
             case 8:
-                $this->setCreatedAt($value);
+                $this->setUpdatedBy($value);
                 break;
             case 9:
-                $this->setUpdatedBy($value);
+                $this->setCreatedAt($value);
                 break;
             case 10:
                 $this->setUpdatedAt($value);
@@ -2351,8 +2274,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if (array_key_exists($keys[5], $arr)) $this->setUsrCp($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setUsrAvatar($arr[$keys[6]]);
         if (array_key_exists($keys[7], $arr)) $this->setCreatedBy($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setCreatedAt($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setUpdatedBy($arr[$keys[9]]);
+        if (array_key_exists($keys[8], $arr)) $this->setUpdatedBy($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
     }
 
@@ -2373,8 +2296,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         if ($this->isColumnModified(UserPeer::USR_CP)) $criteria->add(UserPeer::USR_CP, $this->usr_cp);
         if ($this->isColumnModified(UserPeer::USR_AVATAR)) $criteria->add(UserPeer::USR_AVATAR, $this->usr_avatar);
         if ($this->isColumnModified(UserPeer::CREATED_BY)) $criteria->add(UserPeer::CREATED_BY, $this->created_by);
-        if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(UserPeer::UPDATED_BY)) $criteria->add(UserPeer::UPDATED_BY, $this->updated_by);
+        if ($this->isColumnModified(UserPeer::CREATED_AT)) $criteria->add(UserPeer::CREATED_AT, $this->created_at);
         if ($this->isColumnModified(UserPeer::UPDATED_AT)) $criteria->add(UserPeer::UPDATED_AT, $this->updated_at);
 
         return $criteria;
@@ -2446,8 +2369,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         $copyObj->setUsrCp($this->getUsrCp());
         $copyObj->setUsrAvatar($this->getUsrAvatar());
         $copyObj->setCreatedBy($this->getCreatedBy());
-        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedBy($this->getUpdatedBy());
+        $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
 
         if ($deepCopy && !$this->startCopy) {
@@ -2514,18 +2437,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             foreach ($this->getLefRulsRelatedByUpdatedBy() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
                     $copyObj->addLefRulRelatedByUpdatedBy($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getNodeTreesRelatedByCreatedBy() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNodeTreeRelatedByCreatedBy($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getNodeTreesRelatedByUpdatedBy() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addNodeTreeRelatedByUpdatedBy($relObj->copy($deepCopy));
                 }
             }
 
@@ -2801,12 +2712,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         }
         if ('LefRulRelatedByUpdatedBy' == $relationName) {
             $this->initLefRulsRelatedByUpdatedBy();
-        }
-        if ('NodeTreeRelatedByCreatedBy' == $relationName) {
-            $this->initNodeTreesRelatedByCreatedBy();
-        }
-        if ('NodeTreeRelatedByUpdatedBy' == $relationName) {
-            $this->initNodeTreesRelatedByUpdatedBy();
         }
         if ('RulOptionRelatedByCreatedBy' == $relationName) {
             $this->initRulOptionsRelatedByCreatedBy();
@@ -5277,592 +5182,6 @@ abstract class BaseUser extends BaseObject implements Persistent
         $query->joinWith('Leaf', $join_behavior);
 
         return $this->getLefRulsRelatedByUpdatedBy($query, $con);
-    }
-
-    /**
-     * Clears out the collNodeTreesRelatedByCreatedBy collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return User The current object (for fluent API support)
-     * @see        addNodeTreesRelatedByCreatedBy()
-     */
-    public function clearNodeTreesRelatedByCreatedBy()
-    {
-        $this->collNodeTreesRelatedByCreatedBy = null; // important to set this to null since that means it is uninitialized
-        $this->collNodeTreesRelatedByCreatedByPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collNodeTreesRelatedByCreatedBy collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNodeTreesRelatedByCreatedBy($v = true)
-    {
-        $this->collNodeTreesRelatedByCreatedByPartial = $v;
-    }
-
-    /**
-     * Initializes the collNodeTreesRelatedByCreatedBy collection.
-     *
-     * By default this just sets the collNodeTreesRelatedByCreatedBy collection to an empty array (like clearcollNodeTreesRelatedByCreatedBy());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNodeTreesRelatedByCreatedBy($overrideExisting = true)
-    {
-        if (null !== $this->collNodeTreesRelatedByCreatedBy && !$overrideExisting) {
-            return;
-        }
-        $this->collNodeTreesRelatedByCreatedBy = new PropelObjectCollection();
-        $this->collNodeTreesRelatedByCreatedBy->setModel('NodeTree');
-    }
-
-    /**
-     * Gets an array of NodeTree objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     * @throws PropelException
-     */
-    public function getNodeTreesRelatedByCreatedBy($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByCreatedByPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByCreatedBy || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByCreatedBy) {
-                // return empty collection
-                $this->initNodeTreesRelatedByCreatedBy();
-            } else {
-                $collNodeTreesRelatedByCreatedBy = NodeTreeQuery::create(null, $criteria)
-                    ->filterByUserRelatedByCreatedBy($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNodeTreesRelatedByCreatedByPartial && count($collNodeTreesRelatedByCreatedBy)) {
-                      $this->initNodeTreesRelatedByCreatedBy(false);
-
-                      foreach($collNodeTreesRelatedByCreatedBy as $obj) {
-                        if (false == $this->collNodeTreesRelatedByCreatedBy->contains($obj)) {
-                          $this->collNodeTreesRelatedByCreatedBy->append($obj);
-                        }
-                      }
-
-                      $this->collNodeTreesRelatedByCreatedByPartial = true;
-                    }
-
-                    $collNodeTreesRelatedByCreatedBy->getInternalIterator()->rewind();
-                    return $collNodeTreesRelatedByCreatedBy;
-                }
-
-                if($partial && $this->collNodeTreesRelatedByCreatedBy) {
-                    foreach($this->collNodeTreesRelatedByCreatedBy as $obj) {
-                        if($obj->isNew()) {
-                            $collNodeTreesRelatedByCreatedBy[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNodeTreesRelatedByCreatedBy = $collNodeTreesRelatedByCreatedBy;
-                $this->collNodeTreesRelatedByCreatedByPartial = false;
-            }
-        }
-
-        return $this->collNodeTreesRelatedByCreatedBy;
-    }
-
-    /**
-     * Sets a collection of NodeTreeRelatedByCreatedBy objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $nodeTreesRelatedByCreatedBy A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return User The current object (for fluent API support)
-     */
-    public function setNodeTreesRelatedByCreatedBy(PropelCollection $nodeTreesRelatedByCreatedBy, PropelPDO $con = null)
-    {
-        $nodeTreesRelatedByCreatedByToDelete = $this->getNodeTreesRelatedByCreatedBy(new Criteria(), $con)->diff($nodeTreesRelatedByCreatedBy);
-
-        $this->nodeTreesRelatedByCreatedByScheduledForDeletion = unserialize(serialize($nodeTreesRelatedByCreatedByToDelete));
-
-        foreach ($nodeTreesRelatedByCreatedByToDelete as $nodeTreeRelatedByCreatedByRemoved) {
-            $nodeTreeRelatedByCreatedByRemoved->setUserRelatedByCreatedBy(null);
-        }
-
-        $this->collNodeTreesRelatedByCreatedBy = null;
-        foreach ($nodeTreesRelatedByCreatedBy as $nodeTreeRelatedByCreatedBy) {
-            $this->addNodeTreeRelatedByCreatedBy($nodeTreeRelatedByCreatedBy);
-        }
-
-        $this->collNodeTreesRelatedByCreatedBy = $nodeTreesRelatedByCreatedBy;
-        $this->collNodeTreesRelatedByCreatedByPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related NodeTree objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related NodeTree objects.
-     * @throws PropelException
-     */
-    public function countNodeTreesRelatedByCreatedBy(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByCreatedByPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByCreatedBy || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByCreatedBy) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getNodeTreesRelatedByCreatedBy());
-            }
-            $query = NodeTreeQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUserRelatedByCreatedBy($this)
-                ->count($con);
-        }
-
-        return count($this->collNodeTreesRelatedByCreatedBy);
-    }
-
-    /**
-     * Method called to associate a NodeTree object to this object
-     * through the NodeTree foreign key attribute.
-     *
-     * @param    NodeTree $l NodeTree
-     * @return User The current object (for fluent API support)
-     */
-    public function addNodeTreeRelatedByCreatedBy(NodeTree $l)
-    {
-        if ($this->collNodeTreesRelatedByCreatedBy === null) {
-            $this->initNodeTreesRelatedByCreatedBy();
-            $this->collNodeTreesRelatedByCreatedByPartial = true;
-        }
-        if (!in_array($l, $this->collNodeTreesRelatedByCreatedBy->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddNodeTreeRelatedByCreatedBy($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	NodeTreeRelatedByCreatedBy $nodeTreeRelatedByCreatedBy The nodeTreeRelatedByCreatedBy object to add.
-     */
-    protected function doAddNodeTreeRelatedByCreatedBy($nodeTreeRelatedByCreatedBy)
-    {
-        $this->collNodeTreesRelatedByCreatedBy[]= $nodeTreeRelatedByCreatedBy;
-        $nodeTreeRelatedByCreatedBy->setUserRelatedByCreatedBy($this);
-    }
-
-    /**
-     * @param	NodeTreeRelatedByCreatedBy $nodeTreeRelatedByCreatedBy The nodeTreeRelatedByCreatedBy object to remove.
-     * @return User The current object (for fluent API support)
-     */
-    public function removeNodeTreeRelatedByCreatedBy($nodeTreeRelatedByCreatedBy)
-    {
-        if ($this->getNodeTreesRelatedByCreatedBy()->contains($nodeTreeRelatedByCreatedBy)) {
-            $this->collNodeTreesRelatedByCreatedBy->remove($this->collNodeTreesRelatedByCreatedBy->search($nodeTreeRelatedByCreatedBy));
-            if (null === $this->nodeTreesRelatedByCreatedByScheduledForDeletion) {
-                $this->nodeTreesRelatedByCreatedByScheduledForDeletion = clone $this->collNodeTreesRelatedByCreatedBy;
-                $this->nodeTreesRelatedByCreatedByScheduledForDeletion->clear();
-            }
-            $this->nodeTreesRelatedByCreatedByScheduledForDeletion[]= $nodeTreeRelatedByCreatedBy;
-            $nodeTreeRelatedByCreatedBy->setUserRelatedByCreatedBy(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NodeTreesRelatedByCreatedBy from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByCreatedByJoinLeaf($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('Leaf', $join_behavior);
-
-        return $this->getNodeTreesRelatedByCreatedBy($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NodeTreesRelatedByCreatedBy from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByCreatedByJoinBranchRelatedByBchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('BranchRelatedByBchId', $join_behavior);
-
-        return $this->getNodeTreesRelatedByCreatedBy($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NodeTreesRelatedByCreatedBy from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByCreatedByJoinBranchRelatedByBchParent($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('BranchRelatedByBchParent', $join_behavior);
-
-        return $this->getNodeTreesRelatedByCreatedBy($query, $con);
-    }
-
-    /**
-     * Clears out the collNodeTreesRelatedByUpdatedBy collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return User The current object (for fluent API support)
-     * @see        addNodeTreesRelatedByUpdatedBy()
-     */
-    public function clearNodeTreesRelatedByUpdatedBy()
-    {
-        $this->collNodeTreesRelatedByUpdatedBy = null; // important to set this to null since that means it is uninitialized
-        $this->collNodeTreesRelatedByUpdatedByPartial = null;
-
-        return $this;
-    }
-
-    /**
-     * reset is the collNodeTreesRelatedByUpdatedBy collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialNodeTreesRelatedByUpdatedBy($v = true)
-    {
-        $this->collNodeTreesRelatedByUpdatedByPartial = $v;
-    }
-
-    /**
-     * Initializes the collNodeTreesRelatedByUpdatedBy collection.
-     *
-     * By default this just sets the collNodeTreesRelatedByUpdatedBy collection to an empty array (like clearcollNodeTreesRelatedByUpdatedBy());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initNodeTreesRelatedByUpdatedBy($overrideExisting = true)
-    {
-        if (null !== $this->collNodeTreesRelatedByUpdatedBy && !$overrideExisting) {
-            return;
-        }
-        $this->collNodeTreesRelatedByUpdatedBy = new PropelObjectCollection();
-        $this->collNodeTreesRelatedByUpdatedBy->setModel('NodeTree');
-    }
-
-    /**
-     * Gets an array of NodeTree objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this User is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     * @throws PropelException
-     */
-    public function getNodeTreesRelatedByUpdatedBy($criteria = null, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByUpdatedByPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByUpdatedBy || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByUpdatedBy) {
-                // return empty collection
-                $this->initNodeTreesRelatedByUpdatedBy();
-            } else {
-                $collNodeTreesRelatedByUpdatedBy = NodeTreeQuery::create(null, $criteria)
-                    ->filterByUserRelatedByUpdatedBy($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collNodeTreesRelatedByUpdatedByPartial && count($collNodeTreesRelatedByUpdatedBy)) {
-                      $this->initNodeTreesRelatedByUpdatedBy(false);
-
-                      foreach($collNodeTreesRelatedByUpdatedBy as $obj) {
-                        if (false == $this->collNodeTreesRelatedByUpdatedBy->contains($obj)) {
-                          $this->collNodeTreesRelatedByUpdatedBy->append($obj);
-                        }
-                      }
-
-                      $this->collNodeTreesRelatedByUpdatedByPartial = true;
-                    }
-
-                    $collNodeTreesRelatedByUpdatedBy->getInternalIterator()->rewind();
-                    return $collNodeTreesRelatedByUpdatedBy;
-                }
-
-                if($partial && $this->collNodeTreesRelatedByUpdatedBy) {
-                    foreach($this->collNodeTreesRelatedByUpdatedBy as $obj) {
-                        if($obj->isNew()) {
-                            $collNodeTreesRelatedByUpdatedBy[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collNodeTreesRelatedByUpdatedBy = $collNodeTreesRelatedByUpdatedBy;
-                $this->collNodeTreesRelatedByUpdatedByPartial = false;
-            }
-        }
-
-        return $this->collNodeTreesRelatedByUpdatedBy;
-    }
-
-    /**
-     * Sets a collection of NodeTreeRelatedByUpdatedBy objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $nodeTreesRelatedByUpdatedBy A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     * @return User The current object (for fluent API support)
-     */
-    public function setNodeTreesRelatedByUpdatedBy(PropelCollection $nodeTreesRelatedByUpdatedBy, PropelPDO $con = null)
-    {
-        $nodeTreesRelatedByUpdatedByToDelete = $this->getNodeTreesRelatedByUpdatedBy(new Criteria(), $con)->diff($nodeTreesRelatedByUpdatedBy);
-
-        $this->nodeTreesRelatedByUpdatedByScheduledForDeletion = unserialize(serialize($nodeTreesRelatedByUpdatedByToDelete));
-
-        foreach ($nodeTreesRelatedByUpdatedByToDelete as $nodeTreeRelatedByUpdatedByRemoved) {
-            $nodeTreeRelatedByUpdatedByRemoved->setUserRelatedByUpdatedBy(null);
-        }
-
-        $this->collNodeTreesRelatedByUpdatedBy = null;
-        foreach ($nodeTreesRelatedByUpdatedBy as $nodeTreeRelatedByUpdatedBy) {
-            $this->addNodeTreeRelatedByUpdatedBy($nodeTreeRelatedByUpdatedBy);
-        }
-
-        $this->collNodeTreesRelatedByUpdatedBy = $nodeTreesRelatedByUpdatedBy;
-        $this->collNodeTreesRelatedByUpdatedByPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related NodeTree objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related NodeTree objects.
-     * @throws PropelException
-     */
-    public function countNodeTreesRelatedByUpdatedBy(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collNodeTreesRelatedByUpdatedByPartial && !$this->isNew();
-        if (null === $this->collNodeTreesRelatedByUpdatedBy || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collNodeTreesRelatedByUpdatedBy) {
-                return 0;
-            }
-
-            if($partial && !$criteria) {
-                return count($this->getNodeTreesRelatedByUpdatedBy());
-            }
-            $query = NodeTreeQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByUserRelatedByUpdatedBy($this)
-                ->count($con);
-        }
-
-        return count($this->collNodeTreesRelatedByUpdatedBy);
-    }
-
-    /**
-     * Method called to associate a NodeTree object to this object
-     * through the NodeTree foreign key attribute.
-     *
-     * @param    NodeTree $l NodeTree
-     * @return User The current object (for fluent API support)
-     */
-    public function addNodeTreeRelatedByUpdatedBy(NodeTree $l)
-    {
-        if ($this->collNodeTreesRelatedByUpdatedBy === null) {
-            $this->initNodeTreesRelatedByUpdatedBy();
-            $this->collNodeTreesRelatedByUpdatedByPartial = true;
-        }
-        if (!in_array($l, $this->collNodeTreesRelatedByUpdatedBy->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
-            $this->doAddNodeTreeRelatedByUpdatedBy($l);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param	NodeTreeRelatedByUpdatedBy $nodeTreeRelatedByUpdatedBy The nodeTreeRelatedByUpdatedBy object to add.
-     */
-    protected function doAddNodeTreeRelatedByUpdatedBy($nodeTreeRelatedByUpdatedBy)
-    {
-        $this->collNodeTreesRelatedByUpdatedBy[]= $nodeTreeRelatedByUpdatedBy;
-        $nodeTreeRelatedByUpdatedBy->setUserRelatedByUpdatedBy($this);
-    }
-
-    /**
-     * @param	NodeTreeRelatedByUpdatedBy $nodeTreeRelatedByUpdatedBy The nodeTreeRelatedByUpdatedBy object to remove.
-     * @return User The current object (for fluent API support)
-     */
-    public function removeNodeTreeRelatedByUpdatedBy($nodeTreeRelatedByUpdatedBy)
-    {
-        if ($this->getNodeTreesRelatedByUpdatedBy()->contains($nodeTreeRelatedByUpdatedBy)) {
-            $this->collNodeTreesRelatedByUpdatedBy->remove($this->collNodeTreesRelatedByUpdatedBy->search($nodeTreeRelatedByUpdatedBy));
-            if (null === $this->nodeTreesRelatedByUpdatedByScheduledForDeletion) {
-                $this->nodeTreesRelatedByUpdatedByScheduledForDeletion = clone $this->collNodeTreesRelatedByUpdatedBy;
-                $this->nodeTreesRelatedByUpdatedByScheduledForDeletion->clear();
-            }
-            $this->nodeTreesRelatedByUpdatedByScheduledForDeletion[]= $nodeTreeRelatedByUpdatedBy;
-            $nodeTreeRelatedByUpdatedBy->setUserRelatedByUpdatedBy(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NodeTreesRelatedByUpdatedBy from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByUpdatedByJoinLeaf($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('Leaf', $join_behavior);
-
-        return $this->getNodeTreesRelatedByUpdatedBy($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NodeTreesRelatedByUpdatedBy from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByUpdatedByJoinBranchRelatedByBchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('BranchRelatedByBchId', $join_behavior);
-
-        return $this->getNodeTreesRelatedByUpdatedBy($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this User is new, it will return
-     * an empty collection; or if this User has previously
-     * been saved, it will retrieve related NodeTreesRelatedByUpdatedBy from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in User.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|NodeTree[] List of NodeTree objects
-     */
-    public function getNodeTreesRelatedByUpdatedByJoinBranchRelatedByBchParent($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = NodeTreeQuery::create(null, $criteria);
-        $query->joinWith('BranchRelatedByBchParent', $join_behavior);
-
-        return $this->getNodeTreesRelatedByUpdatedBy($query, $con);
     }
 
     /**
@@ -8887,8 +8206,8 @@ abstract class BaseUser extends BaseObject implements Persistent
         $this->usr_cp = null;
         $this->usr_avatar = null;
         $this->created_by = null;
-        $this->created_at = null;
         $this->updated_by = null;
+        $this->created_at = null;
         $this->updated_at = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
@@ -8959,16 +8278,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             }
             if ($this->collLefRulsRelatedByUpdatedBy) {
                 foreach ($this->collLefRulsRelatedByUpdatedBy as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collNodeTreesRelatedByCreatedBy) {
-                foreach ($this->collNodeTreesRelatedByCreatedBy as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collNodeTreesRelatedByUpdatedBy) {
-                foreach ($this->collNodeTreesRelatedByUpdatedBy as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
@@ -9087,14 +8396,6 @@ abstract class BaseUser extends BaseObject implements Persistent
             $this->collLefRulsRelatedByUpdatedBy->clearIterator();
         }
         $this->collLefRulsRelatedByUpdatedBy = null;
-        if ($this->collNodeTreesRelatedByCreatedBy instanceof PropelCollection) {
-            $this->collNodeTreesRelatedByCreatedBy->clearIterator();
-        }
-        $this->collNodeTreesRelatedByCreatedBy = null;
-        if ($this->collNodeTreesRelatedByUpdatedBy instanceof PropelCollection) {
-            $this->collNodeTreesRelatedByUpdatedBy->clearIterator();
-        }
-        $this->collNodeTreesRelatedByUpdatedBy = null;
         if ($this->collRulOptionsRelatedByCreatedBy instanceof PropelCollection) {
             $this->collRulOptionsRelatedByCreatedBy->clearIterator();
         }
@@ -9169,6 +8470,20 @@ abstract class BaseUser extends BaseObject implements Persistent
     public function isAlreadyInSave()
     {
         return $this->alreadyInSave;
+    }
+
+    // timestampable behavior
+
+    /**
+     * Mark the current object so that the update date doesn't get updated during next save
+     *
+     * @return     User The current object (for fluent API support)
+     */
+    public function keepUpdateDateUnchanged()
+    {
+        $this->modifiedColumns[] = UserPeer::UPDATED_AT;
+
+        return $this;
     }
 
 }

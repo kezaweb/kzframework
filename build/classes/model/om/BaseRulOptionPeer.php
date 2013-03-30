@@ -67,11 +67,11 @@ abstract class BaseRulOptionPeer
     /** the column name for the created_by field */
     const CREATED_BY = 'rul_option.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'rul_option.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'rul_option.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'rul_option.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'rul_option.updated_at';
@@ -95,11 +95,11 @@ abstract class BaseRulOptionPeer
      * e.g. RulOptionPeer::$fieldNames[RulOptionPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'RouName', 'RouDesc', 'RouDefaultValue', 'RouPattern', 'RulId', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'rouName', 'rouDesc', 'rouDefaultValue', 'rouPattern', 'rulId', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (RulOptionPeer::ID, RulOptionPeer::ROU_NAME, RulOptionPeer::ROU_DESC, RulOptionPeer::ROU_DEFAULT_VALUE, RulOptionPeer::ROU_PATTERN, RulOptionPeer::RUL_ID, RulOptionPeer::CREATED_BY, RulOptionPeer::CREATED_AT, RulOptionPeer::UPDATED_BY, RulOptionPeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ROU_NAME', 'ROU_DESC', 'ROU_DEFAULT_VALUE', 'ROU_PATTERN', 'RUL_ID', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'rou_name', 'rou_desc', 'rou_default_value', 'rou_pattern', 'rul_id', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'RouName', 'RouDesc', 'RouDefaultValue', 'RouPattern', 'RulId', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'rouName', 'rouDesc', 'rouDefaultValue', 'rouPattern', 'rulId', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (RulOptionPeer::ID, RulOptionPeer::ROU_NAME, RulOptionPeer::ROU_DESC, RulOptionPeer::ROU_DEFAULT_VALUE, RulOptionPeer::ROU_PATTERN, RulOptionPeer::RUL_ID, RulOptionPeer::CREATED_BY, RulOptionPeer::UPDATED_BY, RulOptionPeer::CREATED_AT, RulOptionPeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ROU_NAME', 'ROU_DESC', 'ROU_DEFAULT_VALUE', 'ROU_PATTERN', 'RUL_ID', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'rou_name', 'rou_desc', 'rou_default_value', 'rou_pattern', 'rul_id', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
@@ -110,11 +110,11 @@ abstract class BaseRulOptionPeer
      * e.g. RulOptionPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'RouName' => 1, 'RouDesc' => 2, 'RouDefaultValue' => 3, 'RouPattern' => 4, 'RulId' => 5, 'CreatedBy' => 6, 'CreatedAt' => 7, 'UpdatedBy' => 8, 'UpdatedAt' => 9, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'rouName' => 1, 'rouDesc' => 2, 'rouDefaultValue' => 3, 'rouPattern' => 4, 'rulId' => 5, 'createdBy' => 6, 'createdAt' => 7, 'updatedBy' => 8, 'updatedAt' => 9, ),
-        BasePeer::TYPE_COLNAME => array (RulOptionPeer::ID => 0, RulOptionPeer::ROU_NAME => 1, RulOptionPeer::ROU_DESC => 2, RulOptionPeer::ROU_DEFAULT_VALUE => 3, RulOptionPeer::ROU_PATTERN => 4, RulOptionPeer::RUL_ID => 5, RulOptionPeer::CREATED_BY => 6, RulOptionPeer::CREATED_AT => 7, RulOptionPeer::UPDATED_BY => 8, RulOptionPeer::UPDATED_AT => 9, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ROU_NAME' => 1, 'ROU_DESC' => 2, 'ROU_DEFAULT_VALUE' => 3, 'ROU_PATTERN' => 4, 'RUL_ID' => 5, 'CREATED_BY' => 6, 'CREATED_AT' => 7, 'UPDATED_BY' => 8, 'UPDATED_AT' => 9, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'rou_name' => 1, 'rou_desc' => 2, 'rou_default_value' => 3, 'rou_pattern' => 4, 'rul_id' => 5, 'created_by' => 6, 'created_at' => 7, 'updated_by' => 8, 'updated_at' => 9, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'RouName' => 1, 'RouDesc' => 2, 'RouDefaultValue' => 3, 'RouPattern' => 4, 'RulId' => 5, 'CreatedBy' => 6, 'UpdatedBy' => 7, 'CreatedAt' => 8, 'UpdatedAt' => 9, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'rouName' => 1, 'rouDesc' => 2, 'rouDefaultValue' => 3, 'rouPattern' => 4, 'rulId' => 5, 'createdBy' => 6, 'updatedBy' => 7, 'createdAt' => 8, 'updatedAt' => 9, ),
+        BasePeer::TYPE_COLNAME => array (RulOptionPeer::ID => 0, RulOptionPeer::ROU_NAME => 1, RulOptionPeer::ROU_DESC => 2, RulOptionPeer::ROU_DEFAULT_VALUE => 3, RulOptionPeer::ROU_PATTERN => 4, RulOptionPeer::RUL_ID => 5, RulOptionPeer::CREATED_BY => 6, RulOptionPeer::UPDATED_BY => 7, RulOptionPeer::CREATED_AT => 8, RulOptionPeer::UPDATED_AT => 9, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ROU_NAME' => 1, 'ROU_DESC' => 2, 'ROU_DEFAULT_VALUE' => 3, 'ROU_PATTERN' => 4, 'RUL_ID' => 5, 'CREATED_BY' => 6, 'UPDATED_BY' => 7, 'CREATED_AT' => 8, 'UPDATED_AT' => 9, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'rou_name' => 1, 'rou_desc' => 2, 'rou_default_value' => 3, 'rou_pattern' => 4, 'rul_id' => 5, 'created_by' => 6, 'updated_by' => 7, 'created_at' => 8, 'updated_at' => 9, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
     );
 
@@ -196,8 +196,8 @@ abstract class BaseRulOptionPeer
             $criteria->addSelectColumn(RulOptionPeer::ROU_PATTERN);
             $criteria->addSelectColumn(RulOptionPeer::RUL_ID);
             $criteria->addSelectColumn(RulOptionPeer::CREATED_BY);
-            $criteria->addSelectColumn(RulOptionPeer::CREATED_AT);
             $criteria->addSelectColumn(RulOptionPeer::UPDATED_BY);
+            $criteria->addSelectColumn(RulOptionPeer::CREATED_AT);
             $criteria->addSelectColumn(RulOptionPeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -207,8 +207,8 @@ abstract class BaseRulOptionPeer
             $criteria->addSelectColumn($alias . '.rou_pattern');
             $criteria->addSelectColumn($alias . '.rul_id');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

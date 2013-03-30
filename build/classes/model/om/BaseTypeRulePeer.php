@@ -54,11 +54,11 @@ abstract class BaseTypeRulePeer
     /** the column name for the created_by field */
     const CREATED_BY = 'type_rule.created_by';
 
-    /** the column name for the created_at field */
-    const CREATED_AT = 'type_rule.created_at';
-
     /** the column name for the updated_by field */
     const UPDATED_BY = 'type_rule.updated_by';
+
+    /** the column name for the created_at field */
+    const CREATED_AT = 'type_rule.created_at';
 
     /** the column name for the updated_at field */
     const UPDATED_AT = 'type_rule.updated_at';
@@ -82,11 +82,11 @@ abstract class BaseTypeRulePeer
      * e.g. TypeRulePeer::$fieldNames[TypeRulePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'IsInStore', 'CreatedBy', 'CreatedAt', 'UpdatedBy', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'isInStore', 'createdBy', 'createdAt', 'updatedBy', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (TypeRulePeer::ID, TypeRulePeer::IS_IN_STORE, TypeRulePeer::CREATED_BY, TypeRulePeer::CREATED_AT, TypeRulePeer::UPDATED_BY, TypeRulePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'IS_IN_STORE', 'CREATED_BY', 'CREATED_AT', 'UPDATED_BY', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'is_in_store', 'created_by', 'created_at', 'updated_by', 'updated_at', ),
+        BasePeer::TYPE_PHPNAME => array ('Id', 'IsInStore', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'isInStore', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (TypeRulePeer::ID, TypeRulePeer::IS_IN_STORE, TypeRulePeer::CREATED_BY, TypeRulePeer::UPDATED_BY, TypeRulePeer::CREATED_AT, TypeRulePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'IS_IN_STORE', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'is_in_store', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
@@ -97,11 +97,11 @@ abstract class BaseTypeRulePeer
      * e.g. TypeRulePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'IsInStore' => 1, 'CreatedBy' => 2, 'CreatedAt' => 3, 'UpdatedBy' => 4, 'UpdatedAt' => 5, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'isInStore' => 1, 'createdBy' => 2, 'createdAt' => 3, 'updatedBy' => 4, 'updatedAt' => 5, ),
-        BasePeer::TYPE_COLNAME => array (TypeRulePeer::ID => 0, TypeRulePeer::IS_IN_STORE => 1, TypeRulePeer::CREATED_BY => 2, TypeRulePeer::CREATED_AT => 3, TypeRulePeer::UPDATED_BY => 4, TypeRulePeer::UPDATED_AT => 5, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'IS_IN_STORE' => 1, 'CREATED_BY' => 2, 'CREATED_AT' => 3, 'UPDATED_BY' => 4, 'UPDATED_AT' => 5, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'is_in_store' => 1, 'created_by' => 2, 'created_at' => 3, 'updated_by' => 4, 'updated_at' => 5, ),
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'IsInStore' => 1, 'CreatedBy' => 2, 'UpdatedBy' => 3, 'CreatedAt' => 4, 'UpdatedAt' => 5, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'isInStore' => 1, 'createdBy' => 2, 'updatedBy' => 3, 'createdAt' => 4, 'updatedAt' => 5, ),
+        BasePeer::TYPE_COLNAME => array (TypeRulePeer::ID => 0, TypeRulePeer::IS_IN_STORE => 1, TypeRulePeer::CREATED_BY => 2, TypeRulePeer::UPDATED_BY => 3, TypeRulePeer::CREATED_AT => 4, TypeRulePeer::UPDATED_AT => 5, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'IS_IN_STORE' => 1, 'CREATED_BY' => 2, 'UPDATED_BY' => 3, 'CREATED_AT' => 4, 'UPDATED_AT' => 5, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'is_in_store' => 1, 'created_by' => 2, 'updated_by' => 3, 'created_at' => 4, 'updated_at' => 5, ),
         BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
     );
 
@@ -179,15 +179,15 @@ abstract class BaseTypeRulePeer
             $criteria->addSelectColumn(TypeRulePeer::ID);
             $criteria->addSelectColumn(TypeRulePeer::IS_IN_STORE);
             $criteria->addSelectColumn(TypeRulePeer::CREATED_BY);
-            $criteria->addSelectColumn(TypeRulePeer::CREATED_AT);
             $criteria->addSelectColumn(TypeRulePeer::UPDATED_BY);
+            $criteria->addSelectColumn(TypeRulePeer::CREATED_AT);
             $criteria->addSelectColumn(TypeRulePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.is_in_store');
             $criteria->addSelectColumn($alias . '.created_by');
-            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_by');
+            $criteria->addSelectColumn($alias . '.created_at');
             $criteria->addSelectColumn($alias . '.updated_at');
         }
     }

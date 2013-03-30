@@ -27,15 +27,15 @@ use Kzf\Model\User;
  * @method TypeRuleQuery orderById($order = Criteria::ASC) Order by the id column
  * @method TypeRuleQuery orderByIsInStore($order = Criteria::ASC) Order by the is_in_store column
  * @method TypeRuleQuery orderByCreatedBy($order = Criteria::ASC) Order by the created_by column
- * @method TypeRuleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method TypeRuleQuery orderByUpdatedBy($order = Criteria::ASC) Order by the updated_by column
+ * @method TypeRuleQuery orderByCreatedAt($order = Criteria::ASC) Order by the created_at column
  * @method TypeRuleQuery orderByUpdatedAt($order = Criteria::ASC) Order by the updated_at column
  *
  * @method TypeRuleQuery groupById() Group by the id column
  * @method TypeRuleQuery groupByIsInStore() Group by the is_in_store column
  * @method TypeRuleQuery groupByCreatedBy() Group by the created_by column
- * @method TypeRuleQuery groupByCreatedAt() Group by the created_at column
  * @method TypeRuleQuery groupByUpdatedBy() Group by the updated_by column
+ * @method TypeRuleQuery groupByCreatedAt() Group by the created_at column
  * @method TypeRuleQuery groupByUpdatedAt() Group by the updated_at column
  *
  * @method TypeRuleQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -63,15 +63,15 @@ use Kzf\Model\User;
  *
  * @method TypeRule findOneByIsInStore(boolean $is_in_store) Return the first TypeRule filtered by the is_in_store column
  * @method TypeRule findOneByCreatedBy(int $created_by) Return the first TypeRule filtered by the created_by column
- * @method TypeRule findOneByCreatedAt(string $created_at) Return the first TypeRule filtered by the created_at column
  * @method TypeRule findOneByUpdatedBy(int $updated_by) Return the first TypeRule filtered by the updated_by column
+ * @method TypeRule findOneByCreatedAt(string $created_at) Return the first TypeRule filtered by the created_at column
  * @method TypeRule findOneByUpdatedAt(string $updated_at) Return the first TypeRule filtered by the updated_at column
  *
  * @method array findById(int $id) Return TypeRule objects filtered by the id column
  * @method array findByIsInStore(boolean $is_in_store) Return TypeRule objects filtered by the is_in_store column
  * @method array findByCreatedBy(int $created_by) Return TypeRule objects filtered by the created_by column
- * @method array findByCreatedAt(string $created_at) Return TypeRule objects filtered by the created_at column
  * @method array findByUpdatedBy(int $updated_by) Return TypeRule objects filtered by the updated_by column
+ * @method array findByCreatedAt(string $created_at) Return TypeRule objects filtered by the created_at column
  * @method array findByUpdatedAt(string $updated_at) Return TypeRule objects filtered by the updated_at column
  *
  * @package    propel.generator.model.om
@@ -176,7 +176,7 @@ abstract class BaseTypeRuleQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT id, is_in_store, created_by, created_at, updated_by, updated_at FROM type_rule WHERE id = :p0';
+        $sql = 'SELECT id, is_in_store, created_by, updated_by, created_at, updated_at FROM type_rule WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -379,49 +379,6 @@ abstract class BaseTypeRuleQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the created_at column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
-     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
-     * </code>
-     *
-     * @param     mixed $createdAt The value to use as filter.
-     *              Values can be integers (unix timestamps), DateTime objects, or strings.
-     *              Empty strings are treated as NULL.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return TypeRuleQuery The current query, for fluid interface
-     */
-    public function filterByCreatedAt($createdAt = null, $comparison = null)
-    {
-        if (is_array($createdAt)) {
-            $useMinMax = false;
-            if (isset($createdAt['min'])) {
-                $this->addUsingAlias(TypeRulePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($createdAt['max'])) {
-                $this->addUsingAlias(TypeRulePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(TypeRulePeer::CREATED_AT, $createdAt, $comparison);
-    }
-
-    /**
      * Filter the query on the updated_by column
      *
      * Example usage:
@@ -463,6 +420,49 @@ abstract class BaseTypeRuleQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TypeRulePeer::UPDATED_BY, $updatedBy, $comparison);
+    }
+
+    /**
+     * Filter the query on the created_at column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCreatedAt('2011-03-14'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt('now'); // WHERE created_at = '2011-03-14'
+     * $query->filterByCreatedAt(array('max' => 'yesterday')); // WHERE created_at > '2011-03-13'
+     * </code>
+     *
+     * @param     mixed $createdAt The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return TypeRuleQuery The current query, for fluid interface
+     */
+    public function filterByCreatedAt($createdAt = null, $comparison = null)
+    {
+        if (is_array($createdAt)) {
+            $useMinMax = false;
+            if (isset($createdAt['min'])) {
+                $this->addUsingAlias(TypeRulePeer::CREATED_AT, $createdAt['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($createdAt['max'])) {
+                $this->addUsingAlias(TypeRulePeer::CREATED_AT, $createdAt['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TypeRulePeer::CREATED_AT, $createdAt, $comparison);
     }
 
     /**
@@ -824,4 +824,69 @@ abstract class BaseTypeRuleQuery extends ModelCriteria
         return $this;
     }
 
+    // timestampable behavior
+
+    /**
+     * Filter by the latest updated
+     *
+     * @param      int $nbDays Maximum age of the latest update in days
+     *
+     * @return     TypeRuleQuery The current query, for fluid interface
+     */
+    public function recentlyUpdated($nbDays = 7)
+    {
+        return $this->addUsingAlias(TypeRulePeer::UPDATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by update date desc
+     *
+     * @return     TypeRuleQuery The current query, for fluid interface
+     */
+    public function lastUpdatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(TypeRulePeer::UPDATED_AT);
+    }
+
+    /**
+     * Order by update date asc
+     *
+     * @return     TypeRuleQuery The current query, for fluid interface
+     */
+    public function firstUpdatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(TypeRulePeer::UPDATED_AT);
+    }
+
+    /**
+     * Filter by the latest created
+     *
+     * @param      int $nbDays Maximum age of in days
+     *
+     * @return     TypeRuleQuery The current query, for fluid interface
+     */
+    public function recentlyCreated($nbDays = 7)
+    {
+        return $this->addUsingAlias(TypeRulePeer::CREATED_AT, time() - $nbDays * 24 * 60 * 60, Criteria::GREATER_EQUAL);
+    }
+
+    /**
+     * Order by create date desc
+     *
+     * @return     TypeRuleQuery The current query, for fluid interface
+     */
+    public function lastCreatedFirst()
+    {
+        return $this->addDescendingOrderByColumn(TypeRulePeer::CREATED_AT);
+    }
+
+    /**
+     * Order by create date asc
+     *
+     * @return     TypeRuleQuery The current query, for fluid interface
+     */
+    public function firstCreatedFirst()
+    {
+        return $this->addAscendingOrderByColumn(TypeRulePeer::CREATED_AT);
+    }
 }
