@@ -136,6 +136,25 @@ buildTree = function(service_node, root_id, kzf_css)
 			"initially_open" : [ "node_2" , "node_3" ] 
 		}
 	})
+	.bind("search.jstree clear_search.jstree reopen.jstree after_open.jstree after_close.jstree create_node.jstree delete_node.jstree clean_node.jstree", function (e, data) {
+		$('.jstree-kzf li[rel="default"] > a > ins').attr('class', 'icon-leaf');
+		$('.jstree-kzf li[rel="drive"] > a > ins').attr('class', 'icon-globe');
+		$('.jstree-kzf li[rel="folder"].jstree-closed > a > ins').attr('class', 'icon-folder-close');
+		$('.jstree-kzf li[rel="folder"].jstree-leaf > a > ins').attr('class', 'icon-folder-close');
+		$('.jstree-kzf li[rel="folder"].jstree-open > a > ins').attr('class', 'icon-folder-open');
+		$('.jstree-kzf .jstree-closed > ins.jstree-icon').attr('class', 'icon-plus');
+		$('.jstree-kzf .jstree-open > ins.jstree-icon').attr('class', 'icon-minus');		
+		$('.jstree-kzf .jstree-closed > ins.icon-plus').attr('style', 'cursor:pointer');
+		$('.jstree-kzf .jstree-open > ins.icon-minus').attr('style', 'cursor:pointer');			
+		$('.jstree-kzf .jstree-closed > ins.icon-minus').attr('class', 'icon-plus');
+		$('.jstree-kzf .jstree-open > ins.icon-plus').attr('class', 'icon-minus');
+		$('.jstree-kzf a.jstree-loading .icon-minus').attr('class', 'icon-spinner icon-spin');
+		$('.jstree-kzf a.jstree-loading .icon-plus').attr('class', 'icon-spinner icon-spin');	
+		
+	})
+	.bind("before_open.jstree", function(e, data) {
+		console.debug($('a.jstree-loading'));
+	})
 	.bind("create.jstree", function (e, data) {
 		id_prev_sibling = null;
 		objectPrev = data.rslt.obj.prev();
@@ -226,3 +245,5 @@ buildTree = function(service_node, root_id, kzf_css)
 		});
 	});
 }
+
+

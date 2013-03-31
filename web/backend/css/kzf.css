@@ -9,18 +9,9 @@
 */
 .jstree-kzf li { background-position:-90px 0; /*background-repeat:repeat-y;*/  }
 .jstree-kzf li.jstree-last { background:transparent; }
-.jstree-kzf li[rel="folder"].jstree-closed > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -384px -120px }
-.jstree-kzf li[rel="folder"].jstree-leaf > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -384px -120px }
-.jstree-kzf li[rel="folder"].jstree-folder > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -384px -120px }
-.jstree-kzf li[rel="folder"].jstree-open > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -408px -120px; width: 16px; }
-.jstree-kzf li[rel="default"] > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -48px -120px }
-.jstree-kzf li[rel="drive"] > a > ins { background-image: url("/backend/img/glyphicons-halflings.png"); background-position: -336px -144px }
-
 .jstree-kzf .jstree-hovered { background:#ededed; border:1px solid #ededed; padding:0 2px 0 1px; }
 .jstree-kzf .jstree-clicked { background:#e1e1e1; border:1px solid #e1e1e1; padding:0 2px 0 1px; }
 .jstree-kzf a .jstree-icon { background-position:-56px -19px; }
-.jstree-kzf .jstree-closed > ins.jstree-icon { background-image: url("/backend/img/glyphicons-halflings.png"); background-position:-408px -96px; cursor:pointer;}
-.jstree-kzf .jstree-open > ins.jstree-icon { background-image: url("/backend/img/glyphicons-halflings.png"); background-position:-433px -96px; cursor:pointer;}
 .jstree-kzf a.jstree-loading .jstree-icon { background:url("/backend/img/16load.gif") center center no-repeat !important; }
 
 .jstree-kzf.jstree-focused { background:white; }

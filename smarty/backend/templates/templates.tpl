@@ -8,6 +8,12 @@ You will to edit templates as soon as possible...
  {/foreach}
 </ul>
 
+<p><span class="icon-leaf"></span></p>
 
+<p style="color:#00a8d2"><span class="icon-leaf icon-2x"></span></p>
+
+<p style="color:#bfbfbf"><span class="icon-leaf icon-2x"></span></p>
+
+<p><i class="icon-stethoscope icon-4x"></i> icon-camera-retro</p>
 
 {/block}

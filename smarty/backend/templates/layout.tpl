@@ -3,8 +3,12 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <style type="text/css" src="/backend/css/bootstrap.min.css"></style>
-    <link href="css/bootstrap.css" rel="stylesheet">    
-    <link href="css/kzf.css" rel="stylesheet">    
+    <link href="/backend/css/bootstrap.css" rel="stylesheet">
+    <link href="/backend/css/kzf.css" rel="stylesheet">    
+    <link href="/backend/css/font-awesome.min.css" rel="stylesheet" >
+	<!--[if IE 7]>
+	<link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css">
+	<![endif]-->
     <script src="/backend/js/jquery-1.9.1.min.js"></script>
     <script src="/backend/js/bootstrap.min.js"></script>
     <script src="/backend/js/kzf.js"></script>
