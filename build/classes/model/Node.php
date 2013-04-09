@@ -21,18 +21,20 @@ class Node extends BaseNode
 	
 	protected $crudFrom;
 	protected $format;
-	protected $template;
+	protected $renderTemplate;
 	protected $action;
 	protected $idParent;
 	protected $idPrevSibling;
+	protected $aJsonResponse;
 	
 	public function __construct() 
 	{
 		// It's mean thant create / read / update or delete provide from free in Ajax.
 		// So, the response must bien in Json for JSTree
-		$this->crudFrom = 'tree';
-		$this->format = array('tree'=>'text/json','node'=>'text/html');
-		$this->template = array('tree'=>'','node'=>'node.tpl');
+		$this->crudFrom			 = 'tree';
+		$this->format			 = array('tree'=>'text/json','node'=>'text/html');
+		$this->renderTemplate 	 = array('tree'=>'','node'=>'node.tpl');
+		$this->aJsonResponse	 = array();
 	}
 	
 	public function setCrudFrom($v)
@@ -50,9 +52,9 @@ class Node extends BaseNode
 		return $this->format[$this->getCrudFrom()];
 	}
 	
-	public function getTemplate()
+	public function getRenderTemplate()
 	{
-		return $this->template[$this->getCrudFrom()];
+		return $this->renderTemplate[$this->getCrudFrom()];
 	}	
 	
 	public function setAction($v)
@@ -121,12 +123,119 @@ class Node extends BaseNode
 				$tmp = array();
 				$tmp['attr']['id'] = "node_".$oNode->getId();
 				$tmp['attr']['rel'] = $oNode->getNodType();
+				$tmp['attr']['data-cloud'] = $oNode->getNodCloud();
+				$tmp['attr']['data-virtual'] = $oNode->getNodVirtual();
 				$tmp['data'] = $oNode->getNodTitle();
 				$tmp['state'] = ($oNode->getNodRight() - $oNode->getNodLeft() > 1) ? "closed" : "";
 				array_push($aData, $tmp);
 			}
 		}
 		return $aData;
+	}
+	
+	public function hasLeafOrBranch() {
+		return ($this->lef_id!='' || $this->bch_id!='');
+	}
+	
+	public function isVirtual() {
+		return ($this->nod_virtual==true && $this->nod_master!='');
+	}
+	
+	public function isCreating() {
+		if (!$this->hasLeafOrBranch() && !$this->isVirtual()) {
+			return true;
+		} else {
+			return false;
+		}
+		
+	}
+	
+	public function getNodTypeForBootstrap() {
+			switch ($this->getNodType()) {
+			case 'default':
+				return 'leaf';
+				break;
+				break;
+			case 'folder':
+				return 'folder-open';
+				break;
+				break;
+			case 'drive':
+				return 'globe';
+				break;
+			case 'root':
+				return '';
+				break;
+		}
+	}
+	
+	public function getNodTypeForUser($ucfirst=false) {
+		switch ($this->getNodType()) {
+			case 'default':
+				$nodTypeForUser = 'leaf';
+				break;
+			case 'folder':
+				$nodTypeForUser = 'branch';
+				break;
+			case 'drive':
+				$nodTypeForUser = 'base';
+				break;
+			case 'root':
+				$nodTypeForUser = '';
+				break;
+		}
+		if ($ucfirst && !empty($nodTypeForUser)) {
+			return ucfirst($nodTypeForUser);
+		} else {
+			return $nodTypeForUser;
+		}
+	}
+	
+	public function isDrive() {
+		return ($this->getNodType()=='drive');
+	}
+	
+	public function getJsonToCreateAsSimple() {
+		$aJson = array();
+		$aJson["action"]   = "read";
+		$aJson["nod_id"]   = $this->getId();
+		$aJson["crudFrom"] = "admin";
+		return htmlentities(json_encode($aJson));
+	}
+	
+	public function getJsonToCreateAsCloud() {
+		$aJson = array();
+		$aJson["action"]    = "read";
+		$aJson["nod_id"]    = $this->getId();
+		$aJson["crudFrom"]  = "admin";
+		$aJson["nod_cloud"] = 1;
+		return htmlentities(json_encode($aJson));
+	}
+	
+	public function getJsonToCreateAsVirtual() {
+		$aJson = array();
+		$aJson["action"]     = "read";
+		$aJson["nod_id"]     = $this->getId();
+		$aJson["crudFrom"]   = "admin";
+		$aJson["nod_virual"] = 1;
+		return htmlentities(json_encode($aJson));
+	}
+	
+	public function addAJsonResponse($aJsonToMerge) {
+		$this->aJsonResponse = array_merge($this->aJsonResponse,$aJsonToMerge);
+	}
+	
+	public function getJsonResponse() {
+		return json_encode($this->aJsonResponse);
+	}
+	
+	public function hasInternalError()
+	{
+		if (array_key_exists('type', $this->aJsonResponse) && $this->aJsonResponse['type'] == 'Error') {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 }

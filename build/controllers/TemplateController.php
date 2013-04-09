@@ -11,7 +11,7 @@ class TemplateController extends Base\BaseController
 	public function singleAction() {
 		$aData = json_decode($this->request->get('jData'),true);
 		$aData = !is_array($aData)?array():$aData;
-		$aResponse = Engine\KzfObject::CUDObject($aData, 'Kzf\Model\Template');
+		$aResponse = Engine\KzfObject::CRUDObject($aData, 'Kzf\Model\Template');
 		return $this->renderJson(json_encode($aResponse));
 	}
 	

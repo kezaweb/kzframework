@@ -44,7 +44,7 @@
 	<div id="load-kzf-content">
 		{html_image file='img/35load.gif'}&nbsp; &nbsp;Loading page...	
 	</div>
-	
+
 </body>
 
 </html>

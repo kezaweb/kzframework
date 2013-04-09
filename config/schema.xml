@@ -139,6 +139,7 @@
   </table>
   <table name="node">
 	  <column name="id" required="true" primaryKey="true" autoIncrement="true" type="INTEGER" />
+	  <column name="nod_master" phpName="NodMaster" type="INTEGER" required="false"/>
       <column name="nod_title" phpName="NodTitle" type="VARCHAR" size="150" required="false"/>
       <column name="nod_left" phpName="NodLeft" type="INTEGER" required="false"/>
       <column name="nod_right" phpName="NodRight" type="INTEGER" required="false"/>
@@ -151,6 +152,9 @@
 	  <column name="lef_id" phpName="LefId" type="INTEGER" required="false"/>
       <column name="created_by" phpName="CreatedBy" type="INTEGER" required="false"/>
       <column name="updated_by" phpName="UpdatedBy" type="INTEGER" required="false"/>
+      <foreign-key foreignTable="node" name="fk_node_virtual">
+	      <reference local="nod_master" foreign="id"/>
+   	  </foreign-key>
 	  <behavior name="timestampable" />
 	  <behavior name="nested_set">
 	    <parameter name="left_column" value="nod_left" />

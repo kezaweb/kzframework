@@ -2,6 +2,66 @@
   margin:0px 0px 0px 10px;
   display:none;
 }
+#load-kzf-sub-content-right {
+  margin:0px 0px 0px 10px;
+  display:none;
+}
+
+#kzf-sub-content-right {
+  position:relative;
+}
+
+#menu-creating ins {
+  margin-right:5px;
+}
+
+h2 > ins {
+  margin-right:5px;
+}
+
+#create-cloud {
+  color:#00a8d2
+}
+
+#create-cloud:hover, #create-cloud:focus {
+  color:#00a8d2
+}
+
+#create-virtual {
+  color:#78A419
+}
+
+#create-virtual:hover, #create-virtual:focus {
+  color:#78A419
+}
+
+.jstree-cloud {
+  color:#00a8d2
+}
+
+.jstree-virtual {
+  color:#78A419
+}
+
+[data-cloud="1"]>a{
+  color:#00a8d2;
+}
+
+[data-virtual="1"]>a{
+  color:#78A419
+}
+
+.wrapper {
+background:silver;
+position:absolute;
+top:0;
+height:100%;
+width:100%;
+opacity: 0.8;
+-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+filter:alpha(opacity=80);
+display: none;
+}
 
 /* JSTree CSS */
 .jstree-kzf li, 

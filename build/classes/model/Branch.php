@@ -18,4 +18,69 @@ use Kzf\Model\om\BaseBranch;
  */
 class Branch extends BaseBranch
 {
+	protected $aJsonResponse;
+	protected $nodId;
+	protected $action;
+	
+	public function __construct()
+	{
+		$this->aJsonResponse = array();
+	}
+	
+	
+	public function addAJsonResponse($aJsonToMerge)
+	{
+		$this->aJsonResponse = array_merge($this->aJsonResponse,$aJsonToMerge);
+	}
+	
+	public function getJsonResponse()
+	{
+		return json_encode($this->aJsonResponse);
+	}
+	
+	public function hasInternalError()
+	{
+		if (array_key_exists('type', $this->aJsonResponse) && $this->aJsonResponse['type'] == 'Error') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public function getFormat()
+	{
+		return 'text/html';
+	}
+	
+	public function getRenderTemplate() 
+	{
+		return 'branch_form.tpl';
+	}
+	
+	public function setNodId($v)
+	{
+		$oNode = NodeQuery::create()->findPk($v);
+		if ($this->isPrimaryKeyNull()) {
+			// Where hydrate the title branch with title node
+			$this->setBchTitle($oNode->getNodTitle());
+		}
+		$this->nodId = $v;
+	}
+	
+	public function postSave()
+	{
+		$oNode = NodeQuery::create()->findPk($this−>nodId);
+		$oNode->setBchId($this->getId());
+		$oNode->save();
+	}
+	
+	public function setAction($v)
+	{
+		$this->action = $v;
+	}
+	
+	public function getAction()
+	{
+		return $this->action;
+	}
 }

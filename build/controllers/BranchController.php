@@ -11,8 +11,9 @@ class BranchController extends Base\BaseController
 	public function singleAction() {
 		$aData = json_decode($this->request->get('jData'),true);
 		$aData = !is_array($aData)?array():$aData;
-		$aResponse = Engine\KzfObject::CUDObject($aData, 'Kzf\Model\Branch');
-		return $this->renderJson(json_encode($aResponse));
+		/* @var $oNode Model\Node */
+		$oBranch = Engine\KzfObject::CRUDObject($aData, 'Kzf\Model\Branch');
+		return $this->render($oBranch, array('oBranch' => $oBranch));
 	}
 	
 	public function listAction() {

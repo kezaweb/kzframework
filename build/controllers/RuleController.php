@@ -11,7 +11,7 @@ class RuleController extends Base\BaseController
 	public function singleAction() {
 		$aData = json_decode($this->request->get('jData'),true);
 		$aData = !is_array($aData)?array():$aData;
-		$aResponse = Engine\KzfObject::CUDObject($aData, 'Kzf\Model\Rule');
+		$aResponse = Engine\KzfObject::CRUDObject($aData, 'Kzf\Model\Rule');
 		return $this->renderJson(json_encode($aResponse));
 	}
 	

@@ -28,19 +28,42 @@ class BaseController
 		return new Response($render);
 	}
 	
-	public function renderJson($json) {
+	public function renderJson($json)
+	{
+ 		$aJson = json_decode($json, true);
+		if(array_key_exists('type', $aJson) && $aJson['type']=="Error") $status = 500;
+		else $status = 200;
 		$response = new Response(
 				$json,
-				200,
+				$status,
 				array('content-type' => 'application/json')
 		);
 		
 		return $response;
 	}
 	
-	public function renderFrontend($tpl, $aParameters = array()){
+	public function renderFrontend($tpl, $aParameters = array())
+	{
 	
 		return new Response("It's work !");
 	}	
 	
+	public function render($oObject, $aParams)
+	{
+		try {
+			if (is_object($oObject)) {
+				if ($oObject->getFormat()=='text/json' || $oObject->hasInternalError()) {
+					return $this->renderJson($oObject->getJsonResponse());
+				} else {
+					return $this->renderBackend($oObject->getRenderTemplate(),$aParams);
+				}
+			} else {
+				return $this->renderJson($oObject);
+			}
+		} catch (\Exception $e) {
+			$aResponse['type']    = 'Error';
+			$aResponse['message'] = $e->getMessage();
+			return $this->renderJson(json_encode($aResponse));
+		}
+	}
 }

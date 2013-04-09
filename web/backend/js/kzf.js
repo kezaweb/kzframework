@@ -11,37 +11,62 @@
 // Ajax listener
 (function($){
  
-  $(document).ready(function(){    
-    $('a').click(function(e){
-    	    e.preventDefault();
-    	    var self = $(this);
-    	        url = self.attr('href');
-    	        target = self.data('target');
-    	        group = self.data('group');
-    	        aGroup = group.split('-');
-    	        if (aGroup[0]=='active') {
-    	        	activeLink(self);
-    	        }
-    	    $.ajax({
-    	        url: url,
-    	        cache : false,
-    	        beforeSend: function() {
-    	        	$('#'+target).html('');
-    	        	$('#load-'+target).show();
-    	        },
-    	        success: function(data){ 
-    	                       if (target !== 'undefined'){
-    	                          $('#'+target).html( data );
-    	                          $('#load-'+target).hide();
-    	                       }
-    	                 }
-    	    });
-        return false;
-	});
-    
+  $(document).ready(function(){
+	linkToAjax();
   });
+  
+  linkToAjax = function() {
+	  $('a').unbind("click").click(function(e){
+  	    e.preventDefault();
+  	    var self = $(this);
+  	        url = self.attr('href');
+  	        target = self.data('target');
+  	        group = self.data('group');
+  	        if (self.data('jdata')!='') {
+  	        	jData = self.data('jdata');
+  	        }
+  	        if (typeof(group)!='undefined') {
+	    	        aGroup = group.split('-');
+	    	        if (aGroup[0]=='active') {
+	    	        	activeLink(self);
+	    	        }
+  	        }
+  	        // We send a string json to webserver
+  	        jData = JSON.stringify(jData);
+  	        call(url, target, jData);
+      return false;
+	});
+  }
+  
+  call = function(url, target, jData){
+	    $.ajax({
+	        url: url,
+   //       cache : false,
+	        method: (typeof(jData)!='undefined')?'POST':'GET',
+	        data: (typeof(jData)!='undefined')?"jData="+jData:'',
+	        beforeSend: function() {
+	        	$('#wrapper-'+target).show();
+	        	$('#load-'+target).show();
+	        },
+	        success: function(data){ 
+	                       if (target !== 'undefined'){
+	                          $('#'+target).html( data );
+	                          $('#load-'+target).hide();
+	          	        	  $('#wrapper-'+target).hide();
+	                       }
+	                 },
+	        error: function(json){
+	        	 errorJson = $.parseJSON(json.responseText);
+	        	 alert(errorJson.message);
+                 $('#load-'+target).hide();
+ 	        	 $('#wrapper-'+target).hide();
+	        }
+	    });
+  }
+
  
 })(jQuery);
+
 
 // This function allow used active class of bootstrap
 activeLink = function(link)
@@ -51,6 +76,53 @@ activeLink = function(link)
 		$(this).parent().attr('class','')
 	});
 	link.parent().attr('class','active');
+}
+
+// This function play tooltip 
+loadTooltip = function(){
+	  if ($("[rel=tooltip]").length) {
+	      $("[rel=tooltip]").tooltip();
+	  }
+}
+
+// Graphics functions to create cloud and virtual
+createPhysical = function(id) {
+	$('#node_'+id).attr('data-virtual','0');
+	$('#node_'+id).attr('data-cloud','0');
+}
+
+createVirtual = function(id) {
+	$('#node_'+id).attr('data-virtual','1');
+	$('#node_'+id).attr('data-cloud','0');
+}
+
+createCloud = function(id) {
+	$('#node_'+id).attr('data-virtual','0');
+	$('#node_'+id).attr('data-cloud','1');
+}
+
+loadListenerCreating = function() {
+	// Listener creating button
+	$('#create-physical').click(function(){
+		createPhysical($(this).data('id'));
+	});
+
+	$('#create-virtual').click(function(){
+		createVirtual($(this).data('id'));
+	});
+
+	$('#create-cloud').click(function(){
+		createCloud($(this).data('id'));
+	});
+}
+
+loadCurrentJsTreeClicked = function(id) {
+	// To start, we disable all class jstree-clicked
+	$('.jstree-clicked').each(function(){
+		$(this).attr('class','');
+	});
+	
+	$('#node_'+id+'>a').attr('class', 'jstree-clicked');
 }
 
 $.bootstrap = {};
@@ -89,6 +161,13 @@ buildTree = function(service_node, root_id, kzf_css)
 					// the result is fed to the AJAX request `data` option
 					id = n.attr ? n.attr("id").replace("node_","") : root_id;
 					return {"jData": '{"action" : "read", "id" : '+id+', "crud_from" : "tree"}'};
+				},
+				"success" : function (n) {
+					return n.data_response;
+				},
+				"error" : function (n) {
+					obj = $.parseJSON(n.responseText);
+					alert(obj.message);
 				}
 			}
 		},
@@ -101,7 +180,7 @@ buildTree = function(service_node, root_id, kzf_css)
 					"separator_after"	: false,
 					"label"				: "Go to",
 					"icon"              : "icon-book",
-					"action"			: function (obj) { return false; }
+					"action"			: function (obj) { call(service_node, 'kzf-sub-content-right', '{"action": "read", "id": '+$(obj).attr('id').replace("node_","")+', "crud_from": "node" }'); return false; }
 				},
 				"add_branch": {
 					"separator_before"	: false,
@@ -259,8 +338,7 @@ loadCurrentIcone = function(){
 	$('.jstree-kzf .jstree-open > ins').attr('class', 'icon-minus');
 	$('.jstree-kzf .jstree-closed > ins.icon-plus').attr('style', 'cursor:pointer');
 	$('.jstree-kzf .jstree-open > ins.icon-minus').attr('style', 'cursor:pointer');		
-	vakataToBootstrap();
-}
+};
 
 listenerTreeLoading = function(){
 	$('.icon-plus').click(function(){
@@ -276,16 +354,9 @@ listenerTreeLoading = function(){
 		$(this).removeClass('icon-minus');
 		$(this).addClass('icon-plus');
 	});
-}
-
-vakataToBootstrap = function(){
-	$('#vakata-contextmenu').down().addClass("dropdown-menu");
-	$('#vakata-contextmenu').down().attr('role',"menu");
-	$('#vakata-contextmenu').down().attr('aria-labelledby', 'dropdownMenu');
-	$('#vakata-contextmenu ul > li > ins').each(function(){
-	 $(this).prependTo($(this).parent().find('a'));
-	});	
 };
+
+
 
 /* 
  * jsTree contextmenu plugin

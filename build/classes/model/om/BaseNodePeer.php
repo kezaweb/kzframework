@@ -36,16 +36,19 @@ abstract class BaseNodePeer
     const TM_CLASS = 'NodeTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 15;
+    const NUM_COLUMNS = 16;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 15;
+    const NUM_HYDRATE_COLUMNS = 16;
 
     /** the column name for the id field */
     const ID = 'node.id';
+
+    /** the column name for the nod_master field */
+    const NOD_MASTER = 'node.nod_master';
 
     /** the column name for the nod_title field */
     const NOD_TITLE = 'node.nod_title';
@@ -125,12 +128,12 @@ abstract class BaseNodePeer
      * e.g. NodePeer::$fieldNames[NodePeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'NodTitle', 'NodLeft', 'NodRight', 'NodLevel', 'NodType', 'NodCloud', 'NodVirtual', 'BchId', 'BchParent', 'LefId', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'nodTitle', 'nodLeft', 'nodRight', 'nodLevel', 'nodType', 'nodCloud', 'nodVirtual', 'bchId', 'bchParent', 'lefId', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
-        BasePeer::TYPE_COLNAME => array (NodePeer::ID, NodePeer::NOD_TITLE, NodePeer::NOD_LEFT, NodePeer::NOD_RIGHT, NodePeer::NOD_LEVEL, NodePeer::NOD_TYPE, NodePeer::NOD_CLOUD, NodePeer::NOD_VIRTUAL, NodePeer::BCH_ID, NodePeer::BCH_PARENT, NodePeer::LEF_ID, NodePeer::CREATED_BY, NodePeer::UPDATED_BY, NodePeer::CREATED_AT, NodePeer::UPDATED_AT, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NOD_TITLE', 'NOD_LEFT', 'NOD_RIGHT', 'NOD_LEVEL', 'NOD_TYPE', 'NOD_CLOUD', 'NOD_VIRTUAL', 'BCH_ID', 'BCH_PARENT', 'LEF_ID', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
-        BasePeer::TYPE_FIELDNAME => array ('id', 'nod_title', 'nod_left', 'nod_right', 'nod_level', 'nod_type', 'nod_cloud', 'nod_virtual', 'bch_id', 'bch_parent', 'lef_id', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'NodMaster', 'NodTitle', 'NodLeft', 'NodRight', 'NodLevel', 'NodType', 'NodCloud', 'NodVirtual', 'BchId', 'BchParent', 'LefId', 'CreatedBy', 'UpdatedBy', 'CreatedAt', 'UpdatedAt', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'nodMaster', 'nodTitle', 'nodLeft', 'nodRight', 'nodLevel', 'nodType', 'nodCloud', 'nodVirtual', 'bchId', 'bchParent', 'lefId', 'createdBy', 'updatedBy', 'createdAt', 'updatedAt', ),
+        BasePeer::TYPE_COLNAME => array (NodePeer::ID, NodePeer::NOD_MASTER, NodePeer::NOD_TITLE, NodePeer::NOD_LEFT, NodePeer::NOD_RIGHT, NodePeer::NOD_LEVEL, NodePeer::NOD_TYPE, NodePeer::NOD_CLOUD, NodePeer::NOD_VIRTUAL, NodePeer::BCH_ID, NodePeer::BCH_PARENT, NodePeer::LEF_ID, NodePeer::CREATED_BY, NodePeer::UPDATED_BY, NodePeer::CREATED_AT, NodePeer::UPDATED_AT, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'NOD_MASTER', 'NOD_TITLE', 'NOD_LEFT', 'NOD_RIGHT', 'NOD_LEVEL', 'NOD_TYPE', 'NOD_CLOUD', 'NOD_VIRTUAL', 'BCH_ID', 'BCH_PARENT', 'LEF_ID', 'CREATED_BY', 'UPDATED_BY', 'CREATED_AT', 'UPDATED_AT', ),
+        BasePeer::TYPE_FIELDNAME => array ('id', 'nod_master', 'nod_title', 'nod_left', 'nod_right', 'nod_level', 'nod_type', 'nod_cloud', 'nod_virtual', 'bch_id', 'bch_parent', 'lef_id', 'created_by', 'updated_by', 'created_at', 'updated_at', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -140,12 +143,12 @@ abstract class BaseNodePeer
      * e.g. NodePeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'NodTitle' => 1, 'NodLeft' => 2, 'NodRight' => 3, 'NodLevel' => 4, 'NodType' => 5, 'NodCloud' => 6, 'NodVirtual' => 7, 'BchId' => 8, 'BchParent' => 9, 'LefId' => 10, 'CreatedBy' => 11, 'UpdatedBy' => 12, 'CreatedAt' => 13, 'UpdatedAt' => 14, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'nodTitle' => 1, 'nodLeft' => 2, 'nodRight' => 3, 'nodLevel' => 4, 'nodType' => 5, 'nodCloud' => 6, 'nodVirtual' => 7, 'bchId' => 8, 'bchParent' => 9, 'lefId' => 10, 'createdBy' => 11, 'updatedBy' => 12, 'createdAt' => 13, 'updatedAt' => 14, ),
-        BasePeer::TYPE_COLNAME => array (NodePeer::ID => 0, NodePeer::NOD_TITLE => 1, NodePeer::NOD_LEFT => 2, NodePeer::NOD_RIGHT => 3, NodePeer::NOD_LEVEL => 4, NodePeer::NOD_TYPE => 5, NodePeer::NOD_CLOUD => 6, NodePeer::NOD_VIRTUAL => 7, NodePeer::BCH_ID => 8, NodePeer::BCH_PARENT => 9, NodePeer::LEF_ID => 10, NodePeer::CREATED_BY => 11, NodePeer::UPDATED_BY => 12, NodePeer::CREATED_AT => 13, NodePeer::UPDATED_AT => 14, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NOD_TITLE' => 1, 'NOD_LEFT' => 2, 'NOD_RIGHT' => 3, 'NOD_LEVEL' => 4, 'NOD_TYPE' => 5, 'NOD_CLOUD' => 6, 'NOD_VIRTUAL' => 7, 'BCH_ID' => 8, 'BCH_PARENT' => 9, 'LEF_ID' => 10, 'CREATED_BY' => 11, 'UPDATED_BY' => 12, 'CREATED_AT' => 13, 'UPDATED_AT' => 14, ),
-        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'nod_title' => 1, 'nod_left' => 2, 'nod_right' => 3, 'nod_level' => 4, 'nod_type' => 5, 'nod_cloud' => 6, 'nod_virtual' => 7, 'bch_id' => 8, 'bch_parent' => 9, 'lef_id' => 10, 'created_by' => 11, 'updated_by' => 12, 'created_at' => 13, 'updated_at' => 14, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'NodMaster' => 1, 'NodTitle' => 2, 'NodLeft' => 3, 'NodRight' => 4, 'NodLevel' => 5, 'NodType' => 6, 'NodCloud' => 7, 'NodVirtual' => 8, 'BchId' => 9, 'BchParent' => 10, 'LefId' => 11, 'CreatedBy' => 12, 'UpdatedBy' => 13, 'CreatedAt' => 14, 'UpdatedAt' => 15, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'nodMaster' => 1, 'nodTitle' => 2, 'nodLeft' => 3, 'nodRight' => 4, 'nodLevel' => 5, 'nodType' => 6, 'nodCloud' => 7, 'nodVirtual' => 8, 'bchId' => 9, 'bchParent' => 10, 'lefId' => 11, 'createdBy' => 12, 'updatedBy' => 13, 'createdAt' => 14, 'updatedAt' => 15, ),
+        BasePeer::TYPE_COLNAME => array (NodePeer::ID => 0, NodePeer::NOD_MASTER => 1, NodePeer::NOD_TITLE => 2, NodePeer::NOD_LEFT => 3, NodePeer::NOD_RIGHT => 4, NodePeer::NOD_LEVEL => 5, NodePeer::NOD_TYPE => 6, NodePeer::NOD_CLOUD => 7, NodePeer::NOD_VIRTUAL => 8, NodePeer::BCH_ID => 9, NodePeer::BCH_PARENT => 10, NodePeer::LEF_ID => 11, NodePeer::CREATED_BY => 12, NodePeer::UPDATED_BY => 13, NodePeer::CREATED_AT => 14, NodePeer::UPDATED_AT => 15, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'NOD_MASTER' => 1, 'NOD_TITLE' => 2, 'NOD_LEFT' => 3, 'NOD_RIGHT' => 4, 'NOD_LEVEL' => 5, 'NOD_TYPE' => 6, 'NOD_CLOUD' => 7, 'NOD_VIRTUAL' => 8, 'BCH_ID' => 9, 'BCH_PARENT' => 10, 'LEF_ID' => 11, 'CREATED_BY' => 12, 'UPDATED_BY' => 13, 'CREATED_AT' => 14, 'UPDATED_AT' => 15, ),
+        BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'nod_master' => 1, 'nod_title' => 2, 'nod_left' => 3, 'nod_right' => 4, 'nod_level' => 5, 'nod_type' => 6, 'nod_cloud' => 7, 'nod_virtual' => 8, 'bch_id' => 9, 'bch_parent' => 10, 'lef_id' => 11, 'created_by' => 12, 'updated_by' => 13, 'created_at' => 14, 'updated_at' => 15, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
     );
 
     /**
@@ -220,6 +223,7 @@ abstract class BaseNodePeer
     {
         if (null === $alias) {
             $criteria->addSelectColumn(NodePeer::ID);
+            $criteria->addSelectColumn(NodePeer::NOD_MASTER);
             $criteria->addSelectColumn(NodePeer::NOD_TITLE);
             $criteria->addSelectColumn(NodePeer::NOD_LEFT);
             $criteria->addSelectColumn(NodePeer::NOD_RIGHT);
@@ -236,6 +240,7 @@ abstract class BaseNodePeer
             $criteria->addSelectColumn(NodePeer::UPDATED_AT);
         } else {
             $criteria->addSelectColumn($alias . '.id');
+            $criteria->addSelectColumn($alias . '.nod_master');
             $criteria->addSelectColumn($alias . '.nod_title');
             $criteria->addSelectColumn($alias . '.nod_left');
             $criteria->addSelectColumn($alias . '.nod_right');
@@ -550,6 +555,101 @@ abstract class BaseNodePeer
         }
 
         return array($obj, $col);
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining all related tables
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAll(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(NodePeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            NodePeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(NodePeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(NodePeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+    /**
+     * Selects a collection of Node objects pre-filled with all related objects.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Node objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAll(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(NodePeer::DATABASE_NAME);
+        }
+
+        NodePeer::addSelectColumns($criteria);
+        $startcol2 = NodePeer::NUM_HYDRATE_COLUMNS;
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = NodePeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = NodePeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = NodePeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                NodePeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
     /**
@@ -1002,9 +1102,9 @@ abstract class BaseNodePeer
                 while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
                     $key = NodePeer::getPrimaryKeyHashFromRow($row, 0);
                     if (null !== ($object = NodePeer::getInstanceFromPool($key))) {
-                        $object->setLeftValue($row[2]);
-                        $object->setRightValue($row[3]);
-                        $object->setLevel($row[4]);
+                        $object->setLeftValue($row[3]);
+                        $object->setRightValue($row[4]);
+                        $object->setLevel($row[5]);
                         $object->clearNestedSetChildren();
                     }
                 }

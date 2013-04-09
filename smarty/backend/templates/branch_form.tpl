@@ -1,0 +1,1 @@
+<h2><ins class="icon-folder-open"></ins>Edit {$oBranch->getBchTitle()}</h2>

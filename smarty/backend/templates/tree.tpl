@@ -7,9 +7,16 @@
 		<div id="tree" class="tree"></div>
 		    
     </div>
-    <div class="span10">
-      Choose a branch or a leaf
+    <div class="span10" id="kzf-sub-content-right">
+      <div id="wrapper-kzf-sub-content-right" class="wrapper"> 
+	      <!-- load box -->
+		<div id="load-kzf-sub-content-right">
+			{html_image file='img/35load.gif'}&nbsp; &nbsp;Loading page...	
+		</div>
+	</div>
     </div>
+
+	
   </div>
   
   

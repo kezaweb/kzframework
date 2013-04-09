@@ -10,6 +10,7 @@ use \Exception;
 use \PDO;
 use \Persistent;
 use \Propel;
+use \PropelCollection;
 use \PropelDateTime;
 use \PropelException;
 use \PropelObjectCollection;
@@ -51,6 +52,12 @@ abstract class BaseNode extends BaseObject implements Persistent
      * @var        int
      */
     protected $id;
+
+    /**
+     * The value for the nod_master field.
+     * @var        int
+     */
+    protected $nod_master;
 
     /**
      * The value for the nod_title field.
@@ -137,6 +144,17 @@ abstract class BaseNode extends BaseObject implements Persistent
     protected $updated_at;
 
     /**
+     * @var        Node
+     */
+    protected $aNodeRelatedByNodMaster;
+
+    /**
+     * @var        PropelObjectCollection|Node[] Collection to store aggregation of Node objects.
+     */
+    protected $collNodesRelatedById;
+    protected $collNodesRelatedByIdPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      * @var        boolean
@@ -178,6 +196,12 @@ abstract class BaseNode extends BaseObject implements Persistent
 
 
     /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $nodesRelatedByIdScheduledForDeletion = null;
+
+    /**
      * Get the [id] column value.
      *
      * @return int
@@ -185,6 +209,16 @@ abstract class BaseNode extends BaseObject implements Persistent
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the [nod_master] column value.
+     *
+     * @return int
+     */
+    public function getNodMaster()
+    {
+        return $this->nod_master;
     }
 
     /**
@@ -407,6 +441,31 @@ abstract class BaseNode extends BaseObject implements Persistent
 
         return $this;
     } // setId()
+
+    /**
+     * Set the value of [nod_master] column.
+     *
+     * @param int $v new value
+     * @return Node The current object (for fluent API support)
+     */
+    public function setNodMaster($v)
+    {
+        if ($v !== null && is_numeric($v)) {
+            $v = (int) $v;
+        }
+
+        if ($this->nod_master !== $v) {
+            $this->nod_master = $v;
+            $this->modifiedColumns[] = NodePeer::NOD_MASTER;
+        }
+
+        if ($this->aNodeRelatedByNodMaster !== null && $this->aNodeRelatedByNodMaster->getId() !== $v) {
+            $this->aNodeRelatedByNodMaster = null;
+        }
+
+
+        return $this;
+    } // setNodMaster()
 
     /**
      * Set the value of [nod_title] column.
@@ -739,20 +798,21 @@ abstract class BaseNode extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->nod_title = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->nod_left = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-            $this->nod_right = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-            $this->nod_level = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-            $this->nod_type = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
-            $this->nod_cloud = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
-            $this->nod_virtual = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
-            $this->bch_id = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
-            $this->bch_parent = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
-            $this->lef_id = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
-            $this->created_by = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
-            $this->updated_by = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
-            $this->created_at = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-            $this->updated_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->nod_master = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->nod_title = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->nod_left = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+            $this->nod_right = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+            $this->nod_level = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+            $this->nod_type = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->nod_cloud = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
+            $this->nod_virtual = ($row[$startcol + 8] !== null) ? (int) $row[$startcol + 8] : null;
+            $this->bch_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+            $this->bch_parent = ($row[$startcol + 10] !== null) ? (int) $row[$startcol + 10] : null;
+            $this->lef_id = ($row[$startcol + 11] !== null) ? (int) $row[$startcol + 11] : null;
+            $this->created_by = ($row[$startcol + 12] !== null) ? (int) $row[$startcol + 12] : null;
+            $this->updated_by = ($row[$startcol + 13] !== null) ? (int) $row[$startcol + 13] : null;
+            $this->created_at = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+            $this->updated_at = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -761,7 +821,7 @@ abstract class BaseNode extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 15; // 15 = NodePeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 16; // 16 = NodePeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Node object", $e);
@@ -784,6 +844,9 @@ abstract class BaseNode extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aNodeRelatedByNodMaster !== null && $this->nod_master !== $this->aNodeRelatedByNodMaster->getId()) {
+            $this->aNodeRelatedByNodMaster = null;
+        }
     } // ensureConsistency
 
     /**
@@ -822,6 +885,9 @@ abstract class BaseNode extends BaseObject implements Persistent
         $this->hydrate($row, 0, true); // rehydrate
 
         if ($deep) {  // also de-associate any related objects?
+
+            $this->aNodeRelatedByNodMaster = null;
+            $this->collNodesRelatedById = null;
 
         } // if (deep)
     }
@@ -973,6 +1039,18 @@ abstract class BaseNode extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aNodeRelatedByNodMaster !== null) {
+                if ($this->aNodeRelatedByNodMaster->isModified() || $this->aNodeRelatedByNodMaster->isNew()) {
+                    $affectedRows += $this->aNodeRelatedByNodMaster->save($con);
+                }
+                $this->setNodeRelatedByNodMaster($this->aNodeRelatedByNodMaster);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -982,6 +1060,24 @@ abstract class BaseNode extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->nodesRelatedByIdScheduledForDeletion !== null) {
+                if (!$this->nodesRelatedByIdScheduledForDeletion->isEmpty()) {
+                    foreach ($this->nodesRelatedByIdScheduledForDeletion as $nodeRelatedById) {
+                        // need to save related object because we set the relation to null
+                        $nodeRelatedById->save($con);
+                    }
+                    $this->nodesRelatedByIdScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collNodesRelatedById !== null) {
+                foreach ($this->collNodesRelatedById as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -1012,6 +1108,9 @@ abstract class BaseNode extends BaseObject implements Persistent
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(NodePeer::ID)) {
             $modifiedColumns[':p' . $index++]  = 'id';
+        }
+        if ($this->isColumnModified(NodePeer::NOD_MASTER)) {
+            $modifiedColumns[':p' . $index++]  = 'nod_master';
         }
         if ($this->isColumnModified(NodePeer::NOD_TITLE)) {
             $modifiedColumns[':p' . $index++]  = 'nod_title';
@@ -1068,6 +1167,9 @@ abstract class BaseNode extends BaseObject implements Persistent
                 switch ($columnName) {
                     case 'id':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
+                        break;
+                    case 'nod_master':
+                        $stmt->bindValue($identifier, $this->nod_master, PDO::PARAM_INT);
                         break;
                     case 'nod_title':
                         $stmt->bindValue($identifier, $this->nod_title, PDO::PARAM_STR);
@@ -1205,10 +1307,30 @@ abstract class BaseNode extends BaseObject implements Persistent
             $failureMap = array();
 
 
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aNodeRelatedByNodMaster !== null) {
+                if (!$this->aNodeRelatedByNodMaster->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aNodeRelatedByNodMaster->getValidationFailures());
+                }
+            }
+
+
             if (($retval = NodePeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
+
+                if ($this->collNodesRelatedById !== null) {
+                    foreach ($this->collNodesRelatedById as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
 
 
             $this->alreadyInValidation = false;
@@ -1249,45 +1371,48 @@ abstract class BaseNode extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getNodTitle();
+                return $this->getNodMaster();
                 break;
             case 2:
-                return $this->getNodLeft();
+                return $this->getNodTitle();
                 break;
             case 3:
-                return $this->getNodRight();
+                return $this->getNodLeft();
                 break;
             case 4:
-                return $this->getNodLevel();
+                return $this->getNodRight();
                 break;
             case 5:
-                return $this->getNodType();
+                return $this->getNodLevel();
                 break;
             case 6:
-                return $this->getNodCloud();
+                return $this->getNodType();
                 break;
             case 7:
-                return $this->getNodVirtual();
+                return $this->getNodCloud();
                 break;
             case 8:
-                return $this->getBchId();
+                return $this->getNodVirtual();
                 break;
             case 9:
-                return $this->getBchParent();
+                return $this->getBchId();
                 break;
             case 10:
-                return $this->getLefId();
+                return $this->getBchParent();
                 break;
             case 11:
-                return $this->getCreatedBy();
+                return $this->getLefId();
                 break;
             case 12:
-                return $this->getUpdatedBy();
+                return $this->getCreatedBy();
                 break;
             case 13:
-                return $this->getCreatedAt();
+                return $this->getUpdatedBy();
                 break;
             case 14:
+                return $this->getCreatedAt();
+                break;
+            case 15:
                 return $this->getUpdatedAt();
                 break;
             default:
@@ -1307,10 +1432,11 @@ abstract class BaseNode extends BaseObject implements Persistent
      *                    Defaults to BasePeer::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to true.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
         if (isset($alreadyDumpedObjects['Node'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
@@ -1319,21 +1445,30 @@ abstract class BaseNode extends BaseObject implements Persistent
         $keys = NodePeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getNodTitle(),
-            $keys[2] => $this->getNodLeft(),
-            $keys[3] => $this->getNodRight(),
-            $keys[4] => $this->getNodLevel(),
-            $keys[5] => $this->getNodType(),
-            $keys[6] => $this->getNodCloud(),
-            $keys[7] => $this->getNodVirtual(),
-            $keys[8] => $this->getBchId(),
-            $keys[9] => $this->getBchParent(),
-            $keys[10] => $this->getLefId(),
-            $keys[11] => $this->getCreatedBy(),
-            $keys[12] => $this->getUpdatedBy(),
-            $keys[13] => $this->getCreatedAt(),
-            $keys[14] => $this->getUpdatedAt(),
+            $keys[1] => $this->getNodMaster(),
+            $keys[2] => $this->getNodTitle(),
+            $keys[3] => $this->getNodLeft(),
+            $keys[4] => $this->getNodRight(),
+            $keys[5] => $this->getNodLevel(),
+            $keys[6] => $this->getNodType(),
+            $keys[7] => $this->getNodCloud(),
+            $keys[8] => $this->getNodVirtual(),
+            $keys[9] => $this->getBchId(),
+            $keys[10] => $this->getBchParent(),
+            $keys[11] => $this->getLefId(),
+            $keys[12] => $this->getCreatedBy(),
+            $keys[13] => $this->getUpdatedBy(),
+            $keys[14] => $this->getCreatedAt(),
+            $keys[15] => $this->getUpdatedAt(),
         );
+        if ($includeForeignObjects) {
+            if (null !== $this->aNodeRelatedByNodMaster) {
+                $result['NodeRelatedByNodMaster'] = $this->aNodeRelatedByNodMaster->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->collNodesRelatedById) {
+                $result['NodesRelatedById'] = $this->collNodesRelatedById->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+        }
 
         return $result;
     }
@@ -1371,45 +1506,48 @@ abstract class BaseNode extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setNodTitle($value);
+                $this->setNodMaster($value);
                 break;
             case 2:
-                $this->setNodLeft($value);
+                $this->setNodTitle($value);
                 break;
             case 3:
-                $this->setNodRight($value);
+                $this->setNodLeft($value);
                 break;
             case 4:
-                $this->setNodLevel($value);
+                $this->setNodRight($value);
                 break;
             case 5:
-                $this->setNodType($value);
+                $this->setNodLevel($value);
                 break;
             case 6:
-                $this->setNodCloud($value);
+                $this->setNodType($value);
                 break;
             case 7:
-                $this->setNodVirtual($value);
+                $this->setNodCloud($value);
                 break;
             case 8:
-                $this->setBchId($value);
+                $this->setNodVirtual($value);
                 break;
             case 9:
-                $this->setBchParent($value);
+                $this->setBchId($value);
                 break;
             case 10:
-                $this->setLefId($value);
+                $this->setBchParent($value);
                 break;
             case 11:
-                $this->setCreatedBy($value);
+                $this->setLefId($value);
                 break;
             case 12:
-                $this->setUpdatedBy($value);
+                $this->setCreatedBy($value);
                 break;
             case 13:
-                $this->setCreatedAt($value);
+                $this->setUpdatedBy($value);
                 break;
             case 14:
+                $this->setCreatedAt($value);
+                break;
+            case 15:
                 $this->setUpdatedAt($value);
                 break;
         } // switch()
@@ -1437,20 +1575,21 @@ abstract class BaseNode extends BaseObject implements Persistent
         $keys = NodePeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setNodTitle($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setNodLeft($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setNodRight($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setNodLevel($arr[$keys[4]]);
-        if (array_key_exists($keys[5], $arr)) $this->setNodType($arr[$keys[5]]);
-        if (array_key_exists($keys[6], $arr)) $this->setNodCloud($arr[$keys[6]]);
-        if (array_key_exists($keys[7], $arr)) $this->setNodVirtual($arr[$keys[7]]);
-        if (array_key_exists($keys[8], $arr)) $this->setBchId($arr[$keys[8]]);
-        if (array_key_exists($keys[9], $arr)) $this->setBchParent($arr[$keys[9]]);
-        if (array_key_exists($keys[10], $arr)) $this->setLefId($arr[$keys[10]]);
-        if (array_key_exists($keys[11], $arr)) $this->setCreatedBy($arr[$keys[11]]);
-        if (array_key_exists($keys[12], $arr)) $this->setUpdatedBy($arr[$keys[12]]);
-        if (array_key_exists($keys[13], $arr)) $this->setCreatedAt($arr[$keys[13]]);
-        if (array_key_exists($keys[14], $arr)) $this->setUpdatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[1], $arr)) $this->setNodMaster($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setNodTitle($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setNodLeft($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setNodRight($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setNodLevel($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setNodType($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setNodCloud($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setNodVirtual($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setBchId($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setBchParent($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setLefId($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setCreatedBy($arr[$keys[12]]);
+        if (array_key_exists($keys[13], $arr)) $this->setUpdatedBy($arr[$keys[13]]);
+        if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
+        if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
     }
 
     /**
@@ -1463,6 +1602,7 @@ abstract class BaseNode extends BaseObject implements Persistent
         $criteria = new Criteria(NodePeer::DATABASE_NAME);
 
         if ($this->isColumnModified(NodePeer::ID)) $criteria->add(NodePeer::ID, $this->id);
+        if ($this->isColumnModified(NodePeer::NOD_MASTER)) $criteria->add(NodePeer::NOD_MASTER, $this->nod_master);
         if ($this->isColumnModified(NodePeer::NOD_TITLE)) $criteria->add(NodePeer::NOD_TITLE, $this->nod_title);
         if ($this->isColumnModified(NodePeer::NOD_LEFT)) $criteria->add(NodePeer::NOD_LEFT, $this->nod_left);
         if ($this->isColumnModified(NodePeer::NOD_RIGHT)) $criteria->add(NodePeer::NOD_RIGHT, $this->nod_right);
@@ -1540,6 +1680,7 @@ abstract class BaseNode extends BaseObject implements Persistent
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
+        $copyObj->setNodMaster($this->getNodMaster());
         $copyObj->setNodTitle($this->getNodTitle());
         $copyObj->setNodLeft($this->getNodLeft());
         $copyObj->setNodRight($this->getNodRight());
@@ -1554,6 +1695,24 @@ abstract class BaseNode extends BaseObject implements Persistent
         $copyObj->setUpdatedBy($this->getUpdatedBy());
         $copyObj->setCreatedAt($this->getCreatedAt());
         $copyObj->setUpdatedAt($this->getUpdatedAt());
+
+        if ($deepCopy && !$this->startCopy) {
+            // important: temporarily setNew(false) because this affects the behavior of
+            // the getter/setter methods for fkey referrer objects.
+            $copyObj->setNew(false);
+            // store object hash to prevent cycle
+            $this->startCopy = true;
+
+            foreach ($this->getNodesRelatedById() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addNodeRelatedById($relObj->copy($deepCopy));
+                }
+            }
+
+            //unflag object copy
+            $this->startCopy = false;
+        } // if ($deepCopy)
+
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -1601,11 +1760,298 @@ abstract class BaseNode extends BaseObject implements Persistent
     }
 
     /**
+     * Declares an association between this object and a Node object.
+     *
+     * @param             Node $v
+     * @return Node The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setNodeRelatedByNodMaster(Node $v = null)
+    {
+        if ($v === null) {
+            $this->setNodMaster(NULL);
+        } else {
+            $this->setNodMaster($v->getId());
+        }
+
+        $this->aNodeRelatedByNodMaster = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Node object, it will not be re-added.
+        if ($v !== null) {
+            $v->addNodeRelatedById($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Node object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @param $doQuery Executes a query to get the object if required
+     * @return Node The associated Node object.
+     * @throws PropelException
+     */
+    public function getNodeRelatedByNodMaster(PropelPDO $con = null, $doQuery = true)
+    {
+        if ($this->aNodeRelatedByNodMaster === null && ($this->nod_master !== null) && $doQuery) {
+            $this->aNodeRelatedByNodMaster = NodeQuery::create()->findPk($this->nod_master, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aNodeRelatedByNodMaster->addNodesRelatedById($this);
+             */
+        }
+
+        return $this->aNodeRelatedByNodMaster;
+    }
+
+
+    /**
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
+     *
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('NodeRelatedById' == $relationName) {
+            $this->initNodesRelatedById();
+        }
+    }
+
+    /**
+     * Clears out the collNodesRelatedById collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return Node The current object (for fluent API support)
+     * @see        addNodesRelatedById()
+     */
+    public function clearNodesRelatedById()
+    {
+        $this->collNodesRelatedById = null; // important to set this to null since that means it is uninitialized
+        $this->collNodesRelatedByIdPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collNodesRelatedById collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialNodesRelatedById($v = true)
+    {
+        $this->collNodesRelatedByIdPartial = $v;
+    }
+
+    /**
+     * Initializes the collNodesRelatedById collection.
+     *
+     * By default this just sets the collNodesRelatedById collection to an empty array (like clearcollNodesRelatedById());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initNodesRelatedById($overrideExisting = true)
+    {
+        if (null !== $this->collNodesRelatedById && !$overrideExisting) {
+            return;
+        }
+        $this->collNodesRelatedById = new PropelObjectCollection();
+        $this->collNodesRelatedById->setModel('Node');
+    }
+
+    /**
+     * Gets an array of Node objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Node is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Node[] List of Node objects
+     * @throws PropelException
+     */
+    public function getNodesRelatedById($criteria = null, PropelPDO $con = null)
+    {
+        $partial = $this->collNodesRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collNodesRelatedById || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collNodesRelatedById) {
+                // return empty collection
+                $this->initNodesRelatedById();
+            } else {
+                $collNodesRelatedById = NodeQuery::create(null, $criteria)
+                    ->filterByNodeRelatedByNodMaster($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collNodesRelatedByIdPartial && count($collNodesRelatedById)) {
+                      $this->initNodesRelatedById(false);
+
+                      foreach($collNodesRelatedById as $obj) {
+                        if (false == $this->collNodesRelatedById->contains($obj)) {
+                          $this->collNodesRelatedById->append($obj);
+                        }
+                      }
+
+                      $this->collNodesRelatedByIdPartial = true;
+                    }
+
+                    $collNodesRelatedById->getInternalIterator()->rewind();
+                    return $collNodesRelatedById;
+                }
+
+                if($partial && $this->collNodesRelatedById) {
+                    foreach($this->collNodesRelatedById as $obj) {
+                        if($obj->isNew()) {
+                            $collNodesRelatedById[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collNodesRelatedById = $collNodesRelatedById;
+                $this->collNodesRelatedByIdPartial = false;
+            }
+        }
+
+        return $this->collNodesRelatedById;
+    }
+
+    /**
+     * Sets a collection of NodeRelatedById objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $nodesRelatedById A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Node The current object (for fluent API support)
+     */
+    public function setNodesRelatedById(PropelCollection $nodesRelatedById, PropelPDO $con = null)
+    {
+        $nodesRelatedByIdToDelete = $this->getNodesRelatedById(new Criteria(), $con)->diff($nodesRelatedById);
+
+        $this->nodesRelatedByIdScheduledForDeletion = unserialize(serialize($nodesRelatedByIdToDelete));
+
+        foreach ($nodesRelatedByIdToDelete as $nodeRelatedByIdRemoved) {
+            $nodeRelatedByIdRemoved->setNodeRelatedByNodMaster(null);
+        }
+
+        $this->collNodesRelatedById = null;
+        foreach ($nodesRelatedById as $nodeRelatedById) {
+            $this->addNodeRelatedById($nodeRelatedById);
+        }
+
+        $this->collNodesRelatedById = $nodesRelatedById;
+        $this->collNodesRelatedByIdPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Node objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Node objects.
+     * @throws PropelException
+     */
+    public function countNodesRelatedById(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collNodesRelatedByIdPartial && !$this->isNew();
+        if (null === $this->collNodesRelatedById || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collNodesRelatedById) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getNodesRelatedById());
+            }
+            $query = NodeQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByNodeRelatedByNodMaster($this)
+                ->count($con);
+        }
+
+        return count($this->collNodesRelatedById);
+    }
+
+    /**
+     * Method called to associate a Node object to this object
+     * through the Node foreign key attribute.
+     *
+     * @param    Node $l Node
+     * @return Node The current object (for fluent API support)
+     */
+    public function addNodeRelatedById(Node $l)
+    {
+        if ($this->collNodesRelatedById === null) {
+            $this->initNodesRelatedById();
+            $this->collNodesRelatedByIdPartial = true;
+        }
+        if (!in_array($l, $this->collNodesRelatedById->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddNodeRelatedById($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	NodeRelatedById $nodeRelatedById The nodeRelatedById object to add.
+     */
+    protected function doAddNodeRelatedById($nodeRelatedById)
+    {
+        $this->collNodesRelatedById[]= $nodeRelatedById;
+        $nodeRelatedById->setNodeRelatedByNodMaster($this);
+    }
+
+    /**
+     * @param	NodeRelatedById $nodeRelatedById The nodeRelatedById object to remove.
+     * @return Node The current object (for fluent API support)
+     */
+    public function removeNodeRelatedById($nodeRelatedById)
+    {
+        if ($this->getNodesRelatedById()->contains($nodeRelatedById)) {
+            $this->collNodesRelatedById->remove($this->collNodesRelatedById->search($nodeRelatedById));
+            if (null === $this->nodesRelatedByIdScheduledForDeletion) {
+                $this->nodesRelatedByIdScheduledForDeletion = clone $this->collNodesRelatedById;
+                $this->nodesRelatedByIdScheduledForDeletion->clear();
+            }
+            $this->nodesRelatedByIdScheduledForDeletion[]= $nodeRelatedById;
+            $nodeRelatedById->setNodeRelatedByNodMaster(null);
+        }
+
+        return $this;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
+        $this->nod_master = null;
         $this->nod_title = null;
         $this->nod_left = null;
         $this->nod_right = null;
@@ -1642,6 +2088,14 @@ abstract class BaseNode extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
+            if ($this->collNodesRelatedById) {
+                foreach ($this->collNodesRelatedById as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->aNodeRelatedByNodMaster instanceof Persistent) {
+              $this->aNodeRelatedByNodMaster->clearAllReferences($deep);
+            }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
@@ -1649,6 +2103,11 @@ abstract class BaseNode extends BaseObject implements Persistent
         // nested_set behavior
         $this->collNestedSetChildren = null;
         $this->aNestedSetParent = null;
+        if ($this->collNodesRelatedById instanceof PropelCollection) {
+            $this->collNodesRelatedById->clearIterator();
+        }
+        $this->collNodesRelatedById = null;
+        $this->aNodeRelatedByNodMaster = null;
     }
 
     /**

@@ -43,6 +43,7 @@ class NodeTableMap extends TableMap
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
+        $this->addForeignKey('nod_master', 'NodMaster', 'INTEGER', 'node', 'id', false, null, null);
         $this->addColumn('nod_title', 'NodTitle', 'VARCHAR', false, 150, null);
         $this->addColumn('nod_left', 'NodLeft', 'INTEGER', false, null, null);
         $this->addColumn('nod_right', 'NodRight', 'INTEGER', false, null, null);
@@ -65,6 +66,8 @@ class NodeTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('NodeRelatedByNodMaster', 'Kzf\\Model\\Node', RelationMap::MANY_TO_ONE, array('nod_master' => 'id', ), null, null);
+        $this->addRelation('NodeRelatedById', 'Kzf\\Model\\Node', RelationMap::ONE_TO_MANY, array('id' => 'nod_master', ), null, null, 'NodesRelatedById');
     } // buildRelations()
 
     /**
