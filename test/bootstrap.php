@@ -1,5 +1,5 @@
 <?php
-$pwd = exec("pwd");
+$pwd = getcwd();
 if(!defined('KZF_DIR')) define('KZF_DIR', (($_SERVER['DOCUMENT_ROOT']=='')?$pwd."/":$_SERVER['DOCUMENT_ROOT']));
 
 require_once KZF_DIR."config/config.php";
